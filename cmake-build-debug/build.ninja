@@ -85,12 +85,6 @@ build CMakeFiles/Schedule_Project.dir/StudentsList.cpp.o: CXX_COMPILER__Schedule
   OBJECT_DIR = CMakeFiles/Schedule_Project.dir
   OBJECT_FILE_DIR = CMakeFiles/Schedule_Project.dir
 
-build CMakeFiles/Schedule_Project.dir/AllSchedules.cpp.o: CXX_COMPILER__Schedule_Project_unscanned_Debug /home/tiagomonteiro/Desktop/feup2/Schedule_Project/AllSchedules.cpp || cmake_object_order_depends_target_Schedule_Project
-  DEP_FILE = CMakeFiles/Schedule_Project.dir/AllSchedules.cpp.o.d
-  FLAGS = -g -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles/Schedule_Project.dir
-  OBJECT_FILE_DIR = CMakeFiles/Schedule_Project.dir
-
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Schedule_Project
@@ -99,7 +93,7 @@ build CMakeFiles/Schedule_Project.dir/AllSchedules.cpp.o: CXX_COMPILER__Schedule
 #############################################
 # Link the executable Schedule_Project
 
-build Schedule_Project: CXX_EXECUTABLE_LINKER__Schedule_Project_Debug CMakeFiles/Schedule_Project.dir/main.cpp.o CMakeFiles/Schedule_Project.dir/Student.cpp.o CMakeFiles/Schedule_Project.dir/Block.cpp.o CMakeFiles/Schedule_Project.dir/ClassForUc.cpp.o CMakeFiles/Schedule_Project.dir/ScheduleUC.cpp.o CMakeFiles/Schedule_Project.dir/StudentsList.cpp.o CMakeFiles/Schedule_Project.dir/AllSchedules.cpp.o
+build Schedule_Project: CXX_EXECUTABLE_LINKER__Schedule_Project_Debug CMakeFiles/Schedule_Project.dir/main.cpp.o CMakeFiles/Schedule_Project.dir/Student.cpp.o CMakeFiles/Schedule_Project.dir/Block.cpp.o CMakeFiles/Schedule_Project.dir/ClassForUc.cpp.o CMakeFiles/Schedule_Project.dir/ScheduleUC.cpp.o CMakeFiles/Schedule_Project.dir/StudentsList.cpp.o
   FLAGS = -g
   OBJECT_DIR = CMakeFiles/Schedule_Project.dir
   POST_BUILD = :

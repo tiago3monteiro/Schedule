@@ -14,9 +14,9 @@
 class ScheduleUC {
 public:
     ScheduleUC(ClassForUc classForUc, std::vector<Block> UcClassSchedule):classForUc(classForUc),UcClassSchedule(UcClassSchedule){ };
-    bool operator< (const ScheduleUC& scheduleUc) const;
     const std::vector<Block> &getUcClassSchedule() const;
     const ClassForUc &getClassForUc() const;
+    bool operator< (const ScheduleUC& scheduleUc) const;
     void addBlock(Block block);
 
 private:

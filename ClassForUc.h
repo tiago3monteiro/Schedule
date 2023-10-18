@@ -21,8 +21,6 @@ public:
         return os;
     }
 
-
-
 private:
     std::string ucCode;
     std::string ucClass;

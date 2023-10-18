@@ -2,10 +2,8 @@
 // Created by tiagomonteiro on 10/10/23.
 //
 #include <iostream>
-#include <fstream>
-#include <sstream>
 #include "Student.h"
-using namespace std;
+
 
 
 bool Student::operator < (const Student& student) const
@@ -21,15 +19,15 @@ Student::Student(std::string id, std::string name, std::vector<ClassForUc> stude
 
 }
 
-const vector<ClassForUc> &Student::getStudentSchedule() const {
+const std::vector<ClassForUc> &Student::getStudentSchedule() const {
     return studentSchedule;
 }
 
-const string &Student::getName() const {
+const std::string &Student::getName() const {
     return name;
 }
 
-const string &Student::getId() const {
+const std::string &Student::getId() const {
     return id;
 }
 
@@ -41,7 +39,7 @@ void Student::printSchedule()
 {
     for(auto classes: studentSchedule)
     {
-
+        //later
 
     }
 

@@ -18,7 +18,7 @@ const std::set<Student> &StudentsList::getStudents() const {
 
 StudentsList::StudentsList()
 {
-    std::ifstream in("students_classes.csv");
+    std::ifstream in("students_classes.csv");  //Parsing of student info
     std::string line;
 
     while (std::getline(in, line)) {
@@ -45,7 +45,7 @@ StudentsList::StudentsList()
         students.insert(student);
     }
 
-    std::ifstream in1("classes.csv");
+    std::ifstream in1("classes.csv"); //Parsing of classes info
     std::string line1;
 
     while (std::getline(in1, line1)) {

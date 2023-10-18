@@ -4,11 +4,6 @@
 
 #include "ScheduleUC.h"
 
-#include <utility>
-
-
-
-
 bool ScheduleUC::operator< (const ScheduleUC& scheduleUc) const
 {
     return this->classForUc.getUcCode() < scheduleUc.classForUc.getUcCode();

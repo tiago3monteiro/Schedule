@@ -11,3 +11,4 @@ Block::Block(std::string day, std::string  startHour, std::string duration, std:
     this->type = type;
 
 }
+

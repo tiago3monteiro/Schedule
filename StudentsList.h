@@ -23,8 +23,6 @@ private:
     std::set<ScheduleUC> schedules;
 
 
-
-
 };
 
 
