@@ -10,12 +10,19 @@
 //A block represents a class
 class Block {
 public:
-    Block(std::string day, float startHour, float duration, std::string type);
+    Block(std::string day, std::string  startHour, std::string  duration, std::string type);
+    friend std::ostream& operator << (std::ostream& os, const Block& obj) {
+        os << obj.day << std::string("/");
+        os << obj.startHour << std::string("/");
+        os << obj.duration << std::string("/");
+        os << obj.type;
+        return os;
+    }
 
 private:
     std::string day;
-    float startHour;
-    float duration;
+    std::string  startHour;
+    std::string  duration;
     std::string type;
 
 };

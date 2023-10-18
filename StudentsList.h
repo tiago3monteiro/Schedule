@@ -9,16 +9,20 @@
 #include <set>
 #include "ClassForUc.h"
 #include "Student.h"
+#include "ScheduleUC.h"
 
 class StudentsList {
 public:
     StudentsList();
+    const std::set<Student> &getStudents() const;
+    const std::set<ScheduleUC> &getSchedules() const;
 
 
 private:
     std::set<Student> students;
-public:
-    const std::set<Student> &getStudents() const;
+    std::set<ScheduleUC> schedules;
+
+
 
 
 };

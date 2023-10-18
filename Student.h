@@ -18,12 +18,14 @@ public:
     const std::string &getId() const;
     const std::vector<ClassForUc> &getStudentSchedule() const;
     const std::string &getName() const;
-    void addClass(ClassForUc theClass) ;
+    void addClass(ClassForUc theClass);
+    void printSchedule();
 
 private:
     std::string name;
     std::string id;
     std::vector<ClassForUc> studentSchedule;
+
 
 };
 

@@ -37,3 +37,12 @@ void Student::addClass(ClassForUc theClass) {
     studentSchedule.push_back(theClass);
 
 }
+void Student::printSchedule()
+{
+    for(auto classes: studentSchedule)
+    {
+
+
+    }
+
+}

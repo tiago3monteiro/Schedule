@@ -4,7 +4,7 @@
 
 #include "Block.h"
 
-Block::Block(std::string day, float startHour, float duration, std::string type) {
+Block::Block(std::string day, std::string  startHour, std::string duration, std::string type) {
     this->day=day;
     this->startHour = startHour;
     this->duration = duration;

@@ -5,6 +5,7 @@
 #include "Student.h"
 #include "StudentsList.h"
 #include "Student.h"
+#include "AllSchedules.h"
 
 using namespace std;
 //just making some tests on how to collect the data
@@ -13,12 +14,25 @@ using namespace std;
 int main()
 {
     StudentsList students;
+
     for(auto student:students.getStudents())
     {
         cout << student.getName() << endl;
         for(auto StudentSchedule: student.getStudentSchedule())
         {
-            cout << StudentSchedule << endl;
+            cout << StudentSchedule << " ";
+
+        }
+
+    }
+    cout << "-----------------------------------------------------" << endl;
+    AllSchedules allSchedules;
+    for(auto ucSchedules: students.getSchedules())
+    {
+        cout << ucSchedules.getClassForUc().getUcClass() << "->" << ucSchedules.getClassForUc().getUcCode() << endl;
+        for (auto info: ucSchedules.getUcClassSchedule())
+        {
+            cout << info << " ";
 
         }
 
