@@ -12,3 +12,18 @@ Block::Block(std::string day, std::string  startHour, std::string duration, std:
 
 }
 
+const std::string &Block::getStartHour() const {
+    return startHour;
+}
+
+const std::string &Block::getDay() const {
+    return day;
+}
+
+const std::string &Block::getDuration() const {
+    return duration;
+}
+
+const std::string &Block::getType() const {
+    return type;
+}

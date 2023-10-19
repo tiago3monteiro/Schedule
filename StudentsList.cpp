@@ -21,7 +21,8 @@ StudentsList::StudentsList()
     std::ifstream in("students_classes.csv");  //Parsing of student info
     std::string line;
 
-    while (std::getline(in, line)) {
+    std::getline(in, line, '\n'); //step var names ahead
+    while (std::getline(in, line,'\n')) {
 
         std::istringstream iss(line);
         std::string word;
@@ -38,6 +39,7 @@ StudentsList::StudentsList()
             students.erase(findStudent);
             for(auto aula: classesStudent) //aula means class in portuguese
             {
+
                 student.addClass(aula);
 
             }
@@ -47,8 +49,8 @@ StudentsList::StudentsList()
 
     std::ifstream in1("classes.csv"); //Parsing of classes info
     std::string line1;
-
-    while (std::getline(in1, line1)) {
+    std::getline(in1, line1, '\n'); //step var names ahead
+    while (std::getline(in1, line1,'\n')) {
 
         std::istringstream iss(line1);
         std::string word;

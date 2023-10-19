@@ -18,6 +18,7 @@ public:
     const ClassForUc &getClassForUc() const;
     bool operator< (const ScheduleUC& scheduleUc) const;
     void addBlock(Block block);
+    void printSchedule();
 
 private:
     ClassForUc classForUc;

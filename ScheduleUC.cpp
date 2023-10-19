@@ -2,6 +2,7 @@
 // Created by tiagomonteiro on 10/18/23.
 //
 
+#include <iostream>
 #include "ScheduleUC.h"
 
 bool ScheduleUC::operator< (const ScheduleUC& scheduleUc) const
@@ -21,3 +22,13 @@ const ClassForUc &ScheduleUC::getClassForUc() const {
     return classForUc;
 }
 
+void ScheduleUC::printSchedule()
+{
+    std::cout << "Schedule for: " << this->classForUc.getUcCode() << " for class " << this->classForUc.getUcClass()<< std::endl;
+    for(auto classes: UcClassSchedule)
+    {
+        std::cout << classes.getDay() << "/" << classes.getStartHour() << "/" << classes.getDuration() << "/" << classes.getType();
+
+    }
+
+}

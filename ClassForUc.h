@@ -16,10 +16,7 @@ public:
     ClassForUc(std::string ucCode, std::string ucClass);
     const std::string &getUcCode() const;
     const std::string &getUcClass() const;
-    friend std::ostream& operator<<(std::ostream& os, const ClassForUc& obj) {
-        os << obj.getUcCode() << std::string("->") << obj.getUcClass();
-        return os;
-    }
+    bool operator == (ClassForUc obj) const { return this->getUcClass() == obj.getUcClass() && this->getUcCode() == obj.getUcCode();}
 
 private:
     std::string ucCode;

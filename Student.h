@@ -27,6 +27,7 @@ private:
     std::vector<ClassForUc> studentSchedule;
 
 
+
 };
 
 

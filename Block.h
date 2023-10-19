@@ -11,13 +11,11 @@
 class Block {
 public:
     Block(std::string day, std::string  startHour, std::string  duration, std::string type);
-    friend std::ostream& operator << (std::ostream& os, const Block& obj) {
-        os << obj.day << std::string("/");
-        os << obj.startHour << std::string("/");
-        os << obj.duration << std::string("/");
-        os << obj.type;
-        return os;
-    }
+    const std::string &getDay() const;
+    const std::string &getStartHour() const;
+    const std::string &getDuration() const;
+    const std::string &getType() const;
+
 
 private:
     std::string day;
