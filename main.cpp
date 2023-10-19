@@ -1,9 +1,8 @@
 #include <iostream>
-#include <fstream>
-#include <sstream>
+
 #include <string>
-#include "Student.h"
-#include "StudentsList.h"
+
+#include "Application.h"
 
 
 
@@ -12,43 +11,28 @@
 
 int main()
 {
-
-    StudentsList application;
-    std::cout << "Student: ";
+    Application application;
     std::string name;
-    std::cin >>  name;
-    std::cin.ignore(10);
-    std::cin.clear();
-    for(auto student: application.getStudents())
+    name = "Vasco";
+
+
+    for(auto student:application.getStudents())
     {
-        if (student.getName() == name)
+        if(student.getName() == name)
         {
-            student.printSchedule();
-            auto schedules = application.getSchedules();
-            std::cout << "Schedule aluno ";
-            std::cout<< student.getStudentSchedule()[0].getUcClass() << " "<< student.getStudentSchedule()[0].getUcCode()<< std::endl ;
-            for(auto schedule: schedules)
+            for(auto aClass: student.getStudentSchedule())
             {
-                if(schedule.getClassForUc()== student.getStudentSchedule()[0])
+
+                for(auto UC: application.getSchedules())
                 {
-                    std::cout << "if";
-                    schedule.printSchedule();
+
+
+                    if(UC.getClassForUc() == aClass ) UC.printSchedule();
+
                 }
             }
-
         }
-
-
     }
-
-
-
-
-
-
-
-
-
 
 
     return 0;

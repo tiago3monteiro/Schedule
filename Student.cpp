@@ -40,10 +40,7 @@ void Student::printSchedule()
     for(auto classes: studentSchedule)
     {
 
-        std::cout << classes.getUcCode()<<"->"<<classes.getUcClass()<< std::endl;
-
-
-
+        std::cout << classes.getUcClass() << "->" << classes.getUcCode() << std::endl;
 
     }
 

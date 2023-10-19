@@ -12,6 +12,6 @@ add_executable(Schedule_Project main.cpp
         ClassForUc.h
         ScheduleUC.cpp
         ScheduleUC.h
-        StudentsList.cpp
-        StudentsList.h
+        Application.cpp
+        Application.h
 )

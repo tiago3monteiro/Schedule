@@ -13,10 +13,10 @@
 class ClassForUc {
 public:
 
-    ClassForUc(std::string ucCode, std::string ucClass);
+    ClassForUc(std::string ucClass , std::string ucCode);
     const std::string &getUcCode() const;
     const std::string &getUcClass() const;
-    bool operator == (ClassForUc obj) const { return this->getUcClass() == obj.getUcClass() && this->getUcCode() == obj.getUcCode();}
+    bool operator == (ClassForUc obj) const { return this->getUcCode() == obj.getUcCode() && this->getUcClass() == obj.getUcClass() ;}
 
 private:
     std::string ucCode;

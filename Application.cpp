@@ -2,34 +2,34 @@
 // Created by tiagomonteiro on 10/18/23.
 //
 
-#include "StudentsList.h"
+#include "Application.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
 #include <vector>
 
 
-const std::set<ScheduleUC> &StudentsList::getSchedules() const {
+const std::set<ScheduleUC> &Application::getSchedules() const {
     return schedules;
 }
-const std::set<Student> &StudentsList::getStudents() const {
+const std::set<Student> &Application::getStudents() const {
     return students;
 }
 
-StudentsList::StudentsList()
+Application::Application()
 {
     std::ifstream in("students_classes.csv");  //Parsing of student info
     std::string line;
 
     std::getline(in, line, '\n'); //step var names ahead
     while (std::getline(in, line,'\n')) {
-
+        line = line.substr(0,line.length()-1); //you bastards I spent 1 day trying to figure out this
         std::istringstream iss(line);
         std::string word;
         std::vector<std::string> saved;
         while(std::getline(iss,word,',')) saved.push_back(word);
 
-        ClassForUc classes(saved[2],saved[3]);
+        ClassForUc classes(saved[3],saved[2]);
         Student student(saved[0], saved[1], {classes});
         auto findStudent = students.find(student);
 
@@ -51,7 +51,7 @@ StudentsList::StudentsList()
     std::string line1;
     std::getline(in1, line1, '\n'); //step var names ahead
     while (std::getline(in1, line1,'\n')) {
-
+        line1 = line1.substr(0,line1.length()-1);
         std::istringstream iss(line1);
         std::string word;
         std::vector<std::string> saved;
@@ -59,21 +59,20 @@ StudentsList::StudentsList()
 
         Block block(saved[2],saved[3],saved[4],saved[5]);
         ClassForUc classes(saved[0], saved[1]);
+
         ScheduleUC scheduleUc(classes, {block});
 
         auto findClass = schedules.find(scheduleUc);
 
-        if( findClass != schedules.end()) //If the student is already in the set:
+        if( findClass != schedules.end()) //If the schedule is already in the set:
         {
-            auto classesStudent = findClass->getUcClassSchedule();
+            auto classesUcClass = findClass->getUcClassSchedule();
             schedules.erase(findClass);
-            for(auto block: classesStudent) //aula means class in portuguese
+            for(auto block: classesUcClass) //aula means class in portuguese
             {
                 scheduleUc.addBlock(block);
-
             }
         }
         schedules.insert(scheduleUc);
     }
-
 }

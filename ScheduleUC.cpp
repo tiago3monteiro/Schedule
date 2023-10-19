@@ -5,9 +5,18 @@
 #include <iostream>
 #include "ScheduleUC.h"
 
-bool ScheduleUC::operator< (const ScheduleUC& scheduleUc) const
+bool ScheduleUC::operator < (const ScheduleUC& scheduleUc) const
 {
-    return this->classForUc.getUcCode() < scheduleUc.classForUc.getUcCode();
+    if(this->classForUc.getUcCode() < scheduleUc.classForUc.getUcCode())
+    {
+        return true;
+    }
+    if(this->classForUc.getUcCode() > scheduleUc.classForUc.getUcCode())
+    {
+        return false;
+    }
+
+    return this->classForUc.getUcClass() < scheduleUc.classForUc.getUcClass();
 }
 
 const std::vector<Block> &ScheduleUC::getUcClassSchedule() const {
@@ -24,10 +33,11 @@ const ClassForUc &ScheduleUC::getClassForUc() const {
 
 void ScheduleUC::printSchedule()
 {
-    std::cout << "Schedule for: " << this->classForUc.getUcCode() << " for class " << this->classForUc.getUcClass()<< std::endl;
+
     for(auto classes: UcClassSchedule)
     {
-        std::cout << classes.getDay() << "/" << classes.getStartHour() << "/" << classes.getDuration() << "/" << classes.getType();
+        std::cout<<classes.getDay() << "/"<<classes.getStartHour()<< "/"<<classes.getDuration() << "/";
+        std::cout << classes.getType() << std::endl;
 
     }
 

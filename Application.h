@@ -2,8 +2,8 @@
 // Created by tiagomonteiro on 10/18/23.
 //
 
-#ifndef SCHEDULE_PROJECT_STUDENTSLIST_H
-#define SCHEDULE_PROJECT_STUDENTSLIST_H
+#ifndef SCHEDULE_PROJECT_APPLICATION_H
+#define SCHEDULE_PROJECT_APPLICATION_H
 
 
 #include <set>
@@ -11,9 +11,9 @@
 #include "Student.h"
 #include "ScheduleUC.h"
 
-class StudentsList {
+class Application {
 public:
-    StudentsList();
+    Application();
     const std::set<Student> &getStudents() const;
     const std::set<ScheduleUC> &getSchedules() const;
 
@@ -26,4 +26,4 @@ private:
 };
 
 
-#endif //SCHEDULE_PROJECT_STUDENTSLIST_H
+#endif //SCHEDULE_PROJECT_APPLICATION_H

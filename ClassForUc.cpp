@@ -4,10 +4,10 @@
 
 #include "ClassForUc.h"
 
-ClassForUc::ClassForUc(std::string ucCode, std::string ucClass)
+ClassForUc::ClassForUc(std::string ucClass , std::string ucCode)
 {
-    this->ucCode = ucCode;
     this->ucClass = ucClass;
+    this->ucCode = ucCode;
 }
 
 const std::string &ClassForUc::getUcCode() const {
