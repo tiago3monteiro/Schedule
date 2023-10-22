@@ -11,6 +11,7 @@
 #include "Block.h"
 #include "ClassForUc.h"
 
+
 class ScheduleUC {
 public:
     ScheduleUC(ClassForUc classForUc, std::vector<Block> UcClassSchedule):classForUc(classForUc),UcClassSchedule(UcClassSchedule){ };

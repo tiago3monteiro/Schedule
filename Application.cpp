@@ -76,3 +76,23 @@ Application::Application()
         schedules.insert(scheduleUc);
     }
 }
+
+const void Application::printStudentSchedule(std::string name) const { //Kinda complex by now
+    for(auto student: this->students)
+    {
+        if(student.getName() == name)
+        {
+            for(auto studentClass: student.getStudentSchedule())
+            {
+                for(auto ucClasses : this->schedules)
+                {
+                    if(studentClass == ucClasses.getClassForUc())
+                    {
+                        ucClasses.printSchedule();
+
+                    }
+                }
+            }
+        }
+    }
+}

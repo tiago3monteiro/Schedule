@@ -1,7 +1,5 @@
 #include <iostream>
-
 #include <string>
-
 #include "Application.h"
 
 
@@ -14,25 +12,9 @@ int main()
     Application application;
     std::string name;
     name = "Vasco";
+    application.printStudentSchedule(name);
 
 
-    for(auto student:application.getStudents())
-    {
-        if(student.getName() == name)
-        {
-            for(auto aClass: student.getStudentSchedule())
-            {
-
-                for(auto UC: application.getSchedules())
-                {
-
-
-                    if(UC.getClassForUc() == aClass ) UC.printSchedule();
-
-                }
-            }
-        }
-    }
 
 
     return 0;

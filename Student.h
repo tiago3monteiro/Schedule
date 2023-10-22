@@ -11,6 +11,7 @@
 #include <vector>
 #include "ClassForUc.h"
 
+
 class Student {
 public:
     Student(std::string id, std::string name, std::vector<ClassForUc> studentSchedule);
