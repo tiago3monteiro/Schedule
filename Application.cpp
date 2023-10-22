@@ -21,7 +21,7 @@ Application::Application()
     std::ifstream in("students_classes.csv");  //Parsing of student info
     std::string line;
 
-    std::getline(in, line, '\n'); //step var names ahead
+    std::getline(in, line, '\n');
     while (std::getline(in, line,'\n')) {
         line = line.substr(0,line.length()-1); //you bastards I spent 1 day trying to figure out this
         std::istringstream iss(line);
@@ -49,7 +49,7 @@ Application::Application()
 
     std::ifstream in1("classes.csv"); //Parsing of classes info
     std::string line1;
-    std::getline(in1, line1, '\n'); //step var names ahead
+    std::getline(in1, line1, '\n');
     while (std::getline(in1, line1,'\n')) {
         line1 = line1.substr(0,line1.length()-1);
         std::istringstream iss(line1);
@@ -77,7 +77,8 @@ Application::Application()
     }
 }
 
-const void Application::printStudentSchedule(std::string name) const { //Kinda complex by now
+void Application::printStudentSchedule(std::string name)  { //Kinda complex by now
+
     for(auto student: this->students)
     {
         if(student.getName() == name)

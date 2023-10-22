@@ -16,7 +16,7 @@ public:
     Application();
     const std::set<Student> &getStudents() const;
     const std::set<ScheduleUC> &getSchedules() const;
-    const void printStudentSchedule(std::string name) const;
+    void printStudentSchedule(std::string name) ;
 
 
 private:
