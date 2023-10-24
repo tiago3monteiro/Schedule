@@ -10,9 +10,11 @@
 int main()
 {
     Application application;
-    std::string name;
-    name = "Vasco";
-    application.printStudentSchedule(name);
+    std::string name = "Vasco";
+    std::string UC = "L.EIC005";
+    std::string aClass = "1LEIC02";
+    //application.printStudentSchedule(name);
+    application.consultStudents(aClass);
 
 
 

@@ -14,15 +14,19 @@
 class Application {
 public:
     Application();
-    const std::set<Student> &getStudents() const;
-    const std::set<ScheduleUC> &getSchedules() const;
-    void printStudentSchedule(std::string name) ;
 
+    void printStudentSchedule(std::string name);
+    void consultStudents(std::string classOrUC);
+  //  void consultOcupationOfUC()(std::string UC); for partial implementation
+    void consultOcupationOfUCs();
+    void consultOcupationOfClassesPerUC();
+    void consultOcupationOfClassesPerUC(std::string aClass); //for partial implementation
 
 private:
     std::set<Student> students;
     std::set<ScheduleUC> schedules;
-
+    std::set<std::string>existingUCs;
+    std::set<std::string>existingClasses;
 
 };
 
