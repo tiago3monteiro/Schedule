@@ -15,12 +15,13 @@ class Application {
 public:
     Application();
 
-    void printStudentSchedule(std::string name);
-    void consultStudents(std::string classOrUC);
-  //  void consultOcupationOfUC()(std::string UC); for partial implementation
-    void consultOcupationOfUCs();
-    void consultOcupationOfClassesPerUC();
-    void consultOcupationOfClassesPerUC(std::string aClass); //for partial implementation
+    void printStudentSchedule(std::string name); //Consult the schedule of a given student
+    void printClassSchedule(std::string aClass); //Consult the schedule of a given class
+    void consultStudents(std::string classOrUC); //Consult the students within a given class or UC
+    void consultOcupationOfUCs();//Consult the number of students of a UC
+    void consultOcupationOfClassesPerUC(std::string UC, std::string aCLass); //consult the number of students on a class for a UC
+  //  void consultOcupationOfClassesPerUC(std::string aClass); //for partial implementation
+    //  void consultOcupationOfUC()(std::string UC); for partial implementation
 
 private:
     std::set<Student> students;

@@ -9,7 +9,6 @@
 #include <vector>
 #include <map>
 
-
 Application::Application() //sort data in the right containers
 {
     std::ifstream in("students_classes.csv");  //Parsing of student info
@@ -84,12 +83,30 @@ Application::Application() //sort data in the right containers
 }
 
 void Application::printStudentSchedule(std::string name) { //Kinda complex by now but gives us the schedule of a student
+    std::set<Block> res;                                                         //still need to sort the data by date
     for (auto student: students)
         if (student.getName() == name)
             for (auto studentClass: student.getStudentSchedule())
                 for (auto ucClasses: schedules)
-                    if (studentClass == ucClasses.getClassForUc()) ucClasses.printSchedule();
+                    if (studentClass == ucClasses.getClassForUc())
+                    {
+                        for (auto block : ucClasses.getUcClassSchedule())
+                        {
+                            res.insert(block);
+                        }
+
+                        ucClasses.printSchedule();
+                    }
 }
+
+void Application::printClassSchedule(std::string aClass)
+{                                                           //still need to sort by date
+    for(auto classes:schedules)
+    {
+        if(classes.getClassForUc().getUcClass() == aClass)  classes.printSchedule();
+    }
+}
+
 
 void Application::consultStudents(std::string classOrUC){ //prints all the students in a certain UC or class
     std::set<std::string> studentsList;
@@ -111,9 +128,14 @@ void Application::consultOcupationOfUCs() //prints the number of students of eac
     for(auto res: studentsPerUC) std::cout<< res.first <<": " <<res.second<<std::endl;
 }
 
-void Application::consultOcupationOfClassesPerUC()
-{
-
-
+void Application::consultOcupationOfClassesPerUC(std::string UC, std::string aCLass) {
+    int count = 0;
+    ClassForUc key = {aCLass, UC};
+    for (auto student: students)
+        for (auto schedule: student.getStudentSchedule())
+            if (schedule == key) {
+                count++;
+                std::cout << student.getName() << std::endl;
+            }
+            std::cout << "UC " << UC << " for class " << aCLass << " has " << count << " students";
 }
-

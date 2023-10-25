@@ -15,7 +15,7 @@ public:
     const std::string &getStartHour() const;
     const std::string &getDuration() const;
     const std::string &getType() const;
-
+    bool operator< (const Block& block) const;
 
 private:
     std::string day;

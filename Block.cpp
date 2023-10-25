@@ -27,3 +27,10 @@ const std::string &Block::getDuration() const {
 const std::string &Block::getType() const {
     return type;
 }
+
+bool Block::operator< (const Block& block) const
+{
+    if(this->getDay() < block.getDay()) return true;
+
+
+}

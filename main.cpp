@@ -12,11 +12,12 @@ int main()
     Application application;
     std::string name = "Vasco";
     std::string UC = "L.EIC005";
-    std::string aClass = "1LEIC02";
-    //application.printStudentSchedule(name);
-    application.consultStudents(aClass);
-
-
+    std::string aClass = "1LEIC08";
+    application.printClassSchedule(aClass);
+    //application.consultStudents(aClass);
+    //application.consultStudents(aClass);
+    //application.consultOcupationOfUCs();
+    //application.consultOcupationOfClassesPerUC(UC,aClass);
 
 
     return 0;
