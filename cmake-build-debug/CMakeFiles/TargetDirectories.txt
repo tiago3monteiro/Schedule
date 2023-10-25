@@ -1,3 +1,3 @@
-/home/tiagomonteiro/Desktop/feup2/Schedule/cmake-build-debug/CMakeFiles/Schedule_Project.dir
-/home/tiagomonteiro/Desktop/feup2/Schedule/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/tiagomonteiro/Desktop/feup2/Schedule/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/kikapereira/Schedule/cmake-build-debug/CMakeFiles/Schedule_Project.dir
+/Users/kikapereira/Schedule/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/kikapereira/Schedule/cmake-build-debug/CMakeFiles/rebuild_cache.dir
