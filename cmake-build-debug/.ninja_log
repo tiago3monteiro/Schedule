@@ -1,8 +1,0 @@
-# ninja log v5
-1	462	1697982742472305160	CMakeFiles/Schedule_Project.dir/Block.cpp.o	8b085a2f068bd96e
-1	614	1697982742624303732	CMakeFiles/Schedule_Project.dir/ScheduleUC.cpp.o	ae29c12c78b29990
-1	488	1697982742496304935	CMakeFiles/Schedule_Project.dir/ClassForUc.cpp.o	1b3a94cc5365350d
-1	373	1698185243537950845	CMakeFiles/Schedule_Project.dir/main.cpp.o	23acd4ceb3a5c483
-1	468	1697983004698060245	CMakeFiles/Schedule_Project.dir/Student.cpp.o	87b6287552ec83df
-1	1116	1698185145692733216	CMakeFiles/Schedule_Project.dir/Application.cpp.o	1b7c05ef50ea98c7
-373	426	1698185243589951513	Schedule_Project	42071f6ff654e54e
