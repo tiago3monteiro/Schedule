@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include "ScheduleUC.h"
+#include <set>
 
 bool ScheduleUC::operator < (const ScheduleUC& scheduleUc) const
 {
@@ -22,23 +23,24 @@ bool ScheduleUC::operator < (const ScheduleUC& scheduleUc) const
 const std::vector<Block> &ScheduleUC::getUcClassSchedule() const {
     return UcClassSchedule;
 }
+
 void ScheduleUC::addBlock(Block block) {
     UcClassSchedule.push_back(block);
-
 }
 
 const ClassForUc &ScheduleUC::getClassForUc() const {
     return classForUc;
 }
+/*
+void ScheduleUC::printSchedule() {
+    std::set<Block> res;
+    for (auto block: UcClassSchedule) res.insert(block);
 
-void ScheduleUC::printSchedule()
-{
-
-    for(auto classes: UcClassSchedule)
-    {
-        std::cout<<classes.getDay() << "/"<<classes.getStartHour()<< "/"<<classes.getDuration() << "/";
-        std::cout << classes.getType() << std::endl;
-
+    for (auto block: res) {
+        int begin = std::stof(block.getStartHour());
+        int duration = std::stof(block.getDuration());
+        std::cout << block.getDay() << " " << block.getStartHour() << "-" << begin + duration << " " << block.getType()
+                  << std::endl;
     }
-
 }
+*/

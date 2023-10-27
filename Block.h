@@ -7,20 +7,24 @@
 
 
 #include <string>
-//A block represents a class
+enum Day {
+    Monday, Tuesday, Wednesday, Thursday, Friday};
+
 class Block {
 public:
-    Block(std::string day, std::string  startHour, std::string  duration, std::string type);
-    const std::string &getDay() const;
-    const std::string &getStartHour() const;
-    const std::string &getDuration() const;
+
+
+    Block(std::string day, float  startHour, float  duration, std::string type);
+    const std::string getDay() const;
+    const float &getStartHour() const;
+    const float &getDuration() const;
     const std::string &getType() const;
     bool operator< (const Block& block) const;
 
 private:
-    std::string day;
-    std::string  startHour;
-    std::string  duration;
+    Day day;
+    float  startHour;
+    float  duration;
     std::string type;
 
 };

@@ -48,7 +48,7 @@ Application::Application() //sort data in the right containers
         std::vector<std::string> saved;
         while (std::getline(iss, word, ',')) saved.push_back(word);
 
-        Block block(saved[2], saved[3], saved[4], saved[5]);
+        Block block(saved[2], stof(saved[3]), stof(saved[4]), saved[5]);
         ClassForUc classes(saved[0], saved[1]);
 
         ScheduleUC scheduleUc(classes, {block});
@@ -78,7 +78,6 @@ Application::Application() //sort data in the right containers
         while (std::getline(iss, word, ',')) saved.push_back(word);
         existingUCs.insert(saved[0]);
         existingClasses.insert(saved[1]);
-
     }
 }
 
@@ -89,23 +88,44 @@ void Application::printStudentSchedule(std::string name) { //Kinda complex by no
             for (auto studentClass: student.getStudentSchedule())
                 for (auto ucClasses: schedules)
                     if (studentClass == ucClasses.getClassForUc())
-                    {
                         for (auto block : ucClasses.getUcClassSchedule())
-                        {
                             res.insert(block);
-                        }
-
-                        ucClasses.printSchedule();
-                    }
+    for(auto block : res)
+    {
+        float begin = block.getStartHour();
+        float duration = block.getDuration();
+        std::cout << block.getDay() << " " << block.getStartHour() << "-" <<begin+duration << " "<< block.getType() <<std::endl;
+    }
 }
 
 void Application::printClassSchedule(std::string aClass)
 {                                                           //still need to sort by date
-    for(auto classes:schedules)
-    {
-        if(classes.getClassForUc().getUcClass() == aClass)  classes.printSchedule();
-    }
+    std::set<Block> res;
+   for(auto schedule: schedules)
+       if(schedule.getClassForUc().getUcClass() == aClass)
+           for(auto block:schedule.getUcClassSchedule()) res.insert(block);
+
+   for(auto block : res)
+   {
+       float begin = block.getStartHour();
+       float duration = block.getDuration();
+       std::cout << block.getDay() << " " << block.getStartHour() << "-" <<begin+duration << " "<< block.getType() <<std::endl;
+   }
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
 
 
 void Application::consultStudents(std::string classOrUC){ //prints all the students in a certain UC or class
