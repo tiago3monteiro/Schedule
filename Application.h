@@ -17,7 +17,10 @@ public:
 
     void printStudentSchedule(std::string name); //Consult the schedule of a given student
     void printClassSchedule(std::string aClass); //Consult the schedule of a given class
-    void consultStudents(std::string classOrUC); //Consult the students within a given class or UC
+    void studentsInClass(std::string aClass); //Consult the students within a given class (also prints for which UCs they are on it)
+    void studentsInUC(std::string UC); //Consult the students in a given UC
+    void studentsInYear(std::string year); //Consult the students in a given Year
+
     void consultOcupationOfUCs();//Consult the number of students of a UC
     void consultOcupationOfClassesPerUC(std::string UC, std::string aCLass); //consult the number of students on a class for a UC
   //  void consultOcupationOfClassesPerUC(std::string aClass); //for partial implementation

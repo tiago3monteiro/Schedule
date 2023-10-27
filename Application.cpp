@@ -82,7 +82,7 @@ Application::Application() //sort data in the right containers
 }
 
 void Application::printStudentSchedule(std::string name) { //Kinda complex by now but gives us the schedule of a student
-    std::set<Block> res;                                                         //still need to sort the data by date
+    std::set<Block> res;
     for (auto student: students)
         if (student.getName() == name)
             for (auto studentClass: student.getStudentSchedule())
@@ -99,7 +99,7 @@ void Application::printStudentSchedule(std::string name) { //Kinda complex by no
 }
 
 void Application::printClassSchedule(std::string aClass)
-{                                                           //still need to sort by date
+{
     std::set<Block> res;
    for(auto schedule: schedules)
        if(schedule.getClassForUc().getUcClass() == aClass)
@@ -112,22 +112,52 @@ void Application::printClassSchedule(std::string aClass)
        std::cout << block.getDay() << " " << block.getStartHour() << "-" <<begin+duration << " "<< block.getType() <<std::endl;
    }
 
+}
+void Application::studentsInClass(std::string aClass){ //prints all the students in a class
+    std::set<std::string> studentsList;
 
+    for (auto student:students)
+    {
+        bool belongs = false;
+        std::vector<std::string>UC;
+        for(auto schedule: student.getStudentSchedule())
+        {
+            if(schedule.getUcClass() == aClass)
+            {
+                belongs = true;
+                UC.push_back(schedule.getUcCode());
+            }
+        }
+        if (belongs)
+        {
+            std::cout << student.getName() << " is on " << aClass << " for ";
+            for(auto uc: UC)
+            {
+                std::cout << uc << " ";
+            }
+            std::cout<<std::endl;
+        }
+    }
+}
+void Application::studentsInUC(std::string UC)
+{
+    for(auto student:students)
+    {
+        for(auto schedule:student.getStudentSchedule())
+        {
+            if(schedule.getUcCode() == UC)
+                std::cout << student.getName() <<" is on " << UC << " (" <<  schedule.getUcClass() << ")" << std::endl;
+        }
+    }
+}
 
+void Application::studentsInYear(std::string year)
+{
+    //to do
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
+/*
 void Application::consultStudents(std::string classOrUC){ //prints all the students in a certain UC or class
     std::set<std::string> studentsList;
     for (auto student: students)
@@ -135,7 +165,7 @@ void Application::consultStudents(std::string classOrUC){ //prints all the stude
             if (classes.getUcClass() == classOrUC || classes.getUcCode() == classOrUC) studentsList.insert(student.getName());
 
     for (auto student: studentsList) std::cout << student << std::endl;
-}
+}*/
 
 void Application::consultOcupationOfUCs() //prints the number of students of each UC
 {
