@@ -8,6 +8,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <algorithm>
 
 Application::Application() //sort data in the right containers
 {
@@ -151,32 +152,76 @@ void Application::studentsInUC(std::string UC)
     }
 }
 
-void Application::studentsInYear(std::string year)
-{
-    //to do
-
+void Application::studentsInYear(int year) {
+    for (auto student: students) {
+        std::vector<std::string> UCs;
+        for (auto schedule: student.getStudentSchedule()) {
+            std::string studentYear = schedule.getUcClass().substr(0, 1);
+            if (stoi(studentYear) == year) {
+                UCs.push_back(schedule.getUcCode());
+            }
+        }
+        if (!UCs.empty()) {
+            std::cout << student.getName() << " is on " << year;
+            if (year == 1) std::cout << "st year";
+            else if (year == 2) std::cout << "nd year";
+            else if (year == 3) std::cout << "rd year";
+            else std::cout << "th year";
+            std::cout << " for the following UCs: ";
+            for (auto UC: UCs) {
+                std::cout << UC << " ";
+            }
+            std::cout << std::endl;
+        }
+    }
 }
 
-/*
-void Application::consultStudents(std::string classOrUC){ //prints all the students in a certain UC or class
-    std::set<std::string> studentsList;
-    for (auto student: students)
-        for (auto classes: student.getStudentSchedule())
-            if (classes.getUcClass() == classOrUC || classes.getUcCode() == classOrUC) studentsList.insert(student.getName());
 
-    for (auto student: studentsList) std::cout << student << std::endl;
-}*/
-
-void Application::consultOcupationOfUCs() //prints the number of students of each UC
+void Application::consultOcupationOfUCs(int order,std::string UC ,int key)  //prints the number of students of each UC
 {
-    std::map<std::string,int> studentsPerUC;
-    for(auto UC:existingUCs) studentsPerUC.try_emplace(UC,0);
-    for(auto UC: existingUCs)
-        for(auto student:students)
-            for(auto schedule: student.getStudentSchedule())
-                if(UC == schedule.getUcCode()) studentsPerUC[schedule.getUcCode()] ++;
-    for(auto res: studentsPerUC) std::cout<< res.first <<": " <<res.second<<std::endl;
+    if(!key) //TOTAL
+    {
+        std::map<std::string,int> studentsPerUC; //DEFAULT IS BY UC
+        for(auto UC:existingUCs) studentsPerUC.try_emplace(UC,0);
+        for(auto UC: existingUCs)
+            for(auto student:students)
+                for(auto schedule: student.getStudentSchedule())
+                    if(UC == schedule.getUcCode()) studentsPerUC[schedule.getUcCode()] ++;
+
+        std::vector<std::pair<int, std::string>> sortedValues;
+        for (const auto &entry : studentsPerUC) {
+            sortedValues.emplace_back(entry.second, entry.first);
+        }
+        if (order == 2) { //ASCENDING
+            std::sort(sortedValues.begin(), sortedValues.end());
+        } else if (order == 3) { //DESCENDING
+            std::sort(sortedValues.rbegin(), sortedValues.rend());
+        }
+        for (const auto &pair : sortedValues) {
+            std::cout << pair.second << ": " << pair.first << std::endl;
+        }
+    }
+
+    else //PARTIAL
+    {
+            int count = 0;
+            for(auto student:students)
+            {
+                for(auto schedule: student.getStudentSchedule())
+                {
+                    if(schedule.getUcCode() == UC) count++;
+                }
+            }
+            std::cout << UC << ": " << count<<std::endl;
+    }
 }
+
+
+
+
+
+
+
 
 void Application::consultOcupationOfClassesPerUC(std::string UC, std::string aCLass) {
     int count = 0;
