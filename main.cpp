@@ -12,20 +12,28 @@ int main() {
 
     int key;
     while (true) {
-        std::cout << "1, Print a schedule:" << std::endl;
-        std::cout << "2. Consult the students within:" << std::endl;
-        std::cout << "3. Consult ocupation:" << std::endl;
-        std::cout << "4. Another statistics:" << std::endl;
+        std::cout << "¡...................................¡" << std::endl;
+        std::cout << "|1.Print a schedule:                |" << std::endl;
+        std::cout << "|2.Consult the students within:     |" << std::endl;
+        std::cout << "|3.Consult ocupation:               |" << std::endl;
+        std::cout << "|4.Another statistics:              |" << std::endl;
+        std::cout << "!...................................!" << std::endl;
         std::cin >> key;
-        switch (key) {
+        //..................................................................................//
+        switch (key)
+        {
             case 1: //Print a Schedule:
             {
-                std::cout << "1.Print a Student's Schedule" << std::endl;
-                std::cout << "2.Print a Class' Schedule" << std::endl;
+                std::cout << "¡....................................¡" << std::endl;
+                std::cout << "|1.Print a Student's Schedule        |" << std::endl;
+                std::cout << "|2.Print a Class' Schedule           |" << std::endl;
+                std::cout << "¡....................................¡" << std::endl;
                 std::cin >> key;
                 switch (key) {
                     case 1: {
-                        std::cout << "Please insert name of the student: ";
+                        std::cout << "¡......................................¡" << std::endl;
+                        std::cout << "|  Please insert name of the student:  |"<< std::endl;
+                        std::cout << "¡......................................¡" << std::endl;
                         std::string name;
                         std::cin >> name;
                         application.printStudentSchedule(name);
@@ -33,7 +41,9 @@ int main() {
                     }
 
                     case 2: {
-                        std::cout << "Please insert the class: ";
+                        std::cout << "¡....................................¡" << std::endl;
+                        std::cout << "|     Please insert the class:       |" << std::endl;
+                        std::cout << "¡....................................¡" << std::endl;
                         std::string aClass;
                         std::cin >> aClass;
                         application.printClassSchedule(aClass);
@@ -41,104 +51,193 @@ int main() {
                     }
 
                     default:
+                    {
+                        std::cout << "¡....................................¡" << std::endl;
+                        std::cout << "|     Please insert a valid key!     |" << std::endl;
+                        std::cout << "!....................................!" << std::endl;
+                        break;
+                    }
+
+
+                }
+                break;
+            }
+        //......................................................................//
+            case 2: //Print Students within a class, a UC or Year
+            {
+                std::cout << "¡.................. ¡" << std::endl;
+                std::cout << "|1.Class            |" << std::endl;
+                std::cout << "|2.UC               |" << std::endl;
+                std::cout << "|3.Year             |" << std::endl;
+                std::cout << "|4.UC and Class     |" << std::endl;
+                std::cout << "¡...................¡" << std::endl;
+                std::cin >> key;
+                switch (key) {
+                    case 1: {
+                        std::cout << "¡.......................... ¡" << std::endl;
+                        std::cout << "| Please insert the class:  |" << std::endl;
+                        std::cout << "¡...........................¡" << std::endl;
+                        std::string aClass;
+                        std::cin >> aClass;
+                        application.studentsInClass(aClass);
+                        break;
+                    }
+
+                    case 2: {
+                        std::cout << "¡.......................... ¡" << std::endl;
+                        std::cout << "|  Please insert the UC:    |" << std::endl;
+                        std::cout << "¡...........................¡" << std::endl;
+                        std::string UC;
+                        std::cin >> UC;
+                        application.studentsInUC(UC);
+                        break;
+                    }
+
+                    case 3: {
+                        std::cout << "¡.......................... ¡" << std::endl;
+                        std::cout << "| Please insert the year:   |" << std::endl;
+                        std::cout << "¡...........................¡" << std::endl;
+                        int year;
+                        std::cin >> year;
+                        application.studentsInYear(year);
+                        break;
+                    }
+                    case 4: {
+                        std::cout << "¡.......................... ¡" << std::endl;
+                        std::cout << "| Please insert the UC:     |" << std::endl;
+                        std::cout << "¡...........................¡" << std::endl;
+                        std::string UC;
+                        std::cin >> UC;
+                        std::cout << "¡.......................... ¡" << std::endl;
+                        std::cout << "| Please insert the class:  |" << std::endl;
+                        std::cout << "¡...........................¡" << std::endl;
+                        std::string aClass;
+                        std::cin >> aClass;
+                        application.consultOcupationOfClassesPerUC(UC, aClass);
                         break;
 
+                    }
+
+                    default:
+                        std::cout << "¡....................................¡" << std::endl;
+                        std::cout << "|     Please insert a valid key!     |" << std::endl;
+                        std::cout << "!....................................!" << std::endl;
+                        break;
                 }
-                default:
-                    break;
-
-                case 2: //Print Students within a class, a UC or Year
-                {
-                    std::cout << "1.Class" << std::endl;
-                    std::cout << "2.UC" << std::endl;
-                    std::cout << "3.Year" << std::endl;
-                    std::cin >> key;
-                    switch (key) {
-                        case 1: {
-                            std::cout << "Please insert the class: ";
-                            std::string aClass;
+                break;
+            } //........................................................//
+            case 3: //Consult the class/year/UC occupation (sorting by UC, ascending or descending order, …)
+            {
+                std::cout << "¡...........................¡" << std::endl;
+                std::cout << "|1.Class                    |" << std::endl;
+                std::cout << "|2.UC                       |" << std::endl;
+                std::cout << "|3.Year                     |" << std::endl;
+                std::cout << "¡.......................... ¡" << std::endl;
+                std::cin >> key;
+                switch (key) {
+                    case 1: {
+                        std::string aClass;
+                        std::cout << "¡........... ¡" << std::endl;
+                        std::cout << "|1.Partial   |" << std::endl;
+                        std::cout << "|2.Total     |" << std::endl;
+                        std::cout << "¡............¡" << std::endl;
+                        std::cin >> key;
+                        if (key == 1) {
+                            std::cout << "¡.......................... ¡" << std::endl;
+                            std::cout << "| Please insert the class:  |" << std::endl;
+                            std::cout << "¡...........................¡" << std::endl;
                             std::cin >> aClass;
-                            application.studentsInClass(aClass);
-                            break;
-                        }
+                            application.consultOcupationOfClasses(0, aClass, 1);
+                        } else {
+                            std::cout << "¡...............................¡" << std::endl;
+                            std::cout << "|1. Sort by class               |" << std::endl;
+                            std::cout << "|2. Sort in ascending order:    |" << std::endl;
+                            std::cout << "|3. Sort in descending order:   |" << std::endl;
+                            std::cout << "¡...............................¡" << std::endl;
+                            int order;
+                            std::cin >> order;
+                            application.consultOcupationOfClasses(order);
 
-                        case 2: {
-                            std::cout << "Please insert the UC: ";
-                            std::string UC;
+                        }
+                        std::cout << "¡....................................¡" << std::endl;
+                        std::cout << "|     Please insert a valid key!     |" << std::endl;
+                        std::cout << "!....................................!" << std::endl;
+                        break;
+                    }
+
+                    case 2: {
+                        std::string UC;
+                        std::cout << "¡........... ¡" << std::endl;
+                        std::cout << "|1.Partial   |" << std::endl;
+                        std::cout << "|2.Total     |" << std::endl;
+                        std::cout << "¡............¡" << std::endl;
+                        std::cin >> key;
+                        if (key == 1) {
+                            std::cout << "¡.......................... ¡" << std::endl;
+                            std::cout << "| Please insert the UC:     |" << std::endl;
+                            std::cout << "¡...........................¡" << std::endl;
                             std::cin >> UC;
-                            application.studentsInUC(UC);
-                            break;
+                            application.consultOcupationOfUCs(0, UC, 1);
+                        } else {
+                            std::cout << "¡...............................¡" << std::endl;
+                            std::cout << "|1. Sort by UC:                 |" << std::endl;
+                            std::cout << "|2. Sort in ascending order:    |" << std::endl;
+                            std::cout << "|3. Sort in descending order:   |" << std::endl;
+                            std::cout << "¡...............................¡" << std::endl;
+                            int order;
+                            std::cin >> order;
+                            application.consultOcupationOfUCs(order);
                         }
-
-                        case 3: {
-                            std::cout << "Please insert the Year: ";
-                            int year;
-                            std::cin >> year;
-                            application.studentsInYear(year);
-                            break;
-                        }
-
-                        default:
-                            break;
+                        std::cout << "¡....................................¡" << std::endl;
+                        std::cout << "|     Please insert a valid key!     |" << std::endl;
+                        std::cout << "!....................................!" << std::endl;
+                        break;
                     }
-                }
-                case 3: //Consult the class/year/UC occupation (sorting by UC, ascending or descending order, …)
-                {
-                    std::cout << "1.Class" << std::endl;
-                    std::cout << "2.UC" << std::endl;
-                    std::cout << "3.Year" << std::endl;
-                    std::cin >> key;
-                    switch (key) {
-                        case 1: {
-                            std::cout << "Please insert the class: ";
-                            std::string aClass;
-                            std::cin >> aClass;
-                            //application.consultOcupationOfClassesPerUC(aClass);
-                            break;
-                        }
 
-                        case 2: {
-                            std::string UC;
-                            std::cout << "1. Partial" << std::endl;
-                            std::cout << "2. Total" << std::endl;
-                            std::cin >> key;
-                            if(key == 1)
-                            {
-                                std::cout << "Please insert the UC: ";
-                                std::cin >> UC;
-                                application.consultOcupationOfUCs(0,UC,1);
-                            }
-                            else
-                            {
-                                std::cout << "1. Sort by UC: "<< std::endl;
-                                std::cout << "2. Sort in ascending order: " << std::endl;
-                                std::cout << "3. Sort in descending order: " << std::endl;
-                                int order;
-                                std::cin >> order;
-                                application.consultOcupationOfUCs(order);
-
-                            }
-
-
-
-                            break;
-                        }
-
-                        case 3: {
-                            std::cout << "Please insert the Year: ";
-                            int year;
+                    case 3: {
+                        std::string year;
+                        std::cout << "¡........... ¡" << std::endl;
+                        std::cout << "|1.Partial   |" << std::endl;
+                        std::cout << "|2.Total     |" << std::endl;
+                        std::cout << "¡............¡" << std::endl;
+                        std::cin >> key;
+                        if (key == 1) {
+                            std::cout << "¡.......................... ¡" << std::endl;
+                            std::cout << "| Please insert the year:   |" << std::endl;
+                            std::cout << "¡...........................¡" << std::endl;
                             std::cin >> year;
-                            application.studentsInYear(year);
-                            break;
+                            application.consultOcupationofYear(0, year, 1);
+                        } else {
+                            std::cout << "¡...............................¡" << std::endl;
+                            std::cout << "|1. Sort by year:               |" << std::endl;
+                            std::cout << "|2. Sort in ascending order:    |" << std::endl;
+                            std::cout << "|3. Sort in descending order:   |" << std::endl;
+                            std::cout << "¡...............................¡" << std::endl;
+                            int order;
+                            std::cin >> order;
+                            application.consultOcupationofYear(order);
                         }
-
-                        default:
-                            break;
+                        std::cout << "¡....................................¡" << std::endl;
+                        std::cout << "|     Please insert a valid key!     |" << std::endl;
+                        std::cout << "!....................................!" << std::endl;
+                        break;
                     }
+                    default: break;
                 }
+                break;
+            }//.............................................................................................//
+            case 4:
+            {
+                std::cout << "¡....................................¡" << std::endl;
+                std::cout << "|1.Print a Student's Schedule        |" << std::endl;
+                std::cout << "|2.Print a Class' Schedule           |" << std::endl;
+                std::cout << "¡....................................¡" << std::endl;
+                std::cin >> key;
+
+
+
             }
         }
-
     }
     return 0;
 }

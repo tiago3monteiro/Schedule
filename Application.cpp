@@ -80,7 +80,7 @@ Application::Application() //sort data in the right containers
         existingUCs.insert(saved[0]);
         existingClasses.insert(saved[1]);
     }
-}
+} //................................END OF THE CONSTRUCTOR....................................//
 
 void Application::printStudentSchedule(std::string name) { //Kinda complex by now but gives us the schedule of a student
     std::set<Block> res;
@@ -176,6 +176,18 @@ void Application::studentsInYear(int year) {
     }
 }
 
+void Application::consultOcupationOfClassesPerUC(std::string UC, std::string aCLass) {
+    int count = 0;
+    ClassForUc key = {aCLass, UC};
+    for (auto student: students)
+        for (auto schedule: student.getStudentSchedule())
+            if (schedule == key) {
+                count++;
+                std::cout << student.getName() << std::endl;
+            }
+    std::cout << "UC " << UC << " for class " << aCLass << " has " << count << " students" << std::endl;
+}
+
 
 void Application::consultOcupationOfUCs(int order,std::string UC ,int key)  //prints the number of students of each UC
 {
@@ -201,7 +213,6 @@ void Application::consultOcupationOfUCs(int order,std::string UC ,int key)  //pr
             std::cout << pair.second << ": " << pair.first << std::endl;
         }
     }
-
     else //PARTIAL
     {
             int count = 0;
@@ -216,21 +227,95 @@ void Application::consultOcupationOfUCs(int order,std::string UC ,int key)  //pr
     }
 }
 
+void Application::consultOcupationOfClasses(int order, std::string aClass, int key) {
+    if (!key) {
+        std::map<std::string, int> studentsPerClass; // DEFAULT IS BY UC
+        for (auto UC : existingClasses) studentsPerClass.try_emplace(UC, 0);
 
-
-
-
-
-
-
-void Application::consultOcupationOfClassesPerUC(std::string UC, std::string aCLass) {
-    int count = 0;
-    ClassForUc key = {aCLass, UC};
-    for (auto student: students)
-        for (auto schedule: student.getStudentSchedule())
-            if (schedule == key) {
-                count++;
-                std::cout << student.getName() << std::endl;
+        for (auto student : students) {
+            for (auto schedule : student.getStudentSchedule()) {
+                if (studentsPerClass.find(schedule.getUcClass()) != studentsPerClass.end()) {
+                    studentsPerClass[schedule.getUcClass()]++;
+                }
             }
-            std::cout << "UC " << UC << " for class " << aCLass << " has " << count << " students";
+        }
+        std::vector<std::pair<int, std::string>> sortedValues;
+        for (const auto &entry : studentsPerClass) {
+            sortedValues.emplace_back(entry.second, entry.first);
+        }
+
+        if (order == 2) { // ASCENDING
+            std::sort(sortedValues.begin(), sortedValues.end());
+        } else if (order == 3) { // DESCENDING
+            std::sort(sortedValues.rbegin(), sortedValues.rend());
+        }
+
+        for (const auto &pair : sortedValues) {
+            std::cout << pair.second << ": " << pair.first << std::endl;
+        }
+    } else { // PARTIAL
+        int count = 0;
+        for (auto student : students) {
+            for (auto schedule : student.getStudentSchedule()) {
+                if (schedule.getUcClass() == aClass) {
+                    count++;
+                }
+            }
+        }
+        std::cout << aClass << ": " << count << std::endl;
+    }
+}
+
+void Application::consultOcupationofYear(int order, std::string year ,int key)
+{
+    if (!key) {
+        std::map<std::string, int> studentsPerYear {{"1", 0}, {"2", 0}, {"3", 0}}; // Initialize with zero for years 1, 2, and 3
+
+        for (auto student : students) {
+            std::set<std::string> attendedYears; // Using a set to keep track of attended years for a student
+
+            for (auto schedule : student.getStudentSchedule()) {
+                std::string studentYear = schedule.getUcClass().substr(0, 1);
+                attendedYears.insert(studentYear); // Collect attended years for a student
+            }
+            for ( auto attendedYear : attendedYears) {
+                studentsPerYear[attendedYear]++; // Increment the count for each attended year
+            }
+        }
+
+        std::vector<std::pair<int, std::string>> sortedValues;
+        for (const auto &entry : studentsPerYear) {
+            sortedValues.emplace_back(entry.second, entry.first);
+        }
+
+        if (order == 2) { // ASCENDING
+            std::sort(sortedValues.begin(), sortedValues.end());
+        } else if (order == 3) { // DESCENDING
+            std::sort(sortedValues.rbegin(), sortedValues.rend());
+        }
+
+        for (const auto &pair : sortedValues) {
+            std::cout << pair.second << ": " << pair.first << std::endl;
+        }
+    }
+
+
+    else //Partial
+    {
+        int count = 0;
+        for(auto student:students)
+        {
+            for(auto schedule:student.getStudentSchedule())
+            {
+                auto studentYear = schedule.getUcClass().substr(0,1);
+                if(studentYear == year)
+                {
+                    count++;
+                    break;
+                }
+            }
+
+        }
+        std::cout << year << ": " << count << std::endl;
+    }
 }
