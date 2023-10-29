@@ -84,108 +84,166 @@ Application::Application() //sort data in the right containers
 
 void Application::printStudentSchedule(std::string name) { //Kinda complex by now but gives us the schedule of a student
     std::set<Block> res;
+    bool found = false;
     for (auto student: students)
-        if (student.getName() == name)
+        if (student.getName() == name){
+            found = true;
             for (auto studentClass: student.getStudentSchedule())
                 for (auto ucClasses: schedules)
                     if (studentClass == ucClasses.getClassForUc())
                         for (auto block : ucClasses.getUcClassSchedule())
                             res.insert(block);
-    for(auto block : res)
+        }
+    if(found)
     {
-        float begin = block.getStartHour();
-        float duration = block.getDuration();
-        std::cout << block.getDay() << " " << block.getStartHour() << "-" <<begin+duration << " "<< block.getType() <<std::endl;
+        for(auto block : res)
+        {
+            float begin = block.getStartHour();
+            float duration = block.getDuration();
+            std::cout << block.getDay() << " " << block.getStartHour() << "-" <<begin+duration << " "<< block.getType() <<std::endl;
+        }
     }
+    else std::cout << "No student with that name was found!"<<std::endl;
 }
 
 void Application::printClassSchedule(std::string aClass)
 {
     std::set<Block> res;
-   for(auto schedule: schedules)
-       if(schedule.getClassForUc().getUcClass() == aClass)
-           for(auto block:schedule.getUcClassSchedule()) res.insert(block);
+    if(existingClasses.find(aClass) != existingClasses.end())
+    {
+        for(auto schedule: schedules)
+            if(schedule.getClassForUc().getUcClass() == aClass)
+                for(auto block:schedule.getUcClassSchedule()) res.insert(block);
 
-   for(auto block : res)
-   {
-       float begin = block.getStartHour();
-       float duration = block.getDuration();
-       std::cout << block.getDay() << " " << block.getStartHour() << "-" <<begin+duration << " "<< block.getType() <<std::endl;
-   }
+        for(auto block : res)
+        {
+            float begin = block.getStartHour();
+            float duration = block.getDuration();
+            std::cout << block.getDay() << " " << block.getStartHour() << "-" <<begin+duration << " "<< block.getType() <<std::endl;
+        }
 
+    }
+    else std::cout<<"No class was found with that code"<<std::endl;
 }
+
 void Application::studentsInClass(std::string aClass){ //prints all the students in a class
     std::set<std::string> studentsList;
-
-    for (auto student:students)
+    bool doIt = true;
+    if(existingClasses.find(aClass)==existingClasses.end())
     {
-        bool belongs = false;
-        std::vector<std::string>UC;
-        for(auto schedule: student.getStudentSchedule())
+        std::cout << "NOT A VALID CLASS" << std::endl;
+        doIt = false;
+    }
+    if(doIt)
+    {
+        for (auto student:students)
         {
-            if(schedule.getUcClass() == aClass)
+            bool belongs = false;
+            std::vector<std::string>UC;
+            for(auto schedule: student.getStudentSchedule())
             {
-                belongs = true;
-                UC.push_back(schedule.getUcCode());
+                if(schedule.getUcClass() == aClass)
+                {
+                    belongs = true;
+                    UC.push_back(schedule.getUcCode());
+                }
             }
-        }
-        if (belongs)
-        {
-            std::cout << student.getName() << " is on " << aClass << " for ";
-            for(auto uc: UC)
+            if (belongs)
             {
-                std::cout << uc << " ";
+                std::cout << student.getName() << " is on " << aClass << " for ";
+                for(auto uc: UC)
+                {
+                    std::cout << uc << " ";
+                }
+                std::cout<<std::endl;
             }
-            std::cout<<std::endl;
         }
     }
+
 }
 void Application::studentsInUC(std::string UC)
 {
-    for(auto student:students)
+    bool doIt = true;
+    if(existingUCs.find(UC)==existingUCs.end())
     {
-        for(auto schedule:student.getStudentSchedule())
+        std::cout << "NOT A VALID UC" << std::endl;
+        doIt = false;
+    }
+    if(doIt)
+    {
+        for(auto student:students)
         {
-            if(schedule.getUcCode() == UC)
-                std::cout << student.getName() <<" is on " << UC << " (" <<  schedule.getUcClass() << ")" << std::endl;
+            for(auto schedule:student.getStudentSchedule())
+            {
+                if(schedule.getUcCode() == UC)
+                    std::cout << student.getName() <<" is on " << UC << " (" <<  schedule.getUcClass() << ")" << std::endl;
+            }
         }
     }
 }
 
-void Application::studentsInYear(int year) {
-    for (auto student: students) {
-        std::vector<std::string> UCs;
-        for (auto schedule: student.getStudentSchedule()) {
-            std::string studentYear = schedule.getUcClass().substr(0, 1);
-            if (stoi(studentYear) == year) {
-                UCs.push_back(schedule.getUcCode());
+void Application::studentsInYear(std::string year) {
+    bool doIt = true;
+    if(year < "1" || year >"3")
+    {
+        std::cout << "NOT A VALID YEAR" << std::endl;
+        doIt = false;
+    }
+    if(doIt)
+    {
+        for (auto student: students) {
+            std::vector<std::string> UCs;
+            for (auto schedule: student.getStudentSchedule()) {
+                std::string studentYear = schedule.getUcClass().substr(0, 1);
+                if (studentYear == year) {
+                    UCs.push_back(schedule.getUcCode());
+                }
             }
-        }
-        if (!UCs.empty()) {
-            std::cout << student.getName() << " is on " << year;
-            if (year == 1) std::cout << "st year";
-            else if (year == 2) std::cout << "nd year";
-            else if (year == 3) std::cout << "rd year";
-            else std::cout << "th year";
-            std::cout << " for the following UCs: ";
-            for (auto UC: UCs) {
-                std::cout << UC << " ";
+            if (!UCs.empty()) {
+                std::cout << student.getName() << " is on " << year;
+                if (year == "1") std::cout << "st year";
+                else if (year == "2") std::cout << "nd year";
+                else if (year == "3") std::cout << "rd year";
+                else std::cout << "th year";
+                std::cout << " for the following UCs: ";
+                for (auto UC: UCs) {
+                    std::cout << UC << " ";
+                }
+                std::cout << std::endl;
             }
-            std::cout << std::endl;
         }
     }
+
 }
 
-void Application::consultOcupationOfClassesPerUC(std::string UC, std::string aCLass) {
-    int count = 0;
-    ClassForUc key = {aCLass, UC};
-    for (auto student: students)
-        for (auto schedule: student.getStudentSchedule())
-            if (schedule == key) {
-                count++;
-                std::cout << student.getName() << std::endl;
-            }
-    std::cout << "UC " << UC << " for class " << aCLass << " has " << count << " students" << std::endl;
+void Application::consultOcupationOfClassesPerUC(std::string UC, std::string aClass) {
+    bool doIt = true;
+    if(existingUCs.find(UC)==existingUCs.end())
+    {
+        std::cout << "NOT A VALID UC" << std::endl;
+        doIt = false;
+    }
+    if(doIt)
+    {
+        if(existingClasses.find(aClass)==existingClasses.end() )
+        {
+            std::cout << "NOT A VALID CLASS" << std::endl;
+            doIt = false;
+        }
+    }
+    if(doIt)
+    {
+        int count = 0;
+        ClassForUc key = {aClass, UC};
+        for (auto student: students)
+            for (auto schedule: student.getStudentSchedule())
+                if (schedule == key) {
+                    count++;
+                    std::cout << student.getName() << std::endl;
+                }
+        std::cout << "UC " << UC << " for class " << aClass << " has " << count << " students" << std::endl;
+    }
+
 }
 
 
@@ -215,6 +273,14 @@ void Application::consultOcupationOfUCs(int order,std::string UC ,int key)  //pr
     }
     else //PARTIAL
     {
+        bool doIt = true;
+        if(existingClasses.find(UC)==existingClasses.end())
+        {
+            std::cout << "NOT A VALID UC" << std::endl;
+            doIt = false;
+        }
+        if(doIt)
+        {
             int count = 0;
             for(auto student:students)
             {
@@ -224,10 +290,12 @@ void Application::consultOcupationOfUCs(int order,std::string UC ,int key)  //pr
                 }
             }
             std::cout << UC << ": " << count<<std::endl;
+        }
     }
 }
 
 void Application::consultOcupationOfClasses(int order, std::string aClass, int key) {
+
     if (!key) {
         std::map<std::string, int> studentsPerClass; // DEFAULT IS BY UC
         for (auto UC : existingClasses) studentsPerClass.try_emplace(UC, 0);
@@ -254,15 +322,24 @@ void Application::consultOcupationOfClasses(int order, std::string aClass, int k
             std::cout << pair.second << ": " << pair.first << std::endl;
         }
     } else { // PARTIAL
-        int count = 0;
-        for (auto student : students) {
-            for (auto schedule : student.getStudentSchedule()) {
-                if (schedule.getUcClass() == aClass) {
-                    count++;
+        bool doIt = true;
+        if(existingClasses.find(aClass)==existingClasses.end())
+        {
+            std::cout << "NOT A VALID CLASS" << std::endl;
+            doIt = false;
+        }
+        if (doIt)
+        {
+            int count = 0;
+            for (auto student : students) {
+                for (auto schedule : student.getStudentSchedule()) {
+                    if (schedule.getUcClass() == aClass) {
+                        count++;
+                    }
                 }
             }
+            std::cout << aClass << ": " << count << std::endl;
         }
-        std::cout << aClass << ": " << count << std::endl;
     }
 }
 
@@ -300,21 +377,29 @@ void Application::consultOcupationofYear(int order, std::string year ,int key)
     }
     else //Partial
     {
-        int count = 0;
-        for(auto student:students)
+        bool doIt = true;
+        if(year < "1" || year > "3")
         {
-            for(auto schedule:student.getStudentSchedule())
+            std::cout << "NOT A VALID YEAR" << std::endl;
+            doIt = false;
+        }
+        if(doIt)
+        {
+            int count = 0;
+            for(auto student:students)
             {
-                auto studentYear = schedule.getUcClass().substr(0,1);
-                if(studentYear == year)
+                for(auto schedule:student.getStudentSchedule())
                 {
-                    count++;
-                    break;
+                    auto studentYear = schedule.getUcClass().substr(0,1);
+                    if(studentYear == year)
+                    {
+                        count++;
+                        break;
+                    }
                 }
             }
-
+            std::cout << year << ": " << count << std::endl;
         }
-        std::cout << year << ": " << count << std::endl;
     }
 }
 
@@ -324,10 +409,12 @@ void Application::consultStudentDetails(std::string info)
     std::string name;
     std::map<std::string,int> yearInfo{{"1",0},{"2",0},{"3",0}};
     std::map<std::string,int> classInfo;
+    bool found = false;
     for(auto student:students)
     {
         if(student.getName() == info || student.getId() == info)
         {
+            found = true;
             name = student.getName();
             std::cout << "Name: " << student.getName() << std::endl; //Name
             std::cout << "ID: " << student.getId() << std::endl; //ID
@@ -346,36 +433,49 @@ void Application::consultStudentDetails(std::string info)
             }
         }
     }
-    std::cout << name << " is on " << countUC << " UC(s)." <<std::endl;
-    std::cout << name << " is on " ;
-    for(auto aClass: classInfo)
+    if(found)
     {
-        std::cout << aClass.first << " for " << aClass.second << " class(es), ";
+
+        std::cout << name << " is on " << countUC << " UC(s)." <<std::endl;
+        std::cout << name << " is on " ;
+        for(auto aClass: classInfo)
+        {
+            std::cout << aClass.first << " for " << aClass.second << " class(es), ";
+        }
+        std::cout << std::endl;
+        std::cout << name << " is on " ;
+        for(auto year: yearInfo)
+        {
+            std::cout << "year " << year.first << " for " << year.second << " class(es) ";
+        }
+        std::cout<<std::endl;
     }
-    std::cout << std::endl;
-    std::cout << name << " is on " ;
-    for(auto year: yearInfo)
-    {
-        std::cout << "year " << year.first << " for " << year.second << " class(es) ";
-    }
-    std::cout<<std::endl;
+
+    else std::cout << "No student was found with that name or ID!"<<std::endl;
+
 }
 
 void Application::moreThanN(int n)
 {
-    std::map<std::string,int>UCs;
-
-    for(auto student:students)
+    if(n >= 0 && n<= 7)
     {
-        for(auto schedule:student.getStudentSchedule())
-        {
+        std::map<std::string,int>UCs;
 
-            auto it = UCs.find(student.getName());
-            if(it != UCs.end()) it->second++;
-            else UCs[student.getName()] = 1;
+        for(auto student:students)
+        {
+            for(auto schedule:student.getStudentSchedule())
+            {
+
+                auto it = UCs.find(student.getName());
+                if(it != UCs.end()) it->second++;
+                else UCs[student.getName()] = 1;
+            }
         }
+        for(auto pair: UCs)
+            if(pair.second >= n) std::cout << pair.first << std::endl;
+
     }
-    for(auto pair: UCs)
-        if(pair.second >= n) std::cout << pair.first << std::endl;
+    else std::cout << "Please insert a number between 1 and 7!"<<std::endl;
+
 
 }

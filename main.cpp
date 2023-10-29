@@ -96,7 +96,7 @@ int main() {
                         std::cout << "¡.......................... ¡" << std::endl;
                         std::cout << "| Please insert the year:   |" << std::endl;
                         std::cout << "¡...........................¡" << std::endl;
-                        int year;
+                        std::string year;
                         std::cin >> year;
                         application.studentsInYear(year);
                         break;
@@ -157,10 +157,8 @@ int main() {
                             std::cin >> order;
                             application.consultOcupationOfClasses(order);
 
+
                         }
-                        std::cout << "¡....................................¡" << std::endl;
-                        std::cout << "|     Please insert a valid key!     |" << std::endl;
-                        std::cout << "!....................................!" << std::endl;
                         break;
                     }
 
@@ -187,9 +185,6 @@ int main() {
                             std::cin >> order;
                             application.consultOcupationOfUCs(order);
                         }
-                        std::cout << "¡....................................¡" << std::endl;
-                        std::cout << "|     Please insert a valid key!     |" << std::endl;
-                        std::cout << "!....................................!" << std::endl;
                         break;
                     }
 
@@ -216,9 +211,6 @@ int main() {
                             std::cin >> order;
                             application.consultOcupationofYear(order);
                         }
-                        std::cout << "¡....................................¡" << std::endl;
-                        std::cout << "|     Please insert a valid key!     |" << std::endl;
-                        std::cout << "!....................................!" << std::endl;
                         break;
                     }
                     default:
