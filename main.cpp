@@ -8,14 +8,14 @@
 
 
 int main() {
-    Application application;
 
+    Application application;
     int key;
     while (true) {
         std::cout << "¡.......................................¡" << std::endl;
         std::cout << "|1.Print a schedule:                    |" << std::endl;
         std::cout << "|2.Consult the students within:         |" << std::endl;
-        std::cout << "|3.Consult ocupation:                   |" << std::endl;
+        std::cout << "|3.Consult occupation:                  |" << std::endl;
         std::cout << "|4.Another statistics:                  |" << std::endl;
         std::cout << "|5.Requests:                            |" << std::endl;
         std::cout << "|PRESS ANY OTHER KEY TO LEAVE THE MENU  |" << std::endl;

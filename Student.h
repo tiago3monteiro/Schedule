@@ -14,14 +14,15 @@
 
 class Student {
 public:
+    Student();
     Student(std::string id, std::string name, std::vector<ClassForUc> studentSchedule);
     bool operator< (const Student& student) const;
     const std::string &getId() const;
     const std::vector<ClassForUc> &getStudentSchedule() const;
     const std::string &getName() const;
     void addClass(ClassForUc theClass);
-    void removeClass(ClassForUc theClass);
-    void printSchedule();
+    void removeUC(ClassForUc theClass) ;
+    void printSchedule() const;
 
 private:
     std::string name;

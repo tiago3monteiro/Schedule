@@ -82,20 +82,26 @@ Application::Application() //sort data in the right containers
     }
 } //................................END OF THE CONSTRUCTOR....................................//
 
-void Application::printStudentSchedule(std::string name) { //Kinda complex by now but gives us the schedule of a student
+void Application::printStudentSchedule(std::string name) //Kinda complex by now but gives us the schedule of a student
+{
     std::set<Block> res;
-    bool found = false;
-    for (auto student: students)
-        if (student.getName() == name){
-            found = true;
-            for (auto studentClass: student.getStudentSchedule())
-                for (auto ucClasses: schedules)
-                    if (studentClass == ucClasses.getClassForUc())
-                        for (auto block : ucClasses.getUcClassSchedule())
-                            res.insert(block);
-        }
-    if(found)
+    bool foundStudent = false;
+    Student student;
+    for (auto theStudent: students)  //Search for the student
     {
+        if (theStudent.getName() == name) {
+             student = theStudent;
+            foundStudent = true;
+        }
+    }
+
+    if(foundStudent)
+    {
+        for (auto studentClass: student.getStudentSchedule())
+            for (auto ucClasses: schedules)
+                if (studentClass == ucClasses.getClassForUc())
+                    for (auto block : ucClasses.getUcClassSchedule())
+                        res.insert(block);
         for(auto block : res)
         {
             float begin = block.getStartHour();
@@ -105,11 +111,11 @@ void Application::printStudentSchedule(std::string name) { //Kinda complex by no
     }
     else std::cout << "No student with that name was found!"<<std::endl;
 }
-
+//.....................................................................................................................................//
 void Application::printClassSchedule(std::string aClass)
 {
     std::set<Block> res;
-    if(existingClasses.find(aClass) != existingClasses.end())
+    if(existingClasses.find(aClass) != existingClasses.end()) //checks if class exists
     {
         for(auto schedule: schedules)
             if(schedule.getClassForUc().getUcClass() == aClass)
@@ -125,11 +131,12 @@ void Application::printClassSchedule(std::string aClass)
     }
     else std::cout<<"No class was found with that code"<<std::endl;
 }
-
-void Application::studentsInClass(std::string aClass){ //prints all the students in a class
+//.....................................................................................................................................//
+void Application::studentsInClass(std::string aClass) //prints all the students in a class
+{
     std::set<std::string> studentsList;
     bool doIt = true;
-    if(existingClasses.find(aClass)==existingClasses.end())
+    if(existingClasses.find(aClass)==existingClasses.end()) //checks if class exists
     {
         std::cout << "NOT A VALID CLASS" << std::endl;
         doIt = false;
@@ -159,8 +166,8 @@ void Application::studentsInClass(std::string aClass){ //prints all the students
             }
         }
     }
-
 }
+//.....................................................................................................................................//
 void Application::studentsInUC(std::string UC)
 {
     bool doIt = true;
@@ -170,18 +177,12 @@ void Application::studentsInUC(std::string UC)
         doIt = false;
     }
     if(doIt)
-    {
         for(auto student:students)
-        {
             for(auto schedule:student.getStudentSchedule())
-            {
                 if(schedule.getUcCode() == UC)
                     std::cout << student.getName() <<" is on " << UC << " (" <<  schedule.getUcClass() << ")" << std::endl;
-            }
-        }
-    }
 }
-
+//.....................................................................................................................................//
 void Application::studentsInYear(std::string year) {
     bool doIt = true;
     if(year < "1" || year >"3")
@@ -195,9 +196,8 @@ void Application::studentsInYear(std::string year) {
             std::vector<std::string> UCs;
             for (auto schedule: student.getStudentSchedule()) {
                 std::string studentYear = schedule.getUcClass().substr(0, 1);
-                if (studentYear == year) {
+                if (studentYear == year)
                     UCs.push_back(schedule.getUcCode());
-                }
             }
             if (!UCs.empty()) {
                 std::cout << student.getName() << " is on " << year;
@@ -213,9 +213,8 @@ void Application::studentsInYear(std::string year) {
             }
         }
     }
-
 }
-
+//.....................................................................................................................................//
 void Application::consultOcupationOfClassesPerUC(std::string UC, std::string aClass) {
     bool doIt = true;
     if(existingUCs.find(UC)==existingUCs.end())
@@ -245,8 +244,7 @@ void Application::consultOcupationOfClassesPerUC(std::string UC, std::string aCl
     }
 
 }
-
-
+//.....................................................................................................................................//
 void Application::consultOcupationOfUCs(int order,std::string UC ,int key)  //prints the number of students of each UC
 {
     if(!key) //TOTAL
@@ -259,17 +257,18 @@ void Application::consultOcupationOfUCs(int order,std::string UC ,int key)  //pr
                     if(UC == schedule.getUcCode()) studentsPerUC[schedule.getUcCode()] ++;
 
         std::vector<std::pair<int, std::string>> sortedValues;
-        for (const auto &entry : studentsPerUC) {
+        for (const auto &entry : studentsPerUC)
             sortedValues.emplace_back(entry.second, entry.first);
-        }
-        if (order == 2) { //ASCENDING
+
+        if (order == 2) //ASCENDING
             std::sort(sortedValues.begin(), sortedValues.end());
-        } else if (order == 3) { //DESCENDING
+
+        else if (order == 3)  //DESCENDING
             std::sort(sortedValues.rbegin(), sortedValues.rend());
-        }
-        for (const auto &pair : sortedValues) {
+
+        for (const auto &pair : sortedValues)
             std::cout << pair.second << ": " << pair.first << std::endl;
-        }
+
     }
     else //PARTIAL
     {
@@ -300,28 +299,27 @@ void Application::consultOcupationOfClasses(int order, std::string aClass, int k
         std::map<std::string, int> studentsPerClass; // DEFAULT IS BY UC
         for (auto UC : existingClasses) studentsPerClass.try_emplace(UC, 0);
 
-        for (auto student : students) {
-            for (auto schedule : student.getStudentSchedule()) {
-                if (studentsPerClass.find(schedule.getUcClass()) != studentsPerClass.end()) {
+        for (auto student : students)
+            for (auto schedule : student.getStudentSchedule())
+                if (studentsPerClass.find(schedule.getUcClass()) != studentsPerClass.end())
                     studentsPerClass[schedule.getUcClass()]++;
-                }
-            }
-        }
+
         std::vector<std::pair<int, std::string>> sortedValues;
-        for (const auto &entry : studentsPerClass) {
+        for (const auto &entry : studentsPerClass)
             sortedValues.emplace_back(entry.second, entry.first);
-        }
 
-        if (order == 2) { // ASCENDING
+
+        if (order == 2) // ASCENDING
             std::sort(sortedValues.begin(), sortedValues.end());
-        } else if (order == 3) { // DESCENDING
+        else if (order == 3)  // DESCENDING
             std::sort(sortedValues.rbegin(), sortedValues.rend());
-        }
 
-        for (const auto &pair : sortedValues) {
+
+        for (const auto &pair : sortedValues)
             std::cout << pair.second << ": " << pair.first << std::endl;
-        }
-    } else { // PARTIAL
+    }
+    else // PARTIAL
+    {
         bool doIt = true;
         if(existingClasses.find(aClass)==existingClasses.end())
         {
@@ -331,13 +329,10 @@ void Application::consultOcupationOfClasses(int order, std::string aClass, int k
         if (doIt)
         {
             int count = 0;
-            for (auto student : students) {
-                for (auto schedule : student.getStudentSchedule()) {
-                    if (schedule.getUcClass() == aClass) {
+            for (auto student : students)
+                for (auto schedule : student.getStudentSchedule())
+                    if (schedule.getUcClass() == aClass)
                         count++;
-                    }
-                }
-            }
             std::cout << aClass << ": " << count << std::endl;
         }
     }
@@ -410,49 +405,46 @@ void Application::consultStudentDetails(std::string info)
     std::map<std::string,int> yearInfo{{"1",0},{"2",0},{"3",0}};
     std::map<std::string,int> classInfo;
     bool found = false;
-    for(auto student:students)
+    Student student;
+    for(auto theStudent:students)
     {
-        if(student.getName() == info || student.getId() == info)
+        if(theStudent.getName() == info || theStudent.getId() == info)
         {
+            student = theStudent;
+            std::cout << "Name: " << theStudent.getName() << std::endl; //Name
+            std::cout << "ID: " << theStudent.getId() << std::endl; //ID
+            theStudent.printSchedule();
             found = true;
-            name = student.getName();
-            std::cout << "Name: " << student.getName() << std::endl; //Name
-            std::cout << "ID: " << student.getId() << std::endl; //ID
-            student.printSchedule();
-            for(auto schedule: student.getStudentSchedule())
-            {
-                auto it = classInfo.find(schedule.getUcClass());
-                if(it != classInfo.end()) it->second++;
-                else classInfo[schedule.getUcClass()] = 1;
-
-                countUC++;
-                auto classYear = schedule.getUcClass().substr(0,1);
-                if(classYear == "1") yearInfo[classYear]++;
-                else if(classYear == "2") yearInfo[classYear]++;
-                else if (classYear == "3") yearInfo[classYear]++;
-            }
         }
     }
+
     if(found)
     {
+        for(auto schedule: student.getStudentSchedule())
+        {
+            auto it = classInfo.find(schedule.getUcClass());
+            if(it != classInfo.end()) it->second++;
+            else classInfo[schedule.getUcClass()] = 1;
+            countUC++;
+            auto classYear = schedule.getUcClass().substr(0,1);
+            if(classYear == "1") yearInfo[classYear]++;
+            else if(classYear == "2") yearInfo[classYear]++;
+            else if (classYear == "3") yearInfo[classYear]++;
+        }
 
         std::cout << name << " is on " << countUC << " UC(s)." <<std::endl;
         std::cout << name << " is on " ;
         for(auto aClass: classInfo)
-        {
             std::cout << aClass.first << " for " << aClass.second << " class(es), ";
-        }
+
         std::cout << std::endl;
         std::cout << name << " is on " ;
         for(auto year: yearInfo)
-        {
             std::cout << "year " << year.first << " for " << year.second << " class(es) ";
-        }
+
         std::cout<<std::endl;
     }
-
     else std::cout << "No student was found with that name or ID!"<<std::endl;
-
 }
 
 void Application::moreThanN(int n)
@@ -460,12 +452,10 @@ void Application::moreThanN(int n)
     if(n >= 0 && n<= 7)
     {
         std::map<std::string,int>UCs;
-
         for(auto student:students)
         {
             for(auto schedule:student.getStudentSchedule())
             {
-
                 auto it = UCs.find(student.getName());
                 if(it != UCs.end()) it->second++;
                 else UCs[student.getName()] = 1;
@@ -473,7 +463,6 @@ void Application::moreThanN(int n)
         }
         for(auto pair: UCs)
             if(pair.second >= n) std::cout << pair.first << std::endl;
-
     }
     else std::cout << "Please insert a number between 1 and 7!"<<std::endl;
 }
@@ -487,18 +476,21 @@ void Application::addUC(std::string name, std::string UC)
 
 void Application::removeUC(std::string name, std::string UC)
 {
-    for(auto student: students)
-    {
-        if(student.getName() == name)
+    std::vector<ClassForUc> in;
+    Student student;
+    std::string id;
+    for(auto theStudent: students)
+        if(theStudent.getName() == name)
         {
-            for(auto schedule: student.getStudentSchedule())
-            {
-                if(schedule.getUcCode() == UC)
-                {
-                    student.removeClass(schedule);
-                    std::cout << "UC " << schedule.getUcCode() << " was removed from " << student.getName() << " schedule" <<std::endl;
-                }
-            }
+            id = theStudent.getId();
+            student = theStudent;
+            for(auto schedule: theStudent.getStudentSchedule())
+                if(schedule.getUcCode() != UC)
+                    in.push_back(schedule);
         }
-    }
+    students.erase(student);
+    Student  newStudent(name,id,in);
+    students.insert(newStudent);
+
 }
+

@@ -12,6 +12,9 @@
 
 class ClassForUc {
 public:
+    ClassForUc();
+
+    explicit ClassForUc(const std::string &ucCode);
 
     ClassForUc(std::string ucClass , std::string ucCode);
     const std::string &getUcCode() const;

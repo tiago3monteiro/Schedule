@@ -18,3 +18,8 @@ const std::string &ClassForUc::getUcClass() const {
     return ucClass;
 }
 
+ClassForUc::ClassForUc() {
+    this->ucCode = "default";
+    this->ucClass = "default";
+}
+
