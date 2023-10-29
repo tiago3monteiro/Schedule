@@ -298,8 +298,6 @@ void Application::consultOcupationofYear(int order, std::string year ,int key)
             std::cout << pair.second << ": " << pair.first << std::endl;
         }
     }
-
-
     else //Partial
     {
         int count = 0;
@@ -318,4 +316,66 @@ void Application::consultOcupationofYear(int order, std::string year ,int key)
         }
         std::cout << year << ": " << count << std::endl;
     }
+}
+
+void Application::consultStudentDetails(std::string info)
+{
+    int countUC = 0;
+    std::string name;
+    std::map<std::string,int> yearInfo{{"1",0},{"2",0},{"3",0}};
+    std::map<std::string,int> classInfo;
+    for(auto student:students)
+    {
+        if(student.getName() == info || student.getId() == info)
+        {
+            name = student.getName();
+            std::cout << "Name: " << student.getName() << std::endl; //Name
+            std::cout << "ID: " << student.getId() << std::endl; //ID
+            student.printSchedule();
+            for(auto schedule: student.getStudentSchedule())
+            {
+                auto it = classInfo.find(schedule.getUcClass());
+                if(it != classInfo.end()) it->second++;
+                else classInfo[schedule.getUcClass()] = 1;
+
+                countUC++;
+                auto classYear = schedule.getUcClass().substr(0,1);
+                if(classYear == "1") yearInfo[classYear]++;
+                else if(classYear == "2") yearInfo[classYear]++;
+                else if (classYear == "3") yearInfo[classYear]++;
+            }
+        }
+    }
+    std::cout << name << " is on " << countUC << " UC(s)." <<std::endl;
+    std::cout << name << " is on " ;
+    for(auto aClass: classInfo)
+    {
+        std::cout << aClass.first << " for " << aClass.second << " class(es), ";
+    }
+    std::cout << std::endl;
+    std::cout << name << " is on " ;
+    for(auto year: yearInfo)
+    {
+        std::cout << "year " << year.first << " for " << year.second << " class(es) ";
+    }
+    std::cout<<std::endl;
+}
+
+void Application::moreThanN(int n)
+{
+    std::map<std::string,int>UCs;
+
+    for(auto student:students)
+    {
+        for(auto schedule:student.getStudentSchedule())
+        {
+
+            auto it = UCs.find(student.getName());
+            if(it != UCs.end()) it->second++;
+            else UCs[student.getName()] = 1;
+        }
+    }
+    for(auto pair: UCs)
+        if(pair.second >= n) std::cout << pair.first << std::endl;
+
 }

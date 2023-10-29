@@ -12,16 +12,16 @@ int main() {
 
     int key;
     while (true) {
-        std::cout << "¡...................................¡" << std::endl;
-        std::cout << "|1.Print a schedule:                |" << std::endl;
-        std::cout << "|2.Consult the students within:     |" << std::endl;
-        std::cout << "|3.Consult ocupation:               |" << std::endl;
-        std::cout << "|4.Another statistics:              |" << std::endl;
-        std::cout << "!...................................!" << std::endl;
+        std::cout << "¡.......................................¡" << std::endl;
+        std::cout << "|1.Print a schedule:                    |" << std::endl;
+        std::cout << "|2.Consult the students within:         |" << std::endl;
+        std::cout << "|3.Consult ocupation:                   |" << std::endl;
+        std::cout << "|4.Another statistics:                  |" << std::endl;
+        std::cout << "|PRESS ANY OTHER KEY TO LEAVE THE MENU  |" << std::endl;
+        std::cout << "!.......................................!" << std::endl;
         std::cin >> key;
         //..................................................................................//
-        switch (key)
-        {
+        switch (key) {
             case 1: //Print a Schedule:
             {
                 std::cout << "¡....................................¡" << std::endl;
@@ -32,7 +32,7 @@ int main() {
                 switch (key) {
                     case 1: {
                         std::cout << "¡......................................¡" << std::endl;
-                        std::cout << "|  Please insert name of the student:  |"<< std::endl;
+                        std::cout << "|  Please insert name of the student:  |" << std::endl;
                         std::cout << "¡......................................¡" << std::endl;
                         std::string name;
                         std::cin >> name;
@@ -50,8 +50,7 @@ int main() {
                         break;
                     }
 
-                    default:
-                    {
+                    default: {
                         std::cout << "¡....................................¡" << std::endl;
                         std::cout << "|     Please insert a valid key!     |" << std::endl;
                         std::cout << "!....................................!" << std::endl;
@@ -62,7 +61,7 @@ int main() {
                 }
                 break;
             }
-        //......................................................................//
+                //......................................................................//
             case 2: //Print Students within a class, a UC or Year
             {
                 std::cout << "¡.................. ¡" << std::endl;
@@ -222,22 +221,62 @@ int main() {
                         std::cout << "!....................................!" << std::endl;
                         break;
                     }
-                    default: break;
+                    default:
+                    {
+                        std::cout << "¡....................................¡" << std::endl;
+                        std::cout << "|     Please insert a valid key!     |" << std::endl;
+                        std::cout << "!....................................!" << std::endl;
+                        break;
+                    }
+
                 }
                 break;
             }//.............................................................................................//
-            case 4:
-            {
-                std::cout << "¡....................................¡" << std::endl;
-                std::cout << "|1.Print a Student's Schedule        |" << std::endl;
-                std::cout << "|2.Print a Class' Schedule           |" << std::endl;
-                std::cout << "¡....................................¡" << std::endl;
+            case 4: {
+                std::cout << "¡...............................................................¡" << std::endl;
+                std::cout << "|1.Consult student details                                      |" << std::endl;
+                std::cout << "|2. Consult the number of students registered in at least n UCs |" << std::endl;
+                std::cout << "¡...............................................................¡" << std::endl;
                 std::cin >> key;
+                switch(key)
+                {
+                    case 1:
+                    {
+                        std::string name;
+                        std::cout << "¡..................................................¡" << std::endl;
+                        std::cout << "| Please insert the name or ID of the student      |" << std::endl;
+                        std::cout << "¡..................................................¡" << std::endl;
+                        std::cin >> name;
+                        application.consultStudentDetails(name);
+                        break;
 
-
-
+                    }
+                    case 2:
+                    {
+                        int n;
+                        std::cout << "¡..................................................¡" << std::endl;
+                        std::cout << "| Please insert a number:                          |" << std::endl;
+                        std::cout << "¡..................................................¡" << std::endl;
+                        std::cin >> n;
+                        application.moreThanN(n);
+                        break;
+                    }
+                    default:
+                    {
+                        std::cout << "¡....................................¡" << std::endl;
+                        std::cout << "|     Please insert a valid key!     |" << std::endl;
+                        std::cout << "!....................................!" << std::endl;
+                        break;
+                    }
+                }
+                break;
             }
+            //...................................................................................................//
+            default:
+                std::cout << "¡..........................¡" << std::endl;
+                std::cout << "|     END OF PROGRAM       |" << std::endl;
+                std::cout << "¡..........................¡" << std::endl;
+                return 0;
         }
     }
-    return 0;
 }

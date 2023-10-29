@@ -23,6 +23,8 @@ public:
     void consultOcupationOfClasses(int order, std::string aClass = "default",int key=0); //Consult the number of students of a class, also sorts it
     void consultOcupationOfUCs(int order, std::string UC = "default",int key=0);  //Consult the number of students of a UC, also sorts it
     void consultOcupationofYear(int order, std::string = "default",int key=0);  //Consult the number of students of a year , also sorts it
+    void consultStudentDetails(std::string info); //Consult basic details about the student
+    void moreThanN(int n); // Consult the number of students registered in at least n UCs;
 
 private:
     std::set<Student> students;
