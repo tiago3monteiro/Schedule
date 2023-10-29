@@ -476,6 +476,29 @@ void Application::moreThanN(int n)
 
     }
     else std::cout << "Please insert a number between 1 and 7!"<<std::endl;
+}
+
+void Application::addUC(std::string name, std::string UC)
+{
+    //
 
 
+}
+
+void Application::removeUC(std::string name, std::string UC)
+{
+    for(auto student: students)
+    {
+        if(student.getName() == name)
+        {
+            for(auto schedule: student.getStudentSchedule())
+            {
+                if(schedule.getUcCode() == UC)
+                {
+                    student.removeClass(schedule);
+                    std::cout << "UC " << schedule.getUcCode() << " was removed from " << student.getName() << " schedule" <<std::endl;
+                }
+            }
+        }
+    }
 }

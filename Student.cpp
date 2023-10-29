@@ -43,3 +43,15 @@ void Student::printSchedule()
     }
 
 }
+
+void Student::removeClass(ClassForUc theClass)
+{
+    for (auto it = studentSchedule.begin(); it != studentSchedule.end();)
+    {
+        if (*it == theClass) it = studentSchedule.erase(it);
+        else ++it;
+    }
+    printSchedule();
+
+}
+

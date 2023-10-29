@@ -20,14 +20,13 @@ public:
     const std::vector<ClassForUc> &getStudentSchedule() const;
     const std::string &getName() const;
     void addClass(ClassForUc theClass);
+    void removeClass(ClassForUc theClass);
     void printSchedule();
 
 private:
     std::string name;
     std::string id;
     std::vector<ClassForUc> studentSchedule;
-
-
 
 };
 

@@ -17,6 +17,7 @@ int main() {
         std::cout << "|2.Consult the students within:         |" << std::endl;
         std::cout << "|3.Consult ocupation:                   |" << std::endl;
         std::cout << "|4.Another statistics:                  |" << std::endl;
+        std::cout << "|5.Requests:                            |" << std::endl;
         std::cout << "|PRESS ANY OTHER KEY TO LEAVE THE MENU  |" << std::endl;
         std::cout << "!.......................................!" << std::endl;
         std::cin >> key;
@@ -261,6 +262,51 @@ int main() {
                         break;
                     }
                 }
+                break;
+            }//........................................................................................................//
+            case 5:
+            {
+                std::cout << "¡...............................¡" << std::endl;
+                std::cout << "|1. Add UC                      |" << std::endl;
+                std::cout << "|2. Remove UC                   |" << std::endl;
+                std::cout << "|3. Switch class                |" << std::endl;
+                std::cout << "|4. Check requests              |" << std::endl;
+                std::cout << "¡...............................¡" << std::endl;
+                std::cin >> key;
+                switch (key)
+                {
+                    case 1:
+                    {
+                        std::string name, UC;
+                        std::cout << "¡....................................¡" << std::endl;
+                        std::cout << "| Please insert the student's name:  |" << std::endl;
+                        std::cout << "!....................................!" << std::endl;
+                        std::cin>>name;
+                        std::cout << "¡....................................¡" << std::endl;
+                        std::cout << "| Please insert the UC :             |" << std::endl;
+                        std::cout << "!....................................!" << std::endl;
+                        std::cin>>UC;
+                        //function here
+                        break;
+                    }
+                    case 2:
+                    {
+                        std::string name, UC;
+                        std::cout << "¡....................................¡" << std::endl;
+                        std::cout << "| Please insert the student's name:  |" << std::endl;
+                        std::cout << "!....................................!" << std::endl;
+                        std::cin>>name;
+                        std::cout << "¡....................................¡" << std::endl;
+                        std::cout << "| Please insert the UC :             |" << std::endl;
+                        std::cout << "!....................................!" << std::endl;
+                        std::cin>>UC;
+                        application.removeUC(name,UC);
+                        break;
+                    }
+
+                }
+
+
                 break;
             }
             //...................................................................................................//

@@ -25,6 +25,9 @@ public:
     void consultOcupationofYear(int order, std::string = "default",int key=0);  //Consult the number of students of a year , also sorts it
     void consultStudentDetails(std::string info); //Consult basic details about the student
     void moreThanN(int n); // Consult the number of students registered in at least n UCs;
+    void addUC(std::string name, std::string UC); //Adds a UC from a student schedule
+    void removeUC(std::string name, std::string UC); //Removes a UC from a student schedule
+
 
 private:
     std::set<Student> students;
