@@ -140,8 +140,17 @@ std::set<Block> Application::printClassSchedule(std::string aClass, int key)
 std::set<Block> Application::printClassForUCSchedule(ClassForUc classforuc,int key)
 {
     std::set<Block> res;
-    if(existingUCs.find(classforuc.getUcCode()) == existingUCs.end()) return res;
-    if(existingClasses.find(classforuc.getUcClass()) == existingClasses.end()) return res;
+    if(existingUCs.find(classforuc.getUcCode()) == existingUCs.end())
+    {
+        if(!key) std::cout << "No UC was found with that code" <<std::endl;
+        return res;
+    }
+    if(existingClasses.find(classforuc.getUcClass()) == existingClasses.end())
+    {
+        if(!key) std::cout << "No class was found with that code" <<std::endl;
+        return res;
+    }
+
     for(auto schedule:schedules)
         if(schedule.getClassForUc() == classforuc)
             for(auto block:schedule.getUcClassSchedule())
@@ -162,7 +171,7 @@ void Application::studentsInClass(std::string aClass) //prints all the students 
     bool doIt = true;
     if(existingClasses.find(aClass)==existingClasses.end()) //checks if class exists
     {
-        std::cout << "NOT A VALID CLASS" << std::endl;
+        std::cout << "No class was found with that code"  << std::endl;
         doIt = false;
     }
     if(doIt)
@@ -197,7 +206,7 @@ void Application::studentsInUC(std::string UC)
     bool doIt = true;
     if(existingUCs.find(UC)==existingUCs.end())
     {
-        std::cout << "NOT A VALID UC" << std::endl;
+        std::cout << "No UC was found with that code"  << std::endl;
         doIt = false;
     }
     if(doIt)
@@ -211,7 +220,7 @@ void Application::studentsInYear(std::string year) {
     bool doIt = true;
     if(year < "1" || year >"3")
     {
-        std::cout << "NOT A VALID YEAR" << std::endl;
+        std::cout << "Not a valid year, please insert a number between 1 and 3" << std::endl;
         doIt = false;
     }
     if(doIt)
@@ -244,14 +253,14 @@ int Application::consultOcupationOfClassesPerUC(std::string UC, std::string aCla
     bool doIt = true;
     if(existingUCs.find(UC)==existingUCs.end())
     {
-        if(!key1)std::cout << "NOT A VALID UC" << std::endl;
+        if(!key1)std::cout << "No UC was found with that code" << std::endl;
         doIt = false;
     }
     if(doIt)
     {
         if(existingClasses.find(aClass)==existingClasses.end() )
         {
-            if(!key1)std::cout << "NOT A VALID CLASS" << std::endl;
+            if(!key1)std::cout << "No class was found with that code" << std::endl;
             doIt = false;
         }
     }
@@ -301,7 +310,7 @@ void Application::consultOcupationOfUCs(int order,std::string UC ,int key)  //pr
         bool doIt = true;
         if(existingClasses.find(UC)==existingClasses.end())
         {
-            std::cout << "NOT A VALID UC" << std::endl;
+            std::cout << "No UC was found with that code" << std::endl;
             doIt = false;
         }
         if(doIt)
@@ -349,7 +358,7 @@ void Application::consultOcupationOfClasses(int order, std::string aClass, int k
         bool doIt = true;
         if(existingClasses.find(aClass)==existingClasses.end())
         {
-            std::cout << "NOT A VALID CLASS" << std::endl;
+            std::cout << "No class was found with that code" << std::endl;
             doIt = false;
         }
         if (doIt)
@@ -401,7 +410,7 @@ void Application::consultOcupationofYear(int order, std::string year ,int key)
         bool doIt = true;
         if(year < "1" || year > "3")
         {
-            std::cout << "NOT A VALID YEAR" << std::endl;
+            std::cout << "Not a valid year, please insert a number between 1 and 3" << std::endl;
             doIt = false;
         }
         if(doIt)
@@ -617,24 +626,47 @@ bool Application::addUC(std::string name, std::string UC,std::string aClass, int
 
 }
 
-void Application::removeUC(std::string name, std::string UC)
+bool Application::removeUC(std::string name, std::string UC)
 {
     std::vector<ClassForUc> in;
     Student student;
     std::string id;
+    bool foundStudent = false;
+    bool foundClass = false;
     for(auto theStudent: students)
         if(theStudent.getName() == name)
         {
+            foundStudent = true;
             id = theStudent.getId();
             student = theStudent;
             for(auto schedule: theStudent.getStudentSchedule())
                 if(schedule.getUcCode() != UC)
                     in.push_back(schedule);
+                else  foundClass = true;
         }
+
+    if(!foundStudent)
+    {
+        std::cout << "The student was not found"<<std::endl;
+        return false;
+    }
+    if(!foundClass)
+    {
+        std::cout << "The UC was not found in the student's schedule"<<std::endl;
+        return false;
+    }
+
+
     students.erase(student);
-    Student  newStudent(name,id,in);
+    Student  newStudent(id,name,in);
     students.insert(newStudent);
     std::cout<< "The student was removed from the desirable UC" << std::endl;
+    if(in.empty())
+    {
+        std::cout << name << " does not have any more UCs in his schedule"<<std::endl;
+        return true;
+    }
+    return true;
 
 }
 

@@ -31,7 +31,7 @@ public:
     void moreThanN(int n); // Consult the number of students registered in at least n UCs;
 
     bool addUC(std::string name, std::string UC,std::string aClass ="default", int key =2); //Adds a UC from a student schedule
-    void removeUC(std::string name, std::string UC); //Removes a UC from a student schedule
+    bool removeUC(std::string name, std::string UC); //Removes a UC from a student schedule
 
 
 private:
