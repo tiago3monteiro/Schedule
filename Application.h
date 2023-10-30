@@ -21,18 +21,20 @@ public:
     void studentsInClass(std::string aClass); //Consult the students within a given class (also prints for which UCs they are on it)
     void studentsInUC(std::string UC); //Consult the students in a given UC
     void studentsInYear(std::string year); //Consult the students in a given Year
-    int consultOcupationOfClassesPerUC(std::string UC, std::string aCLass,int key = 0); //consult the number of students on a class for a UC
+    int studentsInClassForUC(std::string UC, std::string aClass, int key1 = 0); //consult the number of students on a class for a UC
 
     void consultOcupationOfClasses(int order, std::string aClass = "default",int key=0); //Consult the number of students of a class, also sorts it
     void consultOcupationOfUCs(int order, std::string UC = "default",int key=0);  //Consult the number of students of a UC, also sorts it
     void consultOcupationofYear(int order, std::string = "default",int key=0);  //Consult the number of students of a year , also sorts it
+    int  consultOCupationofClassForUc(std::string UC, std::string aCLass,int key = 0); //consult the number of students on a class for a UC
+
 
     void consultStudentDetails(std::string info); //Consult basic details about the student
     void moreThanN(int n); // Consult the number of students registered in at least n UCs;
 
     bool addUC(std::string name, std::string UC,std::string aClass ="default", int key =2); //Adds a UC from a student schedule
     bool removeUC(std::string name, std::string UC); //Removes a UC from a student schedule
-
+    bool switchClass(std::string name, std::string UC, std::string newClass);
 
 private:
     std::set<Student> students;

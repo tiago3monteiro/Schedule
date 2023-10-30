@@ -128,7 +128,7 @@ int main() {
                         std::cout << "¡...........................¡" << std::endl;
                         std::string aClass;
                         std::cin >> aClass;
-                        application.consultOcupationOfClassesPerUC(UC, aClass);
+                        application.studentsInClassForUC(UC, aClass);
                         break;
 
                     }
@@ -333,6 +333,24 @@ int main() {
                         std::cin>>UC;
                         application.removeUC(name,UC);
                         break;
+                    }
+                    case 3:
+                    {
+                        std::string name, UC, newClass;
+                        std::cout << "¡....................................¡" << std::endl;
+                        std::cout << "| Please insert the student's name:  |" << std::endl;
+                        std::cout << "!....................................!" << std::endl;
+                        std::cin>>name;
+                        std::cout << "¡....................................¡" << std::endl;
+                        std::cout << "| Please insert the UC :             |" << std::endl;
+                        std::cout << "!....................................!" << std::endl;
+                        std::cin>>UC;
+                        std::cout << "¡....................................¡" << std::endl;
+                        std::cout << "| Please insert the new class:       |" << std::endl;
+                        std::cout << "!....................................!" << std::endl;
+                        std::cin>>newClass;
+                        application.switchClass(name, UC, newClass);
+
                     }
 
                 }
