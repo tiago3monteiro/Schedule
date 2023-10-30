@@ -9,6 +9,7 @@
 #include <set>
 #include "ClassForUc.h"
 #include "Student.h"
+#include <fstream>
 #include "ScheduleUC.h"
 
 class Application {
@@ -26,7 +27,7 @@ public:
     void consultOcupationOfClasses(int order, std::string aClass = "default",int key=0); //Consult the number of students of a class, also sorts it
     void consultOcupationOfUCs(int order, std::string UC = "default",int key=0);  //Consult the number of students of a UC, also sorts it
     void consultOcupationofYear(int order, std::string = "default",int key=0);  //Consult the number of students of a year , also sorts it
-    int  consultOCupationofClassForUc(std::string UC, std::string aClass,int key = 0); //consult the number of students on a class for a UC
+    int  consultOCupationofClassForUc(std::string UC, std::string aClass,int key = 0); //ill do this later
 
 
     void consultStudentDetails(std::string info); //Consult basic details about the student
@@ -42,6 +43,7 @@ private:
     std::set<std::string>existingUCs;
     std::set<std::string>existingClasses;
     std::set<ClassForUc>existingCombinations;
+    //std::ofstream outputFile("actions.txt");
     const static int CAP = 30;
 
 };

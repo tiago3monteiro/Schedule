@@ -14,8 +14,8 @@ int main() {
     while (true) {
         std::cout << "¡.......................................¡" << std::endl;
         std::cout << "|1.Print a schedule:                    |" << std::endl;
-        std::cout << "|2.Consult the students within:         |" << std::endl;
-        std::cout << "|3.Consult occupation:                  |" << std::endl;
+        std::cout << "|2.Consult the students that belong to: |" << std::endl;
+        std::cout << "|3.Consult occupation by:               |" << std::endl;
         std::cout << "|4.Another statistics:                  |" << std::endl;
         std::cout << "|5.Requests:                            |" << std::endl;
         std::cout << "|PRESS ANY OTHER KEY TO LEAVE THE MENU  |" << std::endl;
@@ -25,11 +25,12 @@ int main() {
         switch (key) {
             case 1: //Print a Schedule:
             {
-                std::cout << "¡....................................¡" << std::endl;
-                std::cout << "|1.Print a Student's Schedule        |" << std::endl;
-                std::cout << "|2.Print a Class' Schedule           |" << std::endl;
-                std::cout << "|3.Print a class for a UC' Schedule  |" << std::endl;
-                std::cout << "¡....................................¡" << std::endl;
+                std::cout << "¡...........................................¡" << std::endl;
+                std::cout << "|1.Print a Student's Schedule               |" << std::endl;
+                std::cout << "|2.Print a Class' Schedule                  |" << std::endl;
+                std::cout << "|3.Print a class for a UC' Schedule         |" << std::endl;
+                std::cout << "|PRESS ANY OTHER KEY TO GO BACK TO THE MENU |" << std::endl;
+                std::cout << "¡...........................................¡" << std::endl;
                 std::cin >> key;
                 switch (key) {
                     case 1: {
@@ -66,26 +67,20 @@ int main() {
                         break;
                     }
 
-                    default: {
-                        std::cout << "¡....................................¡" << std::endl;
-                        std::cout << "|     Please insert a valid key!     |" << std::endl;
-                        std::cout << "!....................................!" << std::endl;
-                        break;
-                    }
-
-
+                    default: break;
                 }
                 break;
             }
                 //......................................................................//
             case 2: //Print Students within a class, a UC or Year
             {
-                std::cout << "¡.................. ¡" << std::endl;
-                std::cout << "|1.Class            |" << std::endl;
-                std::cout << "|2.UC               |" << std::endl;
-                std::cout << "|3.Year             |" << std::endl;
-                std::cout << "|4.UC and Class     |" << std::endl;
-                std::cout << "¡...................¡" << std::endl;
+                std::cout << "¡..............................................¡" << std::endl;
+                std::cout << "|1.Class                                       |" << std::endl;
+                std::cout << "|2.UC                                          |" << std::endl;
+                std::cout << "|3.Year                                        |" << std::endl;
+                std::cout << "|4.UC and Class                                |" << std::endl;
+                std::cout << "|PRESS ANY OTHER NUMBER TO GO BACK TO THE MENU |" << std::endl;
+                std::cout << "¡..............................................¡" << std::endl;
                 std::cin >> key;
                 switch (key) {
                     case 1: {
@@ -140,17 +135,21 @@ int main() {
                         break;
                 }
                 break;
-            } //........................................................//
+            }
+            //........................................................//
             case 3: //Consult the class/year/UC occupation (sorting by UC, ascending or descending order, …)
             {
-                std::cout << "¡...........................¡" << std::endl;
-                std::cout << "|1.Class                    |" << std::endl;
-                std::cout << "|2.UC                       |" << std::endl;
-                std::cout << "|3.Year                     |" << std::endl;
-                std::cout << "¡.......................... ¡" << std::endl;
+                std::cout << "¡..............................................¡" << std::endl;
+                std::cout << "|1.Class                                       |" << std::endl;
+                std::cout << "|2.UC                                          |" << std::endl;
+                std::cout << "|3.Year                                        |" << std::endl;
+                std::cout << "|4.UC and Class                                |" << std::endl; //to implement
+                std::cout << "|PRESS ANY OTHER NUMBER TO GO BACK TO THE MENU |" << std::endl;
+                std::cout << "¡..............................................¡" << std::endl;
                 std::cin >> key;
                 switch (key) {
-                    case 1: {
+                    case 1:
+                    {
                         std::string aClass;
                         std::cout << "¡........... ¡" << std::endl;
                         std::cout << "|1.Partial   |" << std::endl;
@@ -163,7 +162,9 @@ int main() {
                             std::cout << "¡...........................¡" << std::endl;
                             std::cin >> aClass;
                             application.consultOcupationOfClasses(0, aClass, 1);
-                        } else {
+                        }
+                        else if(key == 2)
+                        {
                             std::cout << "¡...............................¡" << std::endl;
                             std::cout << "|1. Sort by class               |" << std::endl;
                             std::cout << "|2. Sort in ascending order:    |" << std::endl;
@@ -172,8 +173,13 @@ int main() {
                             int order;
                             std::cin >> order;
                             application.consultOcupationOfClasses(order);
-
-
+                        }
+                        else
+                        {
+                            std::cout << "¡....................................¡" << std::endl;
+                            std::cout << "|     Please insert a valid key!     |" << std::endl;
+                            std::cout << "!....................................!" << std::endl;
+                            break;
                         }
                         break;
                     }

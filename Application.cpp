@@ -726,16 +726,7 @@ bool Application::switchClass(std::string name, std::string UC, std::string newC
             id = theStudent.getId();
             studentCurrent = theStudent;
             foundStudent = true;
-            for(auto schedule: theStudent.getStudentSchedule())
-            {
-                if(schedule.getUcCode() == UC)
-                {
-                    oldClass = schedule.getUcClass();
-                    foundUC = true;
-                }
-                else in.push_back(schedule);
-            }
-        break;
+            break;
         }
     }
 
@@ -743,6 +734,16 @@ bool Application::switchClass(std::string name, std::string UC, std::string newC
     {
         std::cout << "The student was not found"<<std::endl;
         return false;
+    }
+
+    for(auto schedule: studentCurrent.getStudentSchedule())
+    {
+        if(schedule.getUcCode() == UC)
+        {
+            oldClass = schedule.getUcClass();
+            foundUC = true;
+        }
+        else in.push_back(schedule); //a vector with the same classes the student used to have except the one that we want to change
     }
 
     if(!foundUC)
@@ -753,8 +754,6 @@ bool Application::switchClass(std::string name, std::string UC, std::string newC
 
     bool overlap = false;
 
-    students.erase(studentCurrent); //temporary erase so we dont have 2 students with the exact same name
-    Student studentTesting(id,name,in); //let's test if it creates any conflicts before adding to the set with students;
     auto addSchedule = printClassForUCSchedule({newClass,UC},1);
     auto schedule = printStudentSchedule(name,1);
 
@@ -762,44 +761,38 @@ bool Application::switchClass(std::string name, std::string UC, std::string newC
     {
         for(auto tryBlock:addSchedule)
         {
-            if(fixedBlock.overlapping(tryBlock)) overlap = true; //I haven't done overlapping yet
-
+            if(fixedBlock.overlapping(tryBlock)) overlap = true;
         }
     }
+
     if(overlap)
     {
-        students.erase(studentTesting);
-        students.insert(studentCurrent);
         std::cout << "The student can't be in this class because it will create overlaps in his schedule" <<std::endl;
         return false;
     }
 
-    students.erase(studentTesting);
-    in.push_back({newClass,UC});
-    Student newStudent(id,name,in);
-    students.insert(newStudent);
+    in.push_back({newClass,UC}); //class that was missing
+    Student newStudent(id,name,in); //student with the new schedule
+
+    students.insert(newStudent); //Finally new student is on the students list
     for(auto aCLass:existingClasses)
     {
         if(studentsInClassForUC(UC,aCLass,1) != 0)
         {
-            numberOfStudentsUC.push_back(studentsInClassForUC(UC,aCLass,1));
-        }
+            numberOfStudentsUC.push_back(studentsInClassForUC(UC,aCLass,1)); //creates a vector with the ocupation of all classes for that UC
+        }                                                                          //To check the balance of the classes
     }
     for (size_t i = 0; i < numberOfStudentsUC.size(); ++i) {
         for (size_t j = i + 1; j < numberOfStudentsUC.size(); ++j) {
-            if (std::abs(numberOfStudentsUC[i] - numberOfStudentsUC[j]) > 4) {
-                students.erase(newStudent);
+            if (std::abs(numberOfStudentsUC[i] - numberOfStudentsUC[j]) > 4) {     //If the balance is not respected we eraase what we have done
+                students.erase(newStudent);                                         // and just put it back as it was
                 students.insert(studentCurrent);
+                std::cout << name << " can't switch to this class because the balance between class occupation is disturbed"<<std::endl;
                 return false; // If the difference is greater than 4, return false
             }
         }
     }
-
     std::cout << "The student class has been changed from " << oldClass << " to " << newClass << std::endl;
     return true;
-
-
-
-
 }
 
