@@ -250,22 +250,17 @@ void Application::studentsInYear(std::string year) {
 //.....................................................................................................................................//
 int Application::studentsInClassForUC(std::string UC, std::string aClass, int key1) {
     int count = 0;
-    bool doIt = true;
     if(existingUCs.find(UC)==existingUCs.end())
     {
         if(!key1)std::cout << "No UC was found with that code" << std::endl;
-        doIt = false;
+        return 0;
     }
-    if(doIt)
+
+    if(existingClasses.find(aClass)==existingClasses.end() )
     {
-        if(existingClasses.find(aClass)==existingClasses.end() )
-        {
-            if(!key1)std::cout << "No class was found with that code" << std::endl;
-            doIt = false;
-        }
+        if(!key1)std::cout << "No class was found with that code" << std::endl;
+        return 0;
     }
-    if(doIt)
-    {
 
         ClassForUc key = {aClass, UC};
         for (auto student: students)
@@ -275,7 +270,7 @@ int Application::studentsInClassForUC(std::string UC, std::string aClass, int ke
                     if(!key1)std::cout << student.getName() << std::endl;
                 }
         //if(!key1)std::cout << "UC " << UC << " for class " << aClass << " has " << count << " students" << std::endl;
-    }
+
     return count;
 
 }
@@ -433,35 +428,22 @@ void Application::consultOcupationofYear(int order, std::string year ,int key)
     }
 } //......................................................................................................//
 
-int Application::studentsInClassForUC(std::string UC, std::string aClass, int key1) {
+int  Application::consultOCupationofClassForUc(std::string UC, std::string aClass,int key ) //consult the number of students on a class for a UC
+{
     int count = 0;
-    bool doIt = true;
     if(existingUCs.find(UC)==existingUCs.end())
     {
-        if(!key1)std::cout << "No UC was found with that code" << std::endl;
-        doIt = false;
+        if(!key)std::cout << "No UC was found with that code" << std::endl;
+        return 0;
     }
-    if(doIt)
-    {
-        if(existingClasses.find(aClass)==existingClasses.end() )
-        {
-            if(!key1)std::cout << "No class was found with that code" << std::endl;
-            doIt = false;
-        }
-    }
-    if(doIt)
-    {
 
-        ClassForUc key = {aClass, UC};
-        for (auto student: students)
-            for (auto schedule: student.getStudentSchedule())
-                if (schedule == key) {
-                    count++;
-                    if(!key1)std::cout << student.getName() << std::endl;
-                }
-        if(!key1)std::cout << "UC " << UC << " for class " << aClass << " has " << count << " students" << std::endl;
+    if(existingClasses.find(aClass)==existingClasses.end() )
+    {
+        if(!key)std::cout << "No class was found with that code" << std::endl;
+        return 0;
     }
-    return count;
+    //need to create a structure with all combinations ClassForUC possible
+
 
 }
 
@@ -712,6 +694,7 @@ bool Application::removeUC(std::string name, std::string UC)
 //.....................................................................................................//
 bool Application::switchClass(std::string name, std::string UC, std::string newClass)
 {
+    std::vector<int> numberOfStudentsUC;
     std::string oldClass;
     Student studentCurrent;
     std::string id;
@@ -795,6 +778,23 @@ bool Application::switchClass(std::string name, std::string UC, std::string newC
     in.push_back({newClass,UC});
     Student newStudent(id,name,in);
     students.insert(newStudent);
+    for(auto aCLass:existingClasses)
+    {
+        if(studentsInClassForUC(UC,aCLass,1) != 0)
+        {
+            numberOfStudentsUC.push_back(studentsInClassForUC(UC,aCLass,1));
+        }
+    }
+    for (size_t i = 0; i < numberOfStudentsUC.size(); ++i) {
+        for (size_t j = i + 1; j < numberOfStudentsUC.size(); ++j) {
+            if (std::abs(numberOfStudentsUC[i] - numberOfStudentsUC[j]) > 4) {
+                students.erase(newStudent);
+                students.insert(studentCurrent);
+                return false; // If the difference is greater than 4, return false
+            }
+        }
+    }
+
     std::cout << "The student class has been changed from " << oldClass << " to " << newClass << std::endl;
     return true;
 
