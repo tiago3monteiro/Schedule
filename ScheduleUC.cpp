@@ -13,7 +13,7 @@ bool ScheduleUC::operator < (const ScheduleUC& scheduleUc) const
     return this->classForUc.getUcClass() < scheduleUc.classForUc.getUcClass();
 }
 
-const std::vector<Block> &ScheduleUC::getUcClassSchedule() const {
+const std::vector<Block> ScheduleUC::getUcClassSchedule() const {
     return UcClassSchedule;
 }
 

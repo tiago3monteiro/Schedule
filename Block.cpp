@@ -43,3 +43,17 @@ bool Block::operator< (const Block& block) const {
 
     return this->getStartHour() < block.getStartHour();
 }
+
+bool Block::overlapping(const Block& block) const
+{
+    if(this->day == block.day)
+    {
+        float startHour = this->getStartHour();
+        float endHour = startHour + this->getDuration();
+        float startHour1 = block.getStartHour();
+        float endHour1 = startHour1 + block.getDuration();
+        //
+
+    }
+
+}

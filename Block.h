@@ -20,6 +20,7 @@ public:
     const float &getDuration() const;
     const std::string &getType() const;
     bool operator< (const Block& block) const;
+    bool overlapping(const Block& block) const;
 
 private:
     Day day;

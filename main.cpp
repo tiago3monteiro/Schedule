@@ -28,6 +28,7 @@ int main() {
                 std::cout << "¡....................................¡" << std::endl;
                 std::cout << "|1.Print a Student's Schedule        |" << std::endl;
                 std::cout << "|2.Print a Class' Schedule           |" << std::endl;
+                std::cout << "|3.Print a class for a UC' Schedule  |" << std::endl;
                 std::cout << "¡....................................¡" << std::endl;
                 std::cin >> key;
                 switch (key) {
@@ -48,6 +49,20 @@ int main() {
                         std::string aClass;
                         std::cin >> aClass;
                         application.printClassSchedule(aClass);
+                        break;
+                    }
+                    case 3: {
+                        std::cout << "¡....................................¡" << std::endl;
+                        std::cout << "|     Please insert the UC:          |" << std::endl;
+                        std::cout << "¡....................................¡" << std::endl;
+                        std::string UC;
+                        std::cin >> UC;
+                        std::cout << "¡....................................¡" << std::endl;
+                        std::cout << "|     Please insert the class:       |" << std::endl;
+                        std::cout << "¡....................................¡" << std::endl;
+                        std::string aClass;
+                        std::cin >> aClass;
+                        application.printClassForUCSchedule({aClass,UC});
                         break;
                     }
 
@@ -277,7 +292,7 @@ int main() {
                 {
                     case 1:
                     {
-                        std::string name, UC;
+                        std::string name, UC, aCLass;
                         std::cout << "¡....................................¡" << std::endl;
                         std::cout << "| Please insert the student's name:  |" << std::endl;
                         std::cout << "!....................................!" << std::endl;
@@ -286,7 +301,23 @@ int main() {
                         std::cout << "| Please insert the UC :             |" << std::endl;
                         std::cout << "!....................................!" << std::endl;
                         std::cin>>UC;
-                        //function here
+                        std::cout << "¡....................................¡" << std::endl;
+                        std::cout << "| Do you have a desirable class?:    |" << std::endl;
+                        std::cout << "| 1. Yes                             |" << std::endl;
+                        std::cout << "| 2. No                              |" << std::endl;
+                        std::cout << "!....................................!" << std::endl;
+                        std::cin>>key;
+                        if(key == 2) //something
+                            application.addUC(name,UC);
+                        else if (key == 1)
+                        {
+                            std::cout << "¡....................................¡" << std::endl;
+                            std::cout << "| Please insert the class :          |" << std::endl;
+                            std::cout << "!....................................!" << std::endl;
+                            std::cin>> aCLass;
+                            application.addUC(name,UC,aCLass,1);
+                        }
+
                         break;
                     }
                     case 2:
