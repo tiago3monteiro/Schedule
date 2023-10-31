@@ -10,7 +10,10 @@
 #include "ClassForUc.h"
 #include "Student.h"
 #include <fstream>
+#include <queue>
+#include <stack>
 #include "ScheduleUC.h"
+#include "Request.h"
 
 class Application {
 public:
@@ -36,6 +39,8 @@ public:
     bool addUC(std::string name, std::string UC,std::string aClass ="default", int key =2); //Adds a UC from a student schedule
     bool removeUC(std::string name, std::string UC); //Removes a UC from a student schedule
     bool switchClass(std::string name, std::string UC, std::string newClass);
+    void addRequest(Request request);
+    bool processRequests();
 
 private:
     std::set<Student> students;
@@ -43,6 +48,8 @@ private:
     std::set<std::string>existingUCs;
     std::set<std::string>existingClasses;
     std::set<ClassForUc>existingCombinations;
+    std::queue<Request> requests;
+    std::stack<Request> undo; //to implement
     //std::ofstream outputFile("actions.txt");
     const static int CAP = 30;
 

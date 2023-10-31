@@ -526,51 +526,56 @@ bool Application::addUC(std::string name, std::string UC,std::string aClass, int
     Student student;
     std::string id;
     int count = 0;
-    if(existingUCs.find(UC) == existingUCs.end())
-    {
-        std::cout << "That UC does not exist" << std::endl;
-        return false;
-    }
 
     for(auto theStudent: students)
     {
-        if(theStudent.getName() == name)
+        if (theStudent.getName() == name)
         {
             foundStudent = true;
             student = theStudent;
             id = theStudent.getId();
-            for(auto schedule:student.getStudentSchedule())
-            {
-                if(schedule.getUcCode() == UC)
-                {
-                    std::cout << "Student is already in this UC" <<std::endl;
-                    return false;
-                }
-                count++;
-            }
             break;
         }
     }
+
     if(!foundStudent)
     {
-        std::cout << "Student not found"<<std::endl;
+        std::cout << "Student " << name << " not found"<<std::endl;
         return false;
     }
 
+    std::cout << name <<":" << std::endl;
+    if(existingUCs.find(UC) == existingUCs.end())
+    {
+        std::cout << "The UC" << UC << "does not exist, no changes done to the schedule" << std::endl;
+        return false;
+    }
+
+
+    for(auto schedule:student.getStudentSchedule())
+    {
+        if(schedule.getUcCode() == UC)
+        {
+            std::cout << "Student is already in this UC" <<std::endl;
+            return false;
+        }
+        count++;
+
+    }
     if(count <=7)
     {
         auto schedule = printStudentSchedule(name,1);
         if(key == 1) //A specific class
         {
-            if(existingClasses.find(aClass) == existingClasses.end())
+            if(existingClasses.find(aClass) == existingClasses.end() && aClass != "default")
             {
-                std::cout << "That class does not exist" << std::endl;
+                std::cout << "The class" << aClass << " does not exist, no changes done to the schedule" << std::endl;
                 return false;
             }
 
             if(studentsInClassForUC(UC, aClass, 1) >= CAP)
             {
-                std::cout << "The maximum amount of students for this class has been reached"<<std::endl;
+                std::cout << "The maximum amount of students for the class" << aClass << " has been reached"<<std::endl;
                 return false;
             }
 
@@ -581,7 +586,7 @@ bool Application::addUC(std::string name, std::string UC,std::string aClass, int
                 {
                     if(fixedBlock.overlapping(tryBlock)) //I haven't done overlapping yet
                     {
-                        std::cout << "The student can't join this class because it will create overlaps on it's schedule overlap"<<std::endl;
+                        std::cout << name << " can't join this class because it will create overlaps on it's schedule "<<std::endl;
                         return false;
                     }
                 }
@@ -592,58 +597,53 @@ bool Application::addUC(std::string name, std::string UC,std::string aClass, int
             students.erase(student);
             Student newStudent(id,name,in);
             students.insert(newStudent);
-            std::cout << "The UC was successfully added to the student's schedule" <<std::endl;
+            std::cout <<  UC << " on class " << aClass << " was successfully added to the "<< name << " schedule" <<std::endl;
             return true;
-        }
+        } //ANY CLASS THAT WORKS:
 
-        else if(key == 2) //The first class that works out
+        for(auto classes: schedules)
         {
-            for(auto classes: schedules)
+            bool works = false;
+            if(classes.getClassForUc().getUcCode() == UC)
             {
-                bool works = false;
-                if(classes.getClassForUc().getUcCode() == UC)
-                {
-                    works = true;
-                    if(studentsInClassForUC(UC, classes.getClassForUc().getUcClass(), 1) >= 30) continue;
+                works = true;
+                if(studentsInClassForUC(UC, classes.getClassForUc().getUcClass(), 1) >= 30) continue;
 
-                    auto addSchedule = printClassForUCSchedule(classes.getClassForUc(),1);
-                    for(auto fixedBlock: schedule)
+                auto addSchedule = printClassForUCSchedule(classes.getClassForUc(),1);
+                for(auto fixedBlock: schedule)
+                {
+                    for(auto tryBlock:addSchedule)
                     {
-                        for(auto tryBlock:addSchedule)
+                        if(fixedBlock.overlapping(tryBlock)) //I haven't done overlapping yet
                         {
-                            if(fixedBlock.overlapping(tryBlock)) //I haven't done overlapping yet
-                            {
-                                works = false;
-                            }
+                            works = false;
+                            continue;
                         }
+                        if(!works) break;
                     }
-
-                }
-                if(works)
-                {
-                    for(auto schedule:student.getStudentSchedule()) in.push_back(schedule);
-
-                    in.push_back({classes.getClassForUc().getUcClass(),UC});
-                    students.erase(student);
-                    Student newStudent(id,name,in);
-                    students.insert(newStudent);
-                    std::cout << "The UC was successfully added to the student's schedule in class " << classes.getClassForUc().getUcClass() <<std::endl;
-                    return true;
+                    if(!works) break;
                 }
             }
-            std::cout << "Sorry, no available classes for this UC that don't overlap the student's schedule" <<std::endl;
-            return  false;
+            if(works)
+            {
+                for(auto schedule:student.getStudentSchedule()) in.push_back(schedule);
+
+                in.push_back({classes.getClassForUc().getUcClass(),UC});
+                students.erase(student);
+                Student newStudent(id,name,in);
+                students.insert(newStudent);
+                std::cout <<  UC << " on class " << classes.getClassForUc().getUcClass() << " was successfully added to the "<< name << " schedule" <<std::endl;
+                return true;
+            }
         }
-        else
-        {
-            std::cout << "Please insert a valid key"<<std::endl;
-            return false;
-        }
+        std::cout << "Sorry, no available classes for" << UC <<"that don't overlap " << name << " schedule" <<std::endl;
+        return  false;
+
+
     }
 
         std::cout << name << " has reached the maximum number of UCs"<<std::endl;
         return false;
-
 
 }
 //...........................................................................................................................................................//
@@ -652,37 +652,44 @@ bool Application::removeUC(std::string name, std::string UC)
     std::vector<ClassForUc> in;
     Student student;
     std::string id;
+    std::string oldCLass;
     bool foundStudent = false;
     bool foundClass = false;
+
     for(auto theStudent: students)
-        if(theStudent.getName() == name)
-        {
+        if(theStudent.getName() == name) {
             foundStudent = true;
             id = theStudent.getId();
             student = theStudent;
-            for(auto schedule: theStudent.getStudentSchedule())
-                if(schedule.getUcCode() != UC)
-                    in.push_back(schedule);
-                else  foundClass = true;
             break;
         }
 
     if(!foundStudent)
     {
-        std::cout << "The student was not found"<<std::endl;
-        return false;
-    }
-    if(!foundClass)
-    {
-        std::cout << "The UC was not found in the student's schedule"<<std::endl;
+        std::cout << "The student " <<name << " was not found"<<std::endl;
         return false;
     }
 
+    for(auto schedule: student.getStudentSchedule())
+        if(schedule.getUcCode() != UC)
+            in.push_back(schedule);
+        else
+        {
+            oldCLass = schedule.getUcClass(); //for undo :)
+            foundClass = true;
+        }
+
+
+    if(!foundClass)
+    {
+        std::cout << "The UC "<< UC <<" was not found in the student's schedule"<<std::endl;
+        return false;
+    }
 
     students.erase(student);
     Student  newStudent(id,name,in);
     students.insert(newStudent);
-    std::cout<< "The student was removed from the desirable UC" << std::endl;
+    std::cout<< name  << " was removed from " <<  UC << std::endl;
     if(in.empty())
     {
         std::cout << name << " does not have any more UCs in his schedule"<<std::endl;
@@ -703,19 +710,19 @@ bool Application::switchClass(std::string name, std::string UC, std::string newC
 
     if(studentsInClassForUC(UC, newClass, 1) >= CAP)
     {
-        std::cout << "The maximum amount of students for this class has been reached"<<std::endl;
+        std::cout << name << "can't join" << newClass << "because the maximum amount of students for this class has been reached"<<std::endl;
         return false;
     }
 
     if(existingUCs.find(UC) == existingUCs.end())
     {
-        std::cout << "That UC does not exist" << std::endl;
+        std::cout << name << " can't switch because the UC "<< UC <<" inserted does not exist" << std::endl;
         return false;
     }
 
     if(existingClasses.find(newClass) == existingClasses.end())
     {
-        std::cout << "That new Class does not exist" << std::endl;
+        std::cout << name << " can't switch because the new class " << newClass <<" inserted does not exist" << std::endl;
         return false;
     }
 
@@ -732,7 +739,7 @@ bool Application::switchClass(std::string name, std::string UC, std::string newC
 
     if(!foundStudent)
     {
-        std::cout << "The student was not found"<<std::endl;
+        std::cout << "The student" <<  name << " was not found"<<std::endl;
         return false;
     }
 
@@ -748,7 +755,7 @@ bool Application::switchClass(std::string name, std::string UC, std::string newC
 
     if(!foundUC)
     {
-        std::cout << "The UC was not found on the student's schedule"<<std::endl;
+        std::cout << "The UC"<< UC <<"was not found in " << name <<  " 's schedule"<<std::endl;
         return false;
     }
 
@@ -767,7 +774,7 @@ bool Application::switchClass(std::string name, std::string UC, std::string newC
 
     if(overlap)
     {
-        std::cout << "The student can't be in this class because it will create overlaps in his schedule" <<std::endl;
+        std::cout << name << " can't be in this class because it will create overlaps in his schedule" <<std::endl;
         return false;
     }
 
@@ -792,7 +799,46 @@ bool Application::switchClass(std::string name, std::string UC, std::string newC
             }
         }
     }
-    std::cout << "The student class has been changed from " << oldClass << " to " << newClass << std::endl;
+    std::cout << name << "class has been changed from " << oldClass << " to " << newClass << std::endl;
     return true;
 }
 
+void Application::addRequest(Request request)
+{
+    requests.push(request);
+
+}
+
+bool Application::processRequests()
+{
+    if(requests.empty())
+    {
+        std::cout << "No requests to process" <<std::endl;
+        return false;
+
+    }
+
+    while(!requests.empty())
+    {
+        Request request = requests.front();
+        requests.pop();
+        switch(request.getType())
+        {
+            case 1: //ADD UC
+            {
+                addUC(request.getName(),request.getUc(),request.getAClass(),request.getKey());
+                break;
+            }
+            case 2:
+            {
+                removeUC(request.getName(),request.getUc());
+                break;
+            }
+            case 3:
+            {
+                switchClass(request.getName(),request.getUc(),request.getAClass());
+                break;
+            }
+        }
+    }
+}

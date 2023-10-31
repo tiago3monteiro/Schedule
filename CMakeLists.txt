@@ -14,4 +14,6 @@ add_executable(Schedule_Project main.cpp
         ScheduleUC.h
         Application.cpp
         Application.h
+        Request.cpp
+        Request.h
 )

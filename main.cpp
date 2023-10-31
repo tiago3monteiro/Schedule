@@ -291,12 +291,12 @@ int main() {
                 std::cout << "|1. Add UC                      |" << std::endl;
                 std::cout << "|2. Remove UC                   |" << std::endl;
                 std::cout << "|3. Switch class                |" << std::endl;
-                std::cout << "|4. Check requests              |" << std::endl;
+                std::cout << "|4. Process requests            |" << std::endl;
                 std::cout << "¡...............................¡" << std::endl;
                 std::cin >> key;
                 switch (key)
                 {
-                    case 1:
+                    case 1:  //Add UC -> type of Request 1
                     {
                         std::string name, UC, aCLass;
                         std::cout << "¡....................................¡" << std::endl;
@@ -313,20 +313,39 @@ int main() {
                         std::cout << "| 2. No                              |" << std::endl;
                         std::cout << "!....................................!" << std::endl;
                         std::cin>>key;
-                        if(key == 2) //something
-                            application.addUC(name,UC);
-                        else if (key == 1)
+                        switch(key)
                         {
-                            std::cout << "¡....................................¡" << std::endl;
-                            std::cout << "| Please insert the class :          |" << std::endl;
-                            std::cout << "!....................................!" << std::endl;
-                            std::cin>> aCLass;
-                            application.addUC(name,UC,aCLass,1);
-                        }
+                            case 1:
+                            {
+                                std::cout << "¡....................................¡" << std::endl;
+                                std::cout << "| Please insert the class :          |" << std::endl;
+                                std::cout << "!....................................!" << std::endl;
+                                std::cin>> aCLass;
+                                Request newRequest(1,name,UC,aCLass,1);
+                                application.addRequest(newRequest);
+                                std::cout << "New request submitted for "<< name << " to add an UC"<<std::endl;
+                                break;
+                            }
+                            case 2:
+                            {
+                                Request newRequest(1,name,UC,"default",2);
+                                application.addRequest(newRequest);
+                                std::cout << "New request submitted for "<< name << " to add an UC"<<std::endl;
+                                break;
+                            }
+                            default:
+                            {
+                                std::cout << "¡....................................¡" << std::endl;
+                                std::cout << "|     Please insert a valid key!     |" << std::endl;
+                                std::cout << "!....................................!" << std::endl;
+                                break;
+                            }
 
+                        }
                         break;
                     }
-                    case 2:
+
+                    case 2: //Remove UC
                     {
                         std::string name, UC;
                         std::cout << "¡....................................¡" << std::endl;
@@ -337,7 +356,9 @@ int main() {
                         std::cout << "| Please insert the UC :             |" << std::endl;
                         std::cout << "!....................................!" << std::endl;
                         std::cin>>UC;
-                        application.removeUC(name,UC);
+                        Request newRequest(2,name,UC);
+                        application.addRequest(newRequest);
+                        std::cout << "New request submitted for "<< name << " to remove an UC"<<std::endl;
                         break;
                     }
                     case 3:
@@ -355,13 +376,17 @@ int main() {
                         std::cout << "| Please insert the new class:       |" << std::endl;
                         std::cout << "!....................................!" << std::endl;
                         std::cin>>newClass;
-                        application.switchClass(name, UC, newClass);
-
+                        Request newRequest(3,name,UC,newClass);
+                        application.addRequest(newRequest);
+                        std::cout << "New request submitted for "<< name << " to switch a class"<<std::endl;
+                        break;
                     }
-
+                    case 4:
+                    {
+                        application.processRequests();
+                        break;
+                    }
                 }
-
-
                 break;
             }
             //...................................................................................................//
