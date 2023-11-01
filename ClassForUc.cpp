@@ -23,3 +23,10 @@ ClassForUc::ClassForUc() {
     this->ucClass = "default";
 }
 
+bool ClassForUc::operator < (ClassForUc obj) const
+{
+    if(this->getUcCode() < obj.getUcCode()) return true;
+    else if(this->getUcCode() > obj.getUcCode()) return false;
+    return this->ucClass < obj.getUcClass();
+
+}

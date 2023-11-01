@@ -20,6 +20,7 @@ public:
     const std::string &getUcCode() const;
     const std::string &getUcClass() const;
     bool operator == (ClassForUc obj) const { return this->getUcCode() == obj.getUcCode() && this->getUcClass() == obj.getUcClass() ;}
+    bool operator < (ClassForUc obj) const ;
 
 private:
     std::string ucCode;

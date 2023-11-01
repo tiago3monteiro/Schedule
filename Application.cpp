@@ -81,7 +81,7 @@ Application::Application() //sort data in the right containers
         existingUCs.insert(saved[0]);
         existingClasses.insert(saved[1]);
         ClassForUc comp(saved[1],saved[0]);
-        //existingCombinations.insert(comp); WHY IS THIS NOT WORKING? NEED TO ADD IT TO VALIDCHECK
+        existingCombinations.insert(comp);
     }
 } //................................END OF THE CONSTRUCTOR....................................//
 
@@ -145,6 +145,12 @@ bool Application::ValidData(std::string name, std::string UC, std::string aClass
     if(existingClasses.find(aClass) == existingClasses.end() && aClass != "default")
     {
         std::cout << "NOT A VALID CLASS" << std::endl;
+        return false;
+    }
+    ClassForUc classforuc(aClass,UC);
+    if(existingCombinations.find(classforuc) == existingCombinations.end() && aClass != "default" && UC != "default")
+    {
+        std::cout << "NOT A VALID CLASS FOR THAT UC" << std::endl;
         return false;
     }
     if(name == "default") return true;

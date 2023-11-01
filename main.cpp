@@ -12,19 +12,21 @@
 int main() {
 
     Application application;
-    int key;
-    while (true) {
+    int key = 5;
+    while (key)
+    {
         std::cout << "¡.......................................¡" << std::endl;
         std::cout << "|1.Print a schedule:                    |" << std::endl;
         std::cout << "|2.Consult the students that belong to: |" << std::endl;
         std::cout << "|3.Consult occupation by:               |" << std::endl;
         std::cout << "|4.Another statistics:                  |" << std::endl;
         std::cout << "|5.Requests:                            |" << std::endl;
-        std::cout << "|PRESS ANY OTHER KEY TO LEAVE THE MENU  |" << std::endl;
+        std::cout << "|0.Leave                                |" << std::endl;
         std::cout << "!.......................................!" << std::endl;
         std::cin >> key;
         //..................................................................................//
-        switch (key) {
+        switch (key)
+        {
             case 1: //Print a Schedule:
             {
                 std::cout << "¡...........................................¡" << std::endl;
@@ -267,7 +269,8 @@ int main() {
                 }
                 break;
             }//.............................................................................................//
-            case 4: {
+            case 4:
+            {
                 std::cout << "¡...............................................................¡" << std::endl;
                 std::cout << "|1.Consult student details                                      |" << std::endl;
                 std::cout << "|2. Consult the number of students registered in at least n UCs |" << std::endl;
@@ -479,15 +482,17 @@ int main() {
                         }
                         break;
                     }
+
                 }
-                break;
+
             }
-            //...................................................................................................//
+            case 0: break;
             default:
                 std::cout << "¡..........................¡" << std::endl;
-                std::cout << "|     END OF PROGRAM       |" << std::endl;
+                std::cout << "| CHOOSE A VALID KEY!      |" << std::endl;
                 std::cout << "¡..........................¡" << std::endl;
-                return 0;
+                break;
         }
     }
+    return 0;
 }
