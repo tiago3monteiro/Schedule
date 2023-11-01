@@ -18,6 +18,9 @@
 class Application {
 public:
     Application();
+
+    bool ValidData(std::string name = "default",std::string UC = "default",std::string aClass = "default");
+
     std::set<Block> printStudentSchedule(std::string name, int key = 0); //Consult the schedule of a given student if key = 0 it prints if key = 1 just return the values
     std::set<Block> printClassSchedule(std::string aClass, int key = 0); //Consult the schedule of a given class if key = 0 it prits if key = 1 just return the values
     std::set<Block> printClassForUCSchedule(ClassForUc classforuc, int key = 0); //Consult the schedule of a given class if key = 0 it prits if key = 1 just return the values
@@ -36,11 +39,13 @@ public:
     void consultStudentDetails(std::string info); //Consult basic details about the student
     void moreThanN(int n); // Consult the number of students registered in at least n UCs;
 
-    bool addUC(std::string name, std::string UC,std::string aClass ="default", int key =2); //Adds a UC from a student schedule
+    bool addUC(std::string name, std::string UC,std::string aClass ="default", int key = 2); //Adds a UC from a student schedule
     bool removeUC(std::string name, std::string UC); //Removes a UC from a student schedule
     bool switchClass(std::string name, std::string UC, std::string newClass);
     void addRequest(Request request);
-    bool processRequests();
+    bool processRequests(int key);
+    void checkRequests();
+    bool reverseRequests();
 
 private:
     std::set<Student> students;
@@ -49,7 +54,7 @@ private:
     std::set<std::string>existingClasses;
     std::set<ClassForUc>existingCombinations;
     std::queue<Request> requests;
-    std::stack<Request> undo; //to implement
+    std::stack<Request> requestsProcessed; //to implement
     //std::ofstream outputFile("actions.txt");
     const static int CAP = 30;
 
