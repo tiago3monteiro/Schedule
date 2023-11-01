@@ -13,9 +13,6 @@ class Request {
 public:
     Request(int type, std::string name, std::string UC, std::string aCLass = "default", int key = 2);
 
-
-
-public:
     int getType() const;
 
     const std::string &getUc() const;
@@ -34,7 +31,6 @@ private:
     int key;
     int type;
 
-public:
 
 
 };

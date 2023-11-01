@@ -10,6 +10,7 @@ Request::Request(int type, std::string name, std::string UC, std::string aClass,
     this->UC = UC;
     this->aClass = aClass;
     this->name = name;
+    this->key = key;
 }
 
 int Request::getType() const {

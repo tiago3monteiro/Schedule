@@ -496,7 +496,7 @@ void Application::moreThanN(int n)
 //..................................................................................................................................//
 bool Application::addUC(std::string name, std::string UC,std::string aClass, int key) //missing that code that checks balance!!
 {
-    std::cout << key; //why is this printing 0????????
+
 
     std::vector<ClassForUc>in;
     std::vector<int> numberOfStudentsUC;
@@ -622,13 +622,31 @@ bool Application::addUC(std::string name, std::string UC,std::string aClass, int
             Student newStudent(id,name,in);
             students.insert(newStudent);
 
-            //MISSING BALANCE CHECK
+            for(auto aCLass:existingClasses)
+            {
+                if(studentsInClassForUC(UC,aCLass,1) != 0)
+                {
+                    numberOfStudentsUC.push_back(studentsInClassForUC(UC,aCLass,1)); //creates a vector with the ocupation of all classes for that UC
+                }                                                                          //To check the balance of the classes
+            }
+            for (size_t i = 0; i < numberOfStudentsUC.size(); ++i) {
+                for (size_t j = i + 1; j < numberOfStudentsUC.size(); ++j) {
+                    if (std::abs(numberOfStudentsUC[i] - numberOfStudentsUC[j]) > 4) {     //If the balance is not respected we eraase what we have done
+                        students.erase(newStudent);                                         // and just put it back as it was
+                        students.insert(student);
+                        std::cout << name << " can't switch to this class because the balance between class occupation is disturbed"<<std::endl;
+                        works = false;
+                   }
+                }
+            }
+            if(works)
+            {
+                std::cout <<  UC << " on class " << classes.getClassForUc().getUcClass() << " was successfully added to the "<< name << " schedule" <<std::endl;
+                Request undo(2,student.getName(),UC);
+                requestsProcessed.push(undo);
+                return true;
+            }
 
-            std::cout <<  UC << " on class " << classes.getClassForUc().getUcClass() << " was successfully added to the "<< name << " schedule" <<std::endl;
-
-            Request undo(2,student.getName(),UC);
-            requestsProcessed.push(undo);
-            return true;
         }
     }
     std::cout << "Sorry, no available classes for" << UC <<"that don't overlap " << name << " schedule" <<std::endl;
@@ -719,12 +737,15 @@ bool Application::switchClass(std::string name, std::string UC, std::string newC
     {
         if(schedule.getUcCode() == UC)
         {
-            oldClass = schedule.getUcClass();
+            oldClass = schedule.getUcClass(); //for undoing
         }
         else in.push_back(schedule); //a vector with the same classes the student used to have except the one that we want to change
     }
 
     bool overlap = false;
+    students.erase(studentCurrent);
+    Student newStudent(id,name,in); //student with the new schedule
+    students.insert(newStudent);
 
     auto addSchedule = printClassForUCSchedule({newClass,UC},1);
     auto schedule = printStudentSchedule(name,1);
@@ -739,14 +760,16 @@ bool Application::switchClass(std::string name, std::string UC, std::string newC
 
     if(overlap)
     {
+        students.erase(newStudent);
+        students.insert(studentCurrent);
         std::cout << name << " can't be in this class because it will create overlaps in his schedule" <<std::endl;
         return false;
     }
-
+    students.erase(newStudent);
     in.push_back({newClass,UC}); //class that was missing
-    Student newStudent(id,name,in); //student with the new schedule
+    Student newStudent1(id,name,in); //student with the new schedule
 
-    students.insert(newStudent); //Finally new student is on the students list
+    students.insert(newStudent1); //Finally new student is on the students list
     for(auto aCLass:existingClasses)
     {
         if(studentsInClassForUC(UC,aCLass,1) != 0)
@@ -757,14 +780,14 @@ bool Application::switchClass(std::string name, std::string UC, std::string newC
     for (size_t i = 0; i < numberOfStudentsUC.size(); ++i) {
         for (size_t j = i + 1; j < numberOfStudentsUC.size(); ++j) {
             if (std::abs(numberOfStudentsUC[i] - numberOfStudentsUC[j]) > 4) {     //If the balance is not respected we eraase what we have done
-                students.erase(newStudent);                                         // and just put it back as it was
+                students.erase(newStudent1);                                         // and just put it back as it was
                 students.insert(studentCurrent);
                 std::cout << name << " can't switch to this class because the balance between class occupation is disturbed"<<std::endl;
                 return false; // If the difference is greater than 4, return false
             }
         }
     }
-    std::cout << name << "class has been changed from " << oldClass << " to " << newClass << "on UC" << UC << std::endl;
+    std::cout << name << " class has been changed from " << oldClass << " to " << newClass << " on UC " << UC << std::endl;
 
     Request undo(3,newStudent.getName(),UC,oldClass);
     requestsProcessed.push(undo);
@@ -847,7 +870,7 @@ void Application::checkRequests()
         std::cout << "No requests to process" <<std::endl;
         exist = false;
     }
-    auto show = requests;
+    //auto show = requests;
     for(auto it = &requests.front(); it!= &requests.back()+1;it++)
     {
         std::cout << it->getName() << " is trying to " ;
@@ -866,7 +889,7 @@ void Application::checkRequests()
             }
             case 3:
             {
-                std::cout << "switch to class " << it->getAClass() <<std::endl;
+                std::cout << "switch to class " << it->getAClass() <<" in UC " << it->getUc() <<std::endl;
                 break;
             }
             default: break;
@@ -874,3 +897,83 @@ void Application::checkRequests()
         }
     }
 }
+bool Application::reverseRequests()
+{
+    int key;
+    if(requestsProcessed.empty())
+    {
+        std::cout << "No requests to reverse" <<std::endl;
+        return false;
+
+    }
+    Request request = requestsProcessed.top();
+    requestsProcessed.pop();
+    std::cout << request.getName() << " has ";
+    switch (request.getType())
+    {
+        case 1:
+        {
+            std::cout << "removed " << request.getUc() << " from the schedule. ";
+            break;
+
+        }
+        case 2:
+        {
+            std::cout << "added " << request.getUc() << " to the schedule. ";
+            break;
+        }
+        case 3:
+        {
+            std::cout << "switched from class " << request.getAClass() << " in UC, "<< request.getUc();
+            break;
+        }
+
+    }
+    std::cout << "Do you wanna undo it? " << std::endl;
+    std::cout << "¡...............................¡" << std::endl;
+    std::cout << "|1. YES                         |" << std::endl;
+    std::cout << "|2. NO                          |" << std::endl;
+    std::cout << "¡...............................¡" << std::endl;
+    std::cin >> key;
+    switch (key)
+    {
+        case 1:
+        {
+            if(request.getType()==1)
+            {
+                if(addUC(request.getName(),request.getUc(),request.getAClass(),1)) return true;
+                std::cout << "Conflicts were created, this action can't be undone" <<std::endl;
+                return false;
+
+            }
+            if(request.getType() == 2)
+            {
+                if(removeUC(request.getName(),request.getUc())) return true;
+                std::cout << "Conflicts were created, this action can't be undone" <<std::endl;
+                return false;
+
+            }
+            if(request.getType() == 3)
+            {
+                if(switchClass(request.getName(),request.getUc(),request.getAClass())) return true;
+                std::cout << "Conflicts were created, this action can't be undone" <<std::endl;
+                return false;
+            }
+
+            break;
+        }
+
+        case 2:
+        {
+            std::cout << "NO changes done" << std::endl;
+            return false;
+
+        }
+        default: break;
+
+    }
+
+
+
+}
+

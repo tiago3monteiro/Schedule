@@ -1,0 +1,4 @@
+to do:
+
+juntar a cena para verificar se a ClassForUC existe
+tratar do undo da stack

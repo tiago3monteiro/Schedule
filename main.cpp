@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <limits>
 #include "Application.h"
 
 
@@ -335,7 +336,10 @@ int main() {
                         std::cout << "| 1. Yes                             |" << std::endl;
                         std::cout << "| 2. No                              |" << std::endl;
                         std::cout << "!....................................!" << std::endl;
+                       // std::cin.clear();
+                       // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                         std::cin>>key;
+
                         switch(key)
                         {
                             case 1:
@@ -455,8 +459,25 @@ int main() {
                     {
                         std::cout << "¡...............................¡" << std::endl;
                         std::cout << "|1. Check Accepted Requests     |" << std::endl;
-                        std::cout << "|2. Reverse requests            |" << std::endl;
+                        std::cout << "|2. Reverse last request        |" << std::endl;
                         std::cout << "¡...............................¡" << std::endl;
+                        std::cin >> key;
+                        switch(key)
+                        {
+                            case 1:
+                            {
+                                break;
+
+                            }
+                            case 2:
+                            {
+                                application.reverseRequests();
+                                break;
+                            }
+                            default: break;
+
+                        }
+                        break;
                     }
                 }
                 break;
