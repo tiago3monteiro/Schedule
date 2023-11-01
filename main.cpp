@@ -350,7 +350,7 @@ int main() {
                                 std::cin>> aCLass;
                                 if(application.ValidData(name,UC,aCLass))
                                 {
-                                    Request newRequest(1,name,UC,aCLass,1); //THE VALUE PASSING IS 0?
+                                    Request newRequest(1,name,UC,aCLass,1,0); //THE VALUE PASSING IS 0?
                                     application.addRequest(newRequest);
                                     std::cout << "New request submitted for "<< name << " to add an UC"<<std::endl;
                                 }

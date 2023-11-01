@@ -39,9 +39,9 @@ public:
     void consultStudentDetails(std::string info); //Consult basic details about the student
     void moreThanN(int n); // Consult the number of students registered in at least n UCs;
 
-    bool addUC(std::string name, std::string UC,std::string aClass ="default", int key = 2); //Adds a UC from a student schedule
-    bool removeUC(std::string name, std::string UC); //Removes a UC from a student schedule
-    bool switchClass(std::string name, std::string UC, std::string newClass);
+    bool addUC(std::string name, std::string UC,std::string aClass ="default", int key = 2, int undo = 0); //Adds a UC from a student schedule
+    bool removeUC(std::string name, std::string UC, int undo  = 0); //Removes a UC from a student schedule
+    bool switchClass(std::string name, std::string UC, std::string newClass, int undo = 0);
     void addRequest(Request request);
     bool processRequests(int key);
     void checkRequests();

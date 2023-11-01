@@ -494,7 +494,7 @@ void Application::moreThanN(int n)
     else std::cout << "Please insert a number between 1 and 7!"<<std::endl;
 }
 //..................................................................................................................................//
-bool Application::addUC(std::string name, std::string UC,std::string aClass, int key) //missing that code that checks balance!!
+bool Application::addUC(std::string name, std::string UC,std::string aClass, int key, int undo) //missing that code that checks balance!!
 {
 
 
@@ -582,9 +582,12 @@ bool Application::addUC(std::string name, std::string UC,std::string aClass, int
         }
 
         std::cout <<  UC << " on class " << aClass << " was successfully added to the "<< name << " schedule" <<std::endl;
+        if(!undo)
+        {
+            Request undo(2,student.getName(),UC); //useful if we want to undo this process later
+            requestsProcessed.push(undo);
+        }
 
-        Request undo(2,student.getName(),UC); //useful if we want to undo this process later
-        requestsProcessed.push(undo);
         return true;
     }
     //ANY CLASS THAT WORKS:
@@ -634,7 +637,6 @@ bool Application::addUC(std::string name, std::string UC,std::string aClass, int
                     if (std::abs(numberOfStudentsUC[i] - numberOfStudentsUC[j]) > 4) {     //If the balance is not respected we eraase what we have done
                         students.erase(newStudent);                                         // and just put it back as it was
                         students.insert(student);
-                        std::cout << name << " can't switch to this class because the balance between class occupation is disturbed"<<std::endl;
                         works = false;
                    }
                 }
@@ -642,8 +644,11 @@ bool Application::addUC(std::string name, std::string UC,std::string aClass, int
             if(works)
             {
                 std::cout <<  UC << " on class " << classes.getClassForUc().getUcClass() << " was successfully added to the "<< name << " schedule" <<std::endl;
-                Request undo(2,student.getName(),UC);
-                requestsProcessed.push(undo);
+                if(!undo)
+                {
+                    Request undoit(2,student.getName(),UC,"default",2,1);
+                    requestsProcessed.push(undoit);
+                }
                 return true;
             }
 
@@ -657,8 +662,10 @@ bool Application::addUC(std::string name, std::string UC,std::string aClass, int
 
 }
 //...........................................................................................................................................................//
-bool Application::removeUC(std::string name, std::string UC)
+bool Application::removeUC(std::string name, std::string UC, int undo)
 {
+    std::cout << "undo " << undo <<std::endl;
+
     std::vector<ClassForUc> in;
     Student student;
     std::string id;
@@ -696,11 +703,16 @@ bool Application::removeUC(std::string name, std::string UC)
     students.insert(newStudent);
     std::cout<< name  << " was removed from " <<  UC << std::endl;
 
-    Request undo(1,student.getName(),UC,oldCLass,1);
-    requestsProcessed.push(undo);
+    if(!undo) //UNDO = 0
+    {
+        Request undoit(1,student.getName(),UC,oldCLass,1,1);
+        requestsProcessed.push(undoit);
+    }
+
 
     if(in.empty()) //not really useful, I just thought it would be interesting
     {
+        std::cout<<"i was here" <<std::endl;
         std::cout << name << " does not have any more UCs in his schedule"<<std::endl;
         return true;
     }
@@ -708,7 +720,7 @@ bool Application::removeUC(std::string name, std::string UC)
 
 }
 //.....................................................................................................//
-bool Application::switchClass(std::string name, std::string UC, std::string newClass)
+bool Application::switchClass(std::string name, std::string UC, std::string newClass, int undo)
 {
     std::vector<int> numberOfStudentsUC;
     std::string oldClass;
@@ -789,8 +801,12 @@ bool Application::switchClass(std::string name, std::string UC, std::string newC
     }
     std::cout << name << " class has been changed from " << oldClass << " to " << newClass << " on UC " << UC << std::endl;
 
-    Request undo(3,newStudent.getName(),UC,oldClass);
-    requestsProcessed.push(undo);
+    if(!undo)
+    {
+        Request undoit(3,newStudent.getName(),UC,oldClass,2,1);
+        requestsProcessed.push(undoit);
+    }
+
     return true;
 }
 
@@ -818,15 +834,15 @@ bool Application::processRequests(int key)
                     case 1: //ADD UC
                     {
 
-                        addUC(request.getName(), request.getUc(), request.getAClass(), request.getKey());
+                        addUC(request.getName(), request.getUc(), request.getAClass(), request.getKey(),request.getUndo());
                         break;
                     }
                     case 2: {
-                        removeUC(request.getName(), request.getUc());
+                        removeUC(request.getName(), request.getUc(),request.getUndo());
                         break;
                     }
                     case 3: {
-                        switchClass(request.getName(), request.getUc(), request.getAClass());
+                        switchClass(request.getName(), request.getUc(), request.getAClass(),request.getUndo());
                         break;
                     }
                 }
@@ -840,17 +856,17 @@ bool Application::processRequests(int key)
             {
                 case 1: //ADD UC
                 {
-                    addUC(request.getName(),request.getUc(),request.getAClass(),request.getKey());
+                    addUC(request.getName(),request.getUc(),request.getAClass(),request.getKey(),request.getUndo());
                     break;
                 }
                 case 2:
                 {
-                    removeUC(request.getName(),request.getUc());
+                    removeUC(request.getName(),request.getUc(),request.getUndo());
                     break;
                 }
                 case 3:
                 {
-                    switchClass(request.getName(),request.getUc(),request.getAClass());
+                    switchClass(request.getName(),request.getUc(),request.getAClass(),request.getUndo());
                     break;
                 }
 
@@ -941,21 +957,21 @@ bool Application::reverseRequests()
         {
             if(request.getType()==1)
             {
-                if(addUC(request.getName(),request.getUc(),request.getAClass(),1)) return true;
+                if(addUC(request.getName(),request.getUc(),request.getAClass(),1,1)) return true;
                 std::cout << "Conflicts were created, this action can't be undone" <<std::endl;
                 return false;
 
             }
             if(request.getType() == 2)
             {
-                if(removeUC(request.getName(),request.getUc())) return true;
+                if(removeUC(request.getName(),request.getUc(),1)) return true;
                 std::cout << "Conflicts were created, this action can't be undone" <<std::endl;
                 return false;
 
             }
             if(request.getType() == 3)
             {
-                if(switchClass(request.getName(),request.getUc(),request.getAClass())) return true;
+                if(switchClass(request.getName(),request.getUc(),request.getAClass(),1)) return true;
                 std::cout << "Conflicts were created, this action can't be undone" <<std::endl;
                 return false;
             }

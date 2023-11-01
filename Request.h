@@ -11,7 +11,7 @@
 
 class Request {
 public:
-    Request(int type, std::string name, std::string UC, std::string aCLass = "default", int key = 2);
+    Request(int type, std::string name, std::string UC, std::string aCLass = "default", int key = 2, int undo = 0);
 
     int getType() const;
 
@@ -23,6 +23,8 @@ public:
 
     int getKey() const;
 
+    int getUndo() const;
+
 private:
     //type 1 = Add Request type 2= Remove Request type 3 = Switch Request
     std::string UC; //might be uc that wants to add/remove or to switch class
@@ -30,7 +32,7 @@ private:
     std::string name;
     int key;
     int type;
-
+    int undo;
 
 
 };
