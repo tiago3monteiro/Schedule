@@ -971,31 +971,36 @@ void Application::checkRequests()
         exist = false;
     }
     //auto show = requests;
-    for(auto it = &requests.front(); it!= &requests.back()+1;it++)
+    if(exist)
     {
-        std::cout << it->getName() << " is trying to " ;
-        switch(it->getType())
+        for(auto it = &requests.front(); it!= &requests.back()+1;it++)
         {
-            case 1:
+            std::cout << it->getName() << " is trying to " ;
+            switch(it->getType())
             {
-                if(it->getKey() == 1) std::cout << "add UC " << it->getUc() << " for class " << it->getAClass() <<std::endl;
-                else std::cout << "add UC " << it->getUc() << " for any class" <<std::endl;
-                break;
+                case 1:
+                {
+                    if(it->getKey() == 1) std::cout << "add UC " << it->getUc() << " for class " << it->getAClass() <<std::endl;
+                    else std::cout << "add UC " << it->getUc() << " for any class" <<std::endl;
+                    break;
+                }
+                case 2:
+                {
+                    std::cout << "remove UC " << it->getUc() << std::endl;
+                    break;
+                }
+                case 3:
+                {
+                    std::cout << "switch to class " << it->getAClass() <<" in UC " << it->getUc() <<std::endl;
+                    break;
+                }
+                default: break;
+                    break;
             }
-            case 2:
-            {
-                std::cout << "remove UC " << it->getUc() << std::endl;
-                break;
-            }
-            case 3:
-            {
-                std::cout << "switch to class " << it->getAClass() <<" in UC " << it->getUc() <<std::endl;
-                break;
-            }
-            default: break;
-            break;
         }
+
     }
+
 }
 bool Application::reverseRequests()
 {
