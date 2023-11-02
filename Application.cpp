@@ -287,14 +287,19 @@ void Application::consultOcupationOfUCs(int order,std::string UC ,int key)  //pr
         for (const auto &entry : studentsPerUC)
             sortedValues.emplace_back(entry.second, entry.first);
 
-        if (order == 2) //ASCENDING
-            std::sort(sortedValues.begin(), sortedValues.end());
+        if(order > 0 && order < 4)
+        {
+            if (order == 2) //ASCENDING
+                std::sort(sortedValues.begin(), sortedValues.end());
 
-        else if (order == 3)  //DESCENDING
-            std::sort(sortedValues.rbegin(), sortedValues.rend());
+            else if (order == 3)  //DESCENDING
+                std::sort(sortedValues.rbegin(), sortedValues.rend());
 
-        for (const auto &pair : sortedValues)
-            std::cout << pair.second << ": " << pair.first << std::endl;
+            for (const auto &pair : sortedValues)
+                std::cout << pair.second << ": " << pair.first << std::endl;
+        }
+        else std::cout << "NOT A VALID KEY"<<std::endl;
+
 
     }
     else //PARTIAL
@@ -327,15 +332,20 @@ void Application::consultOcupationOfClasses(int order, std::string aClass, int k
         for (const auto &entry : studentsPerClass)
             sortedValues.emplace_back(entry.second, entry.first);
 
+        if(order > 0 && order < 4)
+        {
+            if (order == 2) // ASCENDING
+                std::sort(sortedValues.begin(), sortedValues.end());
+            else if (order == 3)  // DESCENDING
+                std::sort(sortedValues.rbegin(), sortedValues.rend());
 
-        if (order == 2) // ASCENDING
-            std::sort(sortedValues.begin(), sortedValues.end());
-        else if (order == 3)  // DESCENDING
-            std::sort(sortedValues.rbegin(), sortedValues.rend());
+            for (const auto &pair : sortedValues)
+                std::cout << pair.second << ": " << pair.first << std::endl;
+
+        }
+        else std::cout << "NOT A VALID KEY"<<std::endl;
 
 
-        for (const auto &pair : sortedValues)
-            std::cout << pair.second << ": " << pair.first << std::endl;
     }
     else // PARTIAL
     {
@@ -371,15 +381,22 @@ void Application::consultOcupationofYear(int order, std::string year ,int key)
             sortedValues.emplace_back(entry.second, entry.first);
         }
 
-        if (order == 2) { // ASCENDING
-            std::sort(sortedValues.begin(), sortedValues.end());
-        } else if (order == 3) { // DESCENDING
-            std::sort(sortedValues.rbegin(), sortedValues.rend());
-        }
+        if(order > 0 && order < 4)
+        {
+            if (order == 2) { // ASCENDING
+                std::sort(sortedValues.begin(), sortedValues.end());
+            }
+            else if (order == 3) { // DESCENDING
+                std::sort(sortedValues.rbegin(), sortedValues.rend());
+            }
 
-        for (const auto &pair : sortedValues) {
-            std::cout << pair.second << ": " << pair.first << std::endl;
+            for (const auto &pair : sortedValues) {
+                std::cout << pair.second << ": " << pair.first << std::endl;
+            }
         }
+        else std::cout << "NOT A VALID KEY"<<std::endl;
+
+
     }
     else //Partial
     {
@@ -670,7 +687,6 @@ bool Application::addUC(std::string name, std::string UC,std::string aClass, int
 //...........................................................................................................................................................//
 bool Application::removeUC(std::string name, std::string UC, int undo)
 {
-    std::cout << "undo " << undo <<std::endl;
 
     std::vector<ClassForUc> in;
     Student student;
@@ -733,6 +749,7 @@ bool Application::switchClass(std::string name, std::string UC, std::string newC
     Student studentCurrent;
     std::string id;
     std::vector<ClassForUc> in;
+    bool foundUC = false;
 
 
     if(studentsInClassForUC(UC, newClass, 1) >= CAP)
@@ -751,13 +768,20 @@ bool Application::switchClass(std::string name, std::string UC, std::string newC
         }
     }
 
+
     for(auto schedule: studentCurrent.getStudentSchedule())
     {
         if(schedule.getUcCode() == UC)
         {
             oldClass = schedule.getUcClass(); //for undoing
+            foundUC = true;
         }
         else in.push_back(schedule); //a vector with the same classes the student used to have except the one that we want to change
+    }
+    if(!foundUC)
+    {
+        std::cout << name << " can't switch to " << newClass << " because he is not in "<< UC << std::endl;
+        return false;
     }
 
     bool overlap = false;
@@ -780,7 +804,7 @@ bool Application::switchClass(std::string name, std::string UC, std::string newC
     {
         students.erase(newStudent);
         students.insert(studentCurrent);
-        std::cout << name << " can't be in this class because it will create overlaps in his schedule" <<std::endl;
+        std::cout << name << " can't be in " << newClass <<  " in " << UC <<" because it will create overlaps in his schedule" <<std::endl;
         return false;
     }
     students.erase(newStudent);
@@ -800,7 +824,7 @@ bool Application::switchClass(std::string name, std::string UC, std::string newC
             if (std::abs(numberOfStudentsUC[i] - numberOfStudentsUC[j]) > 4) {     //If the balance is not respected we eraase what we have done
                 students.erase(newStudent1);                                         // and just put it back as it was
                 students.insert(studentCurrent);
-                std::cout << name << " can't switch to this class because the balance between class occupation is disturbed"<<std::endl;
+                std::cout << name << " can't switch to " << newClass <<" in "<< UC <<" because the balance between class occupation is disturbed"<<std::endl;
                 return false; // If the difference is greater than 4, return false
             }
         }
@@ -822,67 +846,121 @@ void Application::addRequest(Request request)
 
 }
 
-bool Application::processRequests(int key)
-{
-    if(requests.empty())
-    {
-        std::cout << "No requests to process" <<std::endl;
-        return false;
+bool Application::processRequests(int key) {
 
-    }
-    switch(key)
+    if (requests.empty())
     {
-        case 1: {
-            while (!requests.empty()) {
+        std::cout << "No requests to process" << std::endl;
+        return false;
+    }
+
+    switch (key)
+    {
+        case 1:
+        {
+            while (!requests.empty())
+            {
                 Request request = requests.front();
                 requests.pop();
-                switch (request.getType()) {
-                    case 1: //ADD UC
-                    {
-
+                switch (request.getType())
+                {
+                    case 1: {
                         addUC(request.getName(), request.getUc(), request.getAClass(), request.getKey(),request.getUndo());
                         break;
                     }
                     case 2: {
-                        removeUC(request.getName(), request.getUc(),request.getUndo());
+                        removeUC(request.getName(), request.getUc(), request.getUndo());
                         break;
                     }
                     case 3: {
-                        switchClass(request.getName(), request.getUc(), request.getAClass(),request.getUndo());
+                        switchClass(request.getName(), request.getUc(), request.getAClass(), request.getUndo());
                         break;
                     }
                 }
             }
+            return true;
         }
         case 2:
         {
             Request request = requests.front();
             requests.pop();
-            switch(request.getType())
+            std::cout << request.getName() << " is trying to ";
+            switch (request.getType()) {
+                case 1: {
+                    if (request.getKey() == 1)
+                        std::cout << "add UC " << request.getUc() << " for class " << request.getAClass() << std::endl;
+                    else std::cout << "add UC " << request.getUc() << " for any class" << std::endl;
+                    break;
+                }
+                case 2: {
+                    std::cout << "remove UC " << request.getUc() << std::endl;
+                    break;
+                }
+                case 3: {
+                    std::cout << "switch to class " << request.getAClass() << " in UC " << request.getUc() << std::endl;
+                    break;
+                }
+            }
+            int theKey = -1;
+            while(theKey)
             {
-                case 1: //ADD UC
-                {
-                    addUC(request.getName(),request.getUc(),request.getAClass(),request.getKey(),request.getUndo());
-                    break;
-                }
-                case 2:
-                {
-                    removeUC(request.getName(),request.getUc(),request.getUndo());
-                    break;
-                }
-                case 3:
-                {
-                    switchClass(request.getName(),request.getUc(),request.getAClass(),request.getUndo());
-                    break;
+                std::cout << "Do you want to accept this request?" << std::endl;
+                std::cout << "¡............¡" << std::endl;
+                std::cout << "|1.Yes       |" << std::endl;
+                std::cout << "|2.No        |" << std::endl;
+                std::cout << "¡............¡" << std::endl;
+
+                std::cin >> theKey;
+                if (theKey == 1) {
+                    switch (request.getType()) {
+                        case 1: //ADD UC
+                        {
+                            addUC(request.getName(), request.getUc(), request.getAClass(), request.getKey(),
+                                  request.getUndo());
+                            break;
+                        }
+                        case 2: {
+                            removeUC(request.getName(), request.getUc(), request.getUndo());
+                            break;
+                        }
+                        case 3: {
+                            switchClass(request.getName(), request.getUc(), request.getAClass(), request.getUndo());
+                            break;
+                        }
+                    }
+                    return true;
+
                 }
 
+                else if(key == 2)
+                {
+                    std::cout << "Request to ";
+                    switch (request.getType()) {
+                        case 1: {
+                                std::cout << "add UC " << request.getUc() << " in " << request.getName() << "denied"<<std::endl;
+                            return false;
+                        }
+                        case 2: {
+                            std::cout << "remove UC " << request.getUc() << " in " << request.getName() << "denied"<<std::endl;
+                            return false;
+                        }
+                        case 3: {
+                            std::cout << "switch to class " << request.getAClass() << " in UC " << request.getUc() << " in " << request.getName() << "denied"<<std::endl;
+                            return false;
+                        }
+
+
+                    }
+                }
+                else std::cout <<"INSERT A VALID KEY" << std::endl;
 
             }
-        }
 
+        }
     }
-    return true;
 }
+
+
 
 void Application::checkRequests()
 {
@@ -924,7 +1002,7 @@ bool Application::reverseRequests()
     int key;
     if(requestsProcessed.empty())
     {
-        std::cout << "No requests to reverse" <<std::endl;
+        std::cout << "No requests to revert" <<std::endl;
         return false;
 
     }
