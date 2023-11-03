@@ -6,6 +6,7 @@
 
 
 
+
 //just making some tests on how to collect the data
 
 
@@ -318,6 +319,137 @@ int main() {
                                     }
                                 }
                                 break;
+                            }
+                            case 4:
+                            {
+                                int key11 = -1;
+                                while(key11)
+                                {
+                                    std::string year;
+                                    std::cout << "¡........... ¡" << std::endl;
+                                    std::cout << "|1.Partial   |" << std::endl;
+                                    std::cout << "|2.Total     |" << std::endl;
+                                    std::cout << "|0.Leave     |" << std::endl;
+                                    std::cout << "¡............¡" << std::endl;
+                                    std::cin >> key11; //key1
+                                    switch(key11)
+                                    {
+                                        case 1:
+                                        {
+                                            int key12 = -1;
+                                            while(key12)
+                                            {
+                                                std::cout << "¡.......................¡" << std::endl;
+                                                std::cout << "|1. FIXED UC            |" << std::endl;
+                                                std::cout << "|1. FIXED Class         |" << std::endl;
+                                                std::cout << "|3. Specific Class+UC   |" << std::endl;
+                                                std::cout << "|0. Leave               |" << std::endl;
+                                                std::cout << "¡.......................¡" << std::endl;
+                                                std::cin>>key12; //key2
+                                                switch(key12)
+                                                {
+                                                    case 1:
+                                                    {
+                                                        std::string UC;
+                                                        std::cout << "¡.......................... ¡" << std::endl;
+                                                        std::cout << "| Please insert the UC:     |" << std::endl;
+                                                        std::cout << "¡...........................¡" << std::endl;
+                                                        std::cin >> UC;
+                                                        if(application.ValidData("default",UC,"default"))
+                                                        {
+                                                            std::cout << "¡...............................¡" << std::endl;
+                                                            std::cout << "|1. Sort by class:              |" << std::endl;
+                                                            std::cout << "|2. Sort in ascending order:    |" << std::endl;
+                                                            std::cout << "|3. Sort in descending order:   |" << std::endl;
+                                                            std::cout << "¡...............................¡" << std::endl;
+                                                            int order;
+                                                            std::cin >> order;
+                                                            application.consultOCupationofClassForUc(UC,"default",1,1,order);
+                                                            key11 = 0;
+                                                        }
+                                                        break;
+
+                                                    }
+
+                                                    case 2:
+                                                    {
+                                                        std::string aClass;
+                                                        std::cout << "¡.......................... ¡" << std::endl;
+                                                        std::cout << "| Please insert the class:  |" << std::endl;
+                                                        std::cout << "¡...........................¡" << std::endl;
+                                                        std::cin >> aClass;
+                                                        if(application.ValidData("default","default",aClass))
+                                                        {
+                                                            std::cout << "¡...............................¡" << std::endl;
+                                                            std::cout << "|1. Sort by UC:                 |" << std::endl;
+                                                            std::cout << "|2. Sort in ascending order:    |" << std::endl;
+                                                            std::cout << "|3. Sort in descending order:   |" << std::endl;
+                                                            std::cout << "¡...............................¡" << std::endl;
+                                                            int order;
+                                                            std::cin >> order;
+                                                            application.consultOCupationofClassForUc("default",aClass,1,2,order);
+                                                            key11 = 0;
+                                                        }
+                                                        break;
+
+                                                    }
+
+                                                    case 3:
+                                                    {
+                                                        std::string UC;
+
+                                                        std::cout << "¡.......................... ¡" << std::endl;
+                                                        std::cout << "| Please insert the UC:     |" << std::endl;
+                                                        std::cout << "¡...........................¡" << std::endl;
+                                                        std::cin >> UC;
+                                                        std::string theClass;
+                                                        std::cout << "¡.......................... ¡" << std::endl;
+                                                        std::cout << "| Please insert the Class:  |" << std::endl;
+                                                        std::cout << "¡...........................¡" << std::endl;
+                                                        std::cin >> theClass;
+
+                                                        if(application.ValidData("default",UC,theClass))
+                                                            application.consultOCupationofClassForUc(UC,theClass,1,3);
+                                                        key11 = 0;
+                                                        break;
+                                                    }
+                                                    case 0:
+                                                    {
+                                                        key11=0;
+                                                        break;
+                                                    }
+                                                    default:
+                                                    {
+                                                        std::cout << "¡....................................¡" << std::endl;
+                                                        std::cout << "|     Please insert a valid key!     |" << std::endl;
+                                                        std::cout << "!....................................!" << std::endl;
+                                                    }
+
+                                                }
+                                            }
+
+                                         break;
+                                        }
+                                        case 2:
+                                        {
+                                            application.consultOCupationofClassForUc("default","default",2);
+                                            key11=0;
+                                            break;
+                                            //total
+                                        }
+                                        case 0: break;
+                                        default:
+                                        {
+                                            std::cout << "¡....................................¡" << std::endl;
+                                            std::cout << "|     Please insert a valid key!     |" << std::endl;
+                                            std::cout << "!....................................!" << std::endl;
+                                        }
+
+                                    }
+                                }
+
+
+
                             }
                             case 0: break;
                             default:

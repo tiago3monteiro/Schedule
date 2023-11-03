@@ -19,7 +19,7 @@ class Application {
 public:
     Application();
 
-    bool ValidData(std::string name = "default",std::string UC = "default",std::string aClass = "default");
+    bool ValidData(std::string name = "default",std::string UC = "default",std::string aClass = "default", int year = 0);
 
     std::set<Block> printStudentSchedule(std::string name, int key = 0); //Consult the schedule of a given student if key = 0 it prints if key = 1 just return the values
     std::set<Block> printClassSchedule(std::string aClass, int key = 0); //Consult the schedule of a given class if key = 0 it prits if key = 1 just return the values
@@ -32,8 +32,8 @@ public:
 
     void consultOcupationOfClasses(int order, std::string aClass = "default",int key=0); //Consult the number of students of a class, also sorts it
     void consultOcupationOfUCs(int order, std::string UC = "default",int key=0);  //Consult the number of students of a UC, also sorts it
-    void consultOcupationofYear(int order, std::string = "default",int key=0);  //Consult the number of students of a year , also sorts it
-    int  consultOCupationofClassForUc(std::string UC, std::string aClass,int key = 0); //ill do this later
+    void consultOcupationofYear(int order, std::string year= "default",int key=0);  //Consult the number of students of a year , also sorts it
+    void  consultOCupationofClassForUc(std::string UC = "default", std::string aClass = "default",int key1 = 0, int key2 = 0, int key3= 0); //ill do this later
 
 
     void consultStudentDetails(std::string info); //Consult basic details about the student

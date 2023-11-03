@@ -133,7 +133,7 @@ std::set<Block> Application::printClassSchedule(std::string aClass, int key)
 }
 //.....................................................................................................................................//
 
-bool Application::ValidData(std::string name, std::string UC, std::string aClass)
+bool Application::ValidData(std::string name, std::string UC, std::string aClass, int year)
 {
 
     if(existingUCs.find(UC) == existingUCs.end() && UC != "default")
@@ -147,6 +147,15 @@ bool Application::ValidData(std::string name, std::string UC, std::string aClass
         std::cout << "NOT A VALID CLASS" << std::endl;
         return false;
     }
+
+    if(year>0 && year<4)
+    {
+        std::cout << "NOT A VALID YEAR" <<std::endl;
+        return false;
+
+    }
+
+
     ClassForUc classforuc(aClass,UC);
     if(existingCombinations.find(classforuc) == existingCombinations.end() && aClass != "default" && UC != "default")
     {
@@ -160,6 +169,7 @@ bool Application::ValidData(std::string name, std::string UC, std::string aClass
             return true;
 
     }
+
 
         std::cout << "That student does not exist"<<std::endl;
         return false;
@@ -426,23 +436,114 @@ void Application::consultOcupationofYear(int order, std::string year ,int key)
     }
 } //......................................................................................................//
 
-int  Application::consultOCupationofClassForUc(std::string UC, std::string aClass,int key ) //consult the number of students on a class for a UC
+void Application::consultOCupationofClassForUc(std::string UC, std::string aClass,int key1, int key2, int order ) //consult the number of students on a class for a UC
 {
-    int count = 0;
-    if(existingUCs.find(UC)==existingUCs.end())
+    std::map<ClassForUc, int> res;
+    if(key1 == 1) //Partial
     {
-        if(!key)std::cout << "No UC was found with that code" << std::endl;
-        return 0;
-    }
+        switch(key2)
+        {
+            case 1: //UC
+            {
+                for(auto classforuc: existingCombinations) if(classforuc.getUcCode() == UC) res.try_emplace(classforuc, 0);
+                for(auto student: students)
+                {
+                    for(auto schedule:student.getStudentSchedule())
+                        if(schedule.getUcCode() == UC) res[schedule]++;
 
-    if(existingClasses.find(aClass)==existingClasses.end() )
+                }
+
+                std::vector<std::pair<int, ClassForUc>> sortedValues;
+                for (const auto &entry : res)
+                    sortedValues.emplace_back(entry.second, entry.first);
+
+                if(order > 0 && order < 4)
+                {
+                    if (order == 2) // ASCENDING
+                        std::sort(sortedValues.begin(), sortedValues.end());
+                    else if (order == 3)  // DESCENDING
+                        std::sort(sortedValues.rbegin(), sortedValues.rend());
+
+                    for (const auto &pair : sortedValues)
+                        std::cout << pair.second.getUcCode()<< "->" << pair.second.getUcClass() << ": " << pair.first << std::endl;
+
+                }
+                else std::cout << "NOT A VALID KEY"<<std::endl;
+
+
+
+
+
+                break;
+            }
+            case 2: //class
+            {
+                for(auto classforuc: existingCombinations) if(classforuc.getUcClass() == aClass) res.try_emplace(classforuc, 0);
+                for(auto student: students)
+                {
+                    for(auto schedule:student.getStudentSchedule())
+                        if(schedule.getUcClass() == aClass) res[schedule]++;
+
+                }
+
+                std::vector<std::pair<int, ClassForUc>> sortedValues;
+                for (const auto &entry : res)
+                    sortedValues.emplace_back(entry.second, entry.first);
+                if(order > 0 && order < 4)
+                {
+                    if (order == 2) // ASCENDING
+                        std::sort(sortedValues.begin(), sortedValues.end());
+                    else if (order == 3)  // DESCENDING
+                        std::sort(sortedValues.rbegin(), sortedValues.rend());
+
+                    for (const auto &pair : sortedValues)
+                        std::cout << pair.second.getUcCode()<< "->" << pair.second.getUcClass() << ": " << pair.first << std::endl;
+
+                }
+                else std::cout << "NOT A VALID KEY"<<std::endl;
+
+
+                break;
+            }
+            case 3: //CLASS+UC
+            {
+                ClassForUc value(aClass,UC);
+                int count = 0;
+                for(auto student: students)
+                {
+                    for(auto schedule:student.getStudentSchedule())
+                        if(schedule == value) count ++;
+                }
+
+                std::cout << UC << "->" << aClass << ": " << count << std::endl;
+                break;
+            }
+
+
+        }
+
+
+
+    }
+    if (key1 == 2) //Total
     {
-        if(!key)std::cout << "No class was found with that code" << std::endl;
-        return 0;
-    }
-    //need to create a structure with all combinations ClassForUC possible
-    // I DONT WANNA DO THIS RN
+        for(auto classforuc: existingCombinations) res.try_emplace(classforuc, 0);
+        for(auto student: students)
+        {
+            for(auto schedule:student.getStudentSchedule())
+            {
+                res[schedule]++;
+            }
 
+        }
+        for(auto data: res)
+        {
+            std::cout << data.first.getUcCode() << "->"<< data.first.getUcClass()<<": " << data.second <<std::endl;
+
+        }
+
+
+    }
 }
 
 
