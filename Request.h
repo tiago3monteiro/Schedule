@@ -14,15 +14,10 @@ public:
     Request(int type, std::string name, std::string UC, std::string aCLass = "default", int key = 2, int undo = 0);
 
     int getType() const;
-
     const std::string &getUc() const;
-
     const std::string &getAClass() const;
-
     const std::string &getName() const;
-
     int getKey() const;
-
     int getUndo() const;
 
 private:

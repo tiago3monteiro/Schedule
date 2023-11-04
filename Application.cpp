@@ -88,8 +88,8 @@ Application::Application() //sort data in the right containers
 std::set<Block> Application::printStudentSchedule(std::string name,int key) //Kinda complex by now but gives us the schedule of a student
 {
     std::set<Block> res;
-
     Student student;
+
     for (auto theStudent: students)  //Search for the student
     {
         if (theStudent.getName() == name) {
@@ -97,7 +97,6 @@ std::set<Block> Application::printStudentSchedule(std::string name,int key) //Ki
             break;
         }
     }
-
 
     for (auto studentClass: student.getStudentSchedule())
         for (auto ucClasses: schedules)
@@ -107,15 +106,13 @@ std::set<Block> Application::printStudentSchedule(std::string name,int key) //Ki
                     res.insert(block);
                 }
 
-
-
-
     for(auto block : res)
     {
         float begin = block.getStartHour();
         float duration = block.getDuration();
         if(!key)std::cout << block.getDay() << " " << block.getStartHour() << "-" <<begin+duration << " "<< block.getType() <<std::endl;
     }
+
     return res;
 
 
@@ -135,6 +132,7 @@ std::set<Block> Application::printClassSchedule(std::string aClass, int key)
         float duration = block.getDuration();
         if(!key) std::cout << block.getDay() << " " << block.getStartHour() << "-" <<begin+duration << " "<< block.getType() <<std::endl;
     }
+
     return res;
 
 }
@@ -162,21 +160,21 @@ bool Application::ValidData(std::string name, std::string UC, std::string aClass
 
     }
 
-
     ClassForUc classforuc(aClass,UC);
+
     if(existingCombinations.find(classforuc) == existingCombinations.end() && aClass != "default" && UC != "default")
     {
         std::cout << "NOT A VALID CLASS FOR THAT UC" << std::endl;
         return false;
     }
+
     if(name == "default") return true;
+
     for(auto theStudent:students)
     {
         if(theStudent.getName() == name)
             return true;
-
     }
-
 
         std::cout << "That student does not exist"<<std::endl;
         return false;
@@ -199,6 +197,7 @@ std::set<Block> Application::printClassForUCSchedule(ClassForUc classforuc,int k
         float duration = block.getDuration();
         if(!key) std::cout << block.getDay() << " " << block.getStartHour() << "-" <<begin+duration << " "<< block.getType() <<std::endl;
     }
+
     return res;
 }
 
@@ -219,6 +218,7 @@ void Application::studentsInClass(std::string aClass) //prints all the students 
                 UC.push_back(schedule.getUcCode());
             }
         }
+
         if (belongs)
         {
             std::cout << student.getName() << " is on " << aClass << " for ";
@@ -240,31 +240,40 @@ void Application::studentsInUC(std::string UC)
                     std::cout << student.getName() <<" is on " << UC << " (" <<  schedule.getUcClass() << ")" << std::endl;
 }
 //.....................................................................................................................................//
-void Application::studentsInYear(std::string year) {
+void Application::studentsInYear(std::string year)
+{
     bool doIt = true;
+
     if(year < "1" || year >"3")
     {
         std::cout << "Not a valid year, please insert a number between 1 and 3" << std::endl;
         doIt = false;
     }
+
     if(doIt)
     {
-        for (auto student: students) {
+        for (auto student: students)
+        {
             std::vector<std::string> UCs;
-            for (auto schedule: student.getStudentSchedule()) {
+
+            for (auto schedule: student.getStudentSchedule())
+            {
                 std::string studentYear = schedule.getUcClass().substr(0, 1);
                 if(schedule.getUcClass() == "UP001") studentYear = "1"; //The teachers won't fool me
                 if (studentYear == year)
                     UCs.push_back(schedule.getUcCode());
             }
-            if (!UCs.empty()) {
+
+            if (!UCs.empty())
+            {
                 std::cout << student.getName() << " is on " << year;
                 if (year == "1") std::cout << "st year";
                 else if (year == "2") std::cout << "nd year";
                 else if (year == "3") std::cout << "rd year";
                 else std::cout << "th year";
                 std::cout << " for the following UCs: ";
-                for (auto UC: UCs) {
+                for (auto UC: UCs)
+                {
                     std::cout << UC << " ";
                 }
                 std::cout << std::endl;
@@ -283,7 +292,7 @@ int Application::studentsInClassForUC(std::string UC, std::string aClass, int ke
                 count++;
                 if(!key1)std::cout << student.getName() << std::endl;
             }
-    //if(!key1)std::cout << "UC " << UC << " for class " << aClass << " has " << count << " students" << std::endl;
+    if(!key1)std::cout << "UC " << UC << " for class " << aClass << " has " << count << " students" << std::endl;
 
     return count;
 
@@ -301,6 +310,7 @@ void Application::consultOcupationOfUCs(int order,std::string UC ,int key)  //pr
                     if(UC == schedule.getUcCode()) studentsPerUC[schedule.getUcCode()] ++;
 
         std::vector<std::pair<int, std::string>> sortedValues;
+
         for (const auto &entry : studentsPerUC)
             sortedValues.emplace_back(entry.second, entry.first);
 
@@ -336,7 +346,8 @@ void Application::consultOcupationOfUCs(int order,std::string UC ,int key)  //pr
 
 void Application::consultOcupationOfClasses(int order, std::string aClass, int key) {
 
-    if (!key) {
+    if (!key)
+    {
         std::map<std::string, int> studentsPerClass; // DEFAULT IS BY UC
         for (auto UC : existingClasses) studentsPerClass.try_emplace(UC, 0);
 
@@ -378,7 +389,8 @@ void Application::consultOcupationOfClasses(int order, std::string aClass, int k
 
 void Application::consultOcupationofYear(int order, std::string year ,int key)
 {
-    if (!key) {
+    if (!key)
+    {
         std::map<std::string, int> studentsPerYear {{"1", 0}, {"2", 0}, {"3", 0}}; // Initialize with zero for years 1, 2, and 3
 
         for (auto student : students) {
@@ -521,12 +533,7 @@ void Application::consultOCupationofClassForUc(std::string UC, std::string aClas
                 std::cout << UC << "->" << aClass << ": " << count << std::endl;
                 break;
             }
-
-
         }
-
-
-
     }
     if (key1 == 2) //Total
     {
@@ -542,10 +549,7 @@ void Application::consultOCupationofClassForUc(std::string UC, std::string aClas
         for(auto data: res)
         {
             std::cout << data.first.getUcCode() << "->"<< data.first.getUcClass()<<": " << data.second <<std::endl;
-
         }
-
-
     }
 }
 
@@ -1207,7 +1211,6 @@ bool Application::reverseRequests()
         default: break;
 
     }
-
 
 return false;
 }

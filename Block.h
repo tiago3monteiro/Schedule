@@ -8,7 +8,7 @@
 
 #include <string>
 enum Day {
-    Monday, Tuesday, Wednesday, Thursday, Friday};
+    Monday, Tuesday, Wednesday, Thursday, Friday};  //this is a cool way to organize the days of the week
 
 class Block {
 public:
