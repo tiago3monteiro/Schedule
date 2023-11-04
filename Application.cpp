@@ -88,21 +88,28 @@ Application::Application() //sort data in the right containers
 std::set<Block> Application::printStudentSchedule(std::string name,int key) //Kinda complex by now but gives us the schedule of a student
 {
     std::set<Block> res;
-    bool foundStudent = false;
+
     Student student;
     for (auto theStudent: students)  //Search for the student
     {
         if (theStudent.getName() == name) {
              student = theStudent;
-            foundStudent = true;
             break;
         }
     }
+
+
     for (auto studentClass: student.getStudentSchedule())
         for (auto ucClasses: schedules)
             if (studentClass == ucClasses.getClassForUc())
                 for (auto block : ucClasses.getUcClassSchedule())
+                {
                     res.insert(block);
+                }
+
+
+
+
     for(auto block : res)
     {
         float begin = block.getStartHour();
@@ -470,10 +477,6 @@ void Application::consultOCupationofClassForUc(std::string UC, std::string aClas
                 }
                 else std::cout << "NOT A VALID KEY"<<std::endl;
 
-
-
-
-
                 break;
             }
             case 2: //class
@@ -620,10 +623,7 @@ void Application::moreThanN(int n)
 //..................................................................................................................................//
 bool Application::addUC(std::string name, std::string UC,std::string aClass, int key, int undo) //missing that code that checks balance!!
 {
-
-
     std::vector<ClassForUc>in;
-    std::vector<int> numberOfStudentsUC;
     Student student;
     std::string id;
     int count = 0;
@@ -661,6 +661,8 @@ bool Application::addUC(std::string name, std::string UC,std::string aClass, int
 
     if(key == 1) //A specific class
     {
+        int membersBeforeChange =  studentsInClassForUC(UC,aClass,1); //to test balance
+
         if(studentsInClassForUC(UC, aClass, 1) >= CAP)
         {
             std::cout << "The maximum amount of students for the class" << aClass << " has been reached"<<std::endl;
@@ -680,23 +682,30 @@ bool Application::addUC(std::string name, std::string UC,std::string aClass, int
                 }
             }
         }
-        for(auto schedule:student.getStudentSchedule()) in.push_back(schedule);
+
+        for(auto data:student.getStudentSchedule()) in.push_back(data);
         in.push_back({aClass,UC}); //schedule with the new class added
 
         students.erase(student);
         Student newStudent(id,name,in);  //we take out the previous data and add the new to the set
         students.insert(newStudent);
 
-        for(auto aCLass:existingClasses) //last test before adding student;
+        int classTestedMembers = studentsInClassForUC(UC,aClass,1); //no. students with student in the new class
+
+        std::vector<int> numberOfStudentsUC;
+        for(auto theCLass:existingClasses) //last test before adding student is balance
         {
-            if(studentsInClassForUC(UC,aCLass,1) !=0)
+            if(studentsInClassForUC(UC,theCLass,1) !=0)
             {
-                numberOfStudentsUC.push_back(studentsInClassForUC(UC,aCLass,1)); //creates a vector with the ocupation of all classes for that UC
+                numberOfStudentsUC.push_back(studentsInClassForUC(UC,theCLass,1)); //creates a vector with the ocupation of all classes for that UC
             }                                                                                   //To check the balance of the classes
         }
-        for (size_t i = 0; i < numberOfStudentsUC.size(); ++i) {
-            for (size_t j = i + 1; j < numberOfStudentsUC.size(); ++j) {
-                if (std::abs(numberOfStudentsUC[i] - numberOfStudentsUC[j]) > 4) {     //If the balance is not respected we eraase what we have done
+        for(auto classes: numberOfStudentsUC)
+        {
+            if(abs(classTestedMembers-classes) >4)
+            {
+                if(abs(classTestedMembers-classes) > abs(membersBeforeChange-classes))
+                {
                     students.erase(newStudent);                                         // and just put it back as it was
                     students.insert(student);
                     std::cout << name << " can't switch to this class because the balance between class occupation is disturbed"<<std::endl;
@@ -718,6 +727,7 @@ bool Application::addUC(std::string name, std::string UC,std::string aClass, int
 
     for(auto classes: schedules)
     {
+        int membersBeforeChange =  studentsInClassForUC(UC,aClass,1); //to test balance
 
         bool works = false;
         if(classes.getClassForUc().getUcCode() == UC)
@@ -740,6 +750,7 @@ bool Application::addUC(std::string name, std::string UC,std::string aClass, int
                 if(!works) break;
             }
         }
+
         if(works)
         {
             for(auto schedule:student.getStudentSchedule()) in.push_back(schedule);
@@ -749,22 +760,30 @@ bool Application::addUC(std::string name, std::string UC,std::string aClass, int
             Student newStudent(id,name,in);
             students.insert(newStudent);
 
-            for(auto aCLass:existingClasses)
+            int classTestedMembers = studentsInClassForUC(UC,aClass,1); //no. students with student in the new class
+
+            std::vector<int> numberOfStudentsUC;
+            for(auto theCLass:existingClasses) //last test before adding student is balance
             {
-                if(studentsInClassForUC(UC,aCLass,1) != 0)
+                if(studentsInClassForUC(UC,theCLass,1) !=0)
                 {
-                    numberOfStudentsUC.push_back(studentsInClassForUC(UC,aCLass,1)); //creates a vector with the ocupation of all classes for that UC
-                }                                                                          //To check the balance of the classes
+                    numberOfStudentsUC.push_back(studentsInClassForUC(UC,theCLass,1)); //creates a vector with the ocupation of all classes for that UC
+                }                                                                                   //To check the balance of the classes
             }
-            for (size_t i = 0; i < numberOfStudentsUC.size(); ++i) {
-                for (size_t j = i + 1; j < numberOfStudentsUC.size(); ++j) {
-                    if (std::abs(numberOfStudentsUC[i] - numberOfStudentsUC[j]) > 4) {     //If the balance is not respected we eraase what we have done
+            for(auto classes: numberOfStudentsUC)
+            {
+                if(abs(classTestedMembers-classes) >4)
+                {
+                    if(abs(classTestedMembers-classes) > abs(membersBeforeChange-classes))
+                    {
                         students.erase(newStudent);                                         // and just put it back as it was
                         students.insert(student);
-                        works = false;
-                   }
+                        std::cout << name << " can't switch to this class because the balance between class occupation is disturbed"<<std::endl;
+                        return false; // If the difference is greater than 4, return false
+                    }
                 }
             }
+
             if(works)
             {
                 std::cout <<  UC << " on class " << classes.getClassForUc().getUcClass() << " was successfully added to the "<< name << " schedule" <<std::endl;
@@ -845,12 +864,12 @@ bool Application::removeUC(std::string name, std::string UC, int undo)
 //.....................................................................................................//
 bool Application::switchClass(std::string name, std::string UC, std::string newClass, int undo)
 {
-    std::vector<int> numberOfStudentsUC;
     std::string oldClass;
     Student studentCurrent;
     std::string id;
     std::vector<ClassForUc> in;
     bool foundUC = false;
+    int membersBeforeChange =  studentsInClassForUC(UC,newClass,1); //to test balance
 
 
     if(studentsInClassForUC(UC, newClass, 1) >= CAP)
@@ -908,28 +927,37 @@ bool Application::switchClass(std::string name, std::string UC, std::string newC
         std::cout << name << " can't be in " << newClass <<  " in " << UC <<" because it will create overlaps in his schedule" <<std::endl;
         return false;
     }
+
     students.erase(newStudent);
     in.push_back({newClass,UC}); //class that was missing
     Student newStudent1(id,name,in); //student with the new schedule
 
     students.insert(newStudent1); //Finally new student is on the students list
-    for(auto aCLass:existingClasses)
+    int classTestedMembers = studentsInClassForUC(UC,newClass,1); //no. students with student in the new class
+
+    std::vector<int> numberOfStudentsUC;
+    for(auto theCLass:existingClasses) //last test before adding student is balance
     {
-        if(studentsInClassForUC(UC,aCLass,1) != 0)
+        if(studentsInClassForUC(UC,theCLass,1) !=0)
         {
-            numberOfStudentsUC.push_back(studentsInClassForUC(UC,aCLass,1)); //creates a vector with the ocupation of all classes for that UC
-        }                                                                          //To check the balance of the classes
+            numberOfStudentsUC.push_back(studentsInClassForUC(UC,theCLass,1)); //creates a vector with the ocupation of all classes for that UC
+        }                                                                                   //To check the balance of the classes
     }
-    for (size_t i = 0; i < numberOfStudentsUC.size(); ++i) {
-        for (size_t j = i + 1; j < numberOfStudentsUC.size(); ++j) {
-            if (std::abs(numberOfStudentsUC[i] - numberOfStudentsUC[j]) > 4) {     //If the balance is not respected we eraase what we have done
-                students.erase(newStudent1);                                         // and just put it back as it was
+    for(auto classes: numberOfStudentsUC)
+    {
+        if(abs(classTestedMembers-classes) >4)
+        {
+            if(abs(classTestedMembers-classes) > abs(membersBeforeChange-classes))
+            {
+                students.erase(newStudent);                                         // and just put it back as it was
                 students.insert(studentCurrent);
                 std::cout << name << " can't switch to " << newClass <<" in "<< UC <<" because the balance between class occupation is disturbed"<<std::endl;
                 return false; // If the difference is greater than 4, return false
             }
         }
     }
+
+
     std::cout << name << " class has been changed from " << oldClass << " to " << newClass << " on UC " << UC << std::endl;
 
     if(!undo)
@@ -1059,6 +1087,7 @@ bool Application::processRequests(int key) {
 
         }
     }
+    return false;
 }
 
 
@@ -1180,6 +1209,6 @@ bool Application::reverseRequests()
     }
 
 
-
+return false;
 }
 

@@ -21,7 +21,6 @@ public:
     const std::vector<ClassForUc> &getStudentSchedule() const;
     const std::string &getName() const;
     void addClass(ClassForUc theClass);
-    void removeUC(ClassForUc theClass) ;
     void printSchedule() const;
 
 private:

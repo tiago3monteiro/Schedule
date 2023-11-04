@@ -16,7 +16,6 @@ Student::Student()
 bool Student::operator < (const Student& student) const
 {
     return this->name < student.name;
-
 }
 
 Student::Student(std::string id, std::string name, std::vector<ClassForUc> studentSchedule) {
@@ -49,13 +48,3 @@ void Student::printSchedule() const {
     }
 
 }
-/*
-void Student::removeUC(ClassForUc theClass)  {
-    for (auto it = studentSchedule.begin(); it != studentSchedule.end();)
-    {
-        if (*it == theClass) it = studentSchedule.erase(it);
-        else ++it;
-    }
-    printSchedule();
-}*/
-

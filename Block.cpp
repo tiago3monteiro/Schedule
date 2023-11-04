@@ -41,7 +41,25 @@ bool Block::operator< (const Block& block) const {
 
     else if (this->day > block.day) return false;
 
-    return this->getStartHour() < block.getStartHour();
+    else
+    {
+        if (this->getStartHour() < block.getStartHour()) return true;
+
+        else if (this->getStartHour() > block.getStartHour()) return false;
+
+        else
+        {
+            if(this->getDuration()< block.getDuration()) return true;
+
+            else if(this->getDuration() > block.getDuration()) return false;
+
+            else
+            {
+                return this->getType() < block.getType();
+            }
+        }
+    }
+
 }
 
 bool Block::overlapping(const Block& block) const

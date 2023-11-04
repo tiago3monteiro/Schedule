@@ -55,7 +55,7 @@ private:
     std::set<ClassForUc>existingCombinations;
     std::queue<Request> requests;
     std::stack<Request> requestsProcessed; //to implement
-    //std::ofstream outputFile("actions.txt");
+    //std::ofstream outputFile("log.txt");
     const static int CAP = 30;
 
 };
