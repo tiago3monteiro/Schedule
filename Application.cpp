@@ -13,7 +13,7 @@
 Application::Application() //sort data in the right containers
 {
     std::ofstream clearFile("../log.txt", std::ios::trunc);
-    std::ifstream in("students_classes.csv");  //Parsing of student info
+    std::ifstream in("../students_classes.csv");  //Parsing of student info
     std::string line;
     std::getline(in, line, '\n');
     while (std::getline(in, line, '\n')) {
@@ -39,7 +39,7 @@ Application::Application() //sort data in the right containers
         students.insert(student);
     }
 
-    std::ifstream in1("classes.csv"); //Parsing of classes info
+    std::ifstream in1("../classes.csv"); //Parsing of classes info
     std::string line1;
     std::getline(in1, line1, '\n');
     while (std::getline(in1, line1, '\n')) {
@@ -68,7 +68,7 @@ Application::Application() //sort data in the right containers
         schedules.insert(scheduleUc);
     }
 
-    std::ifstream in2("classes_per_uc.csv"); //Parsing of classes info
+    std::ifstream in2("../classes_per_uc.csv"); //Parsing of classes info
     std::string line2;
     std::getline(in2, line2, '\n');
     while (std::getline(in2, line2, '\n'))
