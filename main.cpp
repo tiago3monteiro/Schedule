@@ -693,7 +693,6 @@ int main() {
                                 std::cout << "| CHOOSE A VALID KEY!      |" << std::endl;
                                 std::cout << "¡..........................¡" << std::endl;
                             }
-
                         }
                     }
                     break;

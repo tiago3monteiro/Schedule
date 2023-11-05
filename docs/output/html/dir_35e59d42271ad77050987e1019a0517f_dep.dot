@@ -1,0 +1,16 @@
+digraph "/home/tiagomonteiro/Desktop/feup2/Schedule"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  compound=true
+  subgraph clusterdir_c0a0d009fabcb6c3bddd4e926d16f286 {
+    graph [ bgcolor="#edf0f7", pencolor="grey25", label="feup2", fontname=Helvetica,fontsize=10 style="filled,dashed", URL="dir_c0a0d009fabcb6c3bddd4e926d16f286.html",tooltip=""]
+  subgraph clusterdir_35e59d42271ad77050987e1019a0517f {
+    graph [ bgcolor="#edf0f7", pencolor="grey25", label="", fontname=Helvetica,fontsize=10 style="filled,bold", URL="dir_35e59d42271ad77050987e1019a0517f.html",tooltip=""]
+    dir_35e59d42271ad77050987e1019a0517f [shape=plaintext, label="Schedule"];
+  dir_1587ef4a6a73c755501a02112cd3ea64 [label="cmake-build-debug", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_1587ef4a6a73c755501a02112cd3ea64.html",tooltip=""];
+  }
+  }
+}
