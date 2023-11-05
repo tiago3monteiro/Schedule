@@ -17,7 +17,7 @@ Application::Application() //sort data in the right containers
     std::string line;
     std::getline(in, line, '\n');
     while (std::getline(in, line, '\n')) {
-        line = line.substr(0, line.length() - 1); //you bastards I spent 1 day trying to figure out this
+        line = line.substr(0, line.length() - 1); // spent 1 day trying to figure out this
         std::istringstream iss(line);
         std::string word;
         std::vector<std::string> saved;
@@ -682,7 +682,7 @@ bool Application::addUC(std::string name, std::string UC,std::string aClass, int
             {
                 if(fixedBlock.overlapping(tryBlock)) //I haven't done overlapping yet
                 {
-                    std::cout << name << " can't join class " << aClass << " in UC " << UC <<"because it will create overlaps on it's schedule "<<std::endl;
+                    std::cout << name << " can't join class " << aClass << " in UC " << UC <<" because it will create overlaps on it's schedule "<<std::endl;
                     return false;
                 }
             }

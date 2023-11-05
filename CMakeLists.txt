@@ -17,7 +17,9 @@ add_executable(Schedule_Project main.cpp
         Request.cpp
         Request.h
 )
+
 # Doxyfile Build
+option(BUILD_DOC "Build documentation" ON)
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
     set(BUILD_DOC_DIR "${CMAKE_SOURCE_DIR}/docs/output")
