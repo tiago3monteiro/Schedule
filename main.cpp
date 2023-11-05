@@ -22,6 +22,7 @@ int main() {
         std::cout << "|3.Consult occupation by:               |" << std::endl;
         std::cout << "|4.Another statistics:                  |" << std::endl;
         std::cout << "|5.Requests:                            |" << std::endl;
+        std::cout << "|6.Log                                  |" << std::endl;
         std::cout << "|0.Leave                                |" << std::endl;
         std::cout << "!.......................................!" << std::endl;
         std::cin >> key;
@@ -609,7 +610,6 @@ int main() {
                                     Request newRequest(2,name,UC);
                                     application.addRequest(newRequest);
                                     std::cout << "New request submitted for "<< name << " to remove an UC"<<std::endl;
-
                                 }
 
                                 break;
@@ -688,15 +688,31 @@ int main() {
                             }
                             case 0: break;
                             default:
+                            {
                                 std::cout << "¡..........................¡" << std::endl;
                                 std::cout << "| CHOOSE A VALID KEY!      |" << std::endl;
                                 std::cout << "¡..........................¡" << std::endl;
+                            }
 
                         }
-
                     }
                     break;
                 }
+                case 6:
+                {
+                    std::ifstream file("../log.txt");
+                    std::string line;
+                    std::cout << "                 LOG                         "<<std::endl;
+                    std::cout << "----------------------------------------------------"<<std::endl;
+                    while (getline(file, line))
+                    {
+
+                        std::cout << line << std::endl;
+                    }
+                    std::cout << "----------------------------------------------------"<<std::endl;
+                    break;
+                }
+
                 case 0:
                 {
                     std::cout << "Program terminated" <<std::endl;
@@ -708,10 +724,6 @@ int main() {
                     std::cout << "¡..........................¡" << std::endl;
                     break;
             }
-
-
-
-
     }
     return 0;
 }
