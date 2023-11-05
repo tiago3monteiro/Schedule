@@ -12,9 +12,9 @@
 
 Application::Application() //sort data in the right containers
 {
+    std::ofstream clearFile("log.txt", std::ios::trunc);
     std::ifstream in("students_classes.csv");  //Parsing of student info
     std::string line;
-
     std::getline(in, line, '\n');
     while (std::getline(in, line, '\n')) {
         line = line.substr(0, line.length() - 1); //you bastards I spent 1 day trying to figure out this
@@ -607,7 +607,7 @@ void Application::consultStudentDetails(std::string info)
 //....................................................................................................................//
 void Application::moreThanN(int n)
 {
-    if(n >= 0 && n<= 7)
+    if(n > 0 && n<= 7)
     {
         std::map<std::string,int>UCs;
         for(auto student:students)
@@ -627,6 +627,7 @@ void Application::moreThanN(int n)
 //..................................................................................................................................//
 bool Application::addUC(std::string name, std::string UC,std::string aClass, int key, int undo) //missing that code that checks balance!!
 {
+    std::ofstream logfile("log.txt");
     std::vector<ClassForUc>in;
     Student student;
     std::string id;
@@ -641,21 +642,23 @@ bool Application::addUC(std::string name, std::string UC,std::string aClass, int
             break;
         }
     }
-
+    //logfile << name <<":" << std::endl;
     std::cout << name <<":" << std::endl;
 
     for(auto schedule:student.getStudentSchedule())
     {
         if(schedule.getUcCode() == UC)
         {
+            //logfile << name << " can't add " << UC << " because she/he is already in it"<<std::endl;
             std::cout << name << " can't add " << UC << " because she/he is already in it"<<std::endl;
             return false;
         }
         count++;
     }
 
-    if(count >=7) {
-
+    if(count >=7)
+    {
+        //logfile << name << " has reached the maximum number of UCs" << std::endl;
         std::cout << name << " has reached the maximum number of UCs" << std::endl;
         return false;
     }
@@ -669,7 +672,8 @@ bool Application::addUC(std::string name, std::string UC,std::string aClass, int
 
         if(studentsInClassForUC(UC, aClass, 1) >= CAP)
         {
-            std::cout << "The maximum amount of students for the class" << aClass << " has been reached"<<std::endl;
+            //logfile << "The maximum amount of students for the class" << aClass << " has been reached in UC "<< UC << std::endl;
+            std::cout << "The maximum amount of students for the class" << aClass << " has been reached in UC "<< UC <<std::endl;
             return false;
         }
 
@@ -681,7 +685,8 @@ bool Application::addUC(std::string name, std::string UC,std::string aClass, int
             {
                 if(fixedBlock.overlapping(tryBlock)) //I haven't done overlapping yet
                 {
-                    std::cout << name << " can't join this class because it will create overlaps on it's schedule "<<std::endl;
+                    //logfile << name << " can't join class " << aClass << " in UC " << UC <<"because it will create overlaps on it's schedule "<<std::endl;
+                    std::cout << name << " can't join class " << aClass << " in UC " << UC <<"because it will create overlaps on it's schedule "<<std::endl;
                     return false;
                 }
             }
@@ -712,12 +717,13 @@ bool Application::addUC(std::string name, std::string UC,std::string aClass, int
                 {
                     students.erase(newStudent);                                         // and just put it back as it was
                     students.insert(student);
-                    std::cout << name << " can't switch to this class because the balance between class occupation is disturbed"<<std::endl;
+                    //logfile << name << " can't switch to " << aClass << " in "<< UC << " because the balance between class occupation is disturbed"<<std::endl;
+                    std::cout << name << " can't switch to " << aClass << " in "<< UC << " because the balance between class occupation is disturbed"<<std::endl;
                     return false; // If the difference is greater than 4, return false
                 }
             }
         }
-
+        //logfile << UC << " on class " << aClass << " was successfully added to the "<< name << " schedule" <<std::endl;
         std::cout <<  UC << " on class " << aClass << " was successfully added to the "<< name << " schedule" <<std::endl;
         if(!undo)
         {
@@ -778,12 +784,11 @@ bool Application::addUC(std::string name, std::string UC,std::string aClass, int
             {
                 if(abs(classTestedMembers-classes) >4)
                 {
-                    if(abs(classTestedMembers-classes) > abs(membersBeforeChange-classes))
+                    if(abs(classTestedMembers-classes) > abs(membersBeforeChange-classes)) //does it improve the balance or not?
                     {
                         students.erase(newStudent);                                         // and just put it back as it was
                         students.insert(student);
-                        std::cout << name << " can't switch to this class because the balance between class occupation is disturbed"<<std::endl;
-                        return false; // If the difference is greater than 4, return false
+                        works = false;
                     }
                 }
             }
@@ -791,6 +796,7 @@ bool Application::addUC(std::string name, std::string UC,std::string aClass, int
             if(works)
             {
                 std::cout <<  UC << " on class " << classes.getClassForUc().getUcClass() << " was successfully added to the "<< name << " schedule" <<std::endl;
+                //logfile << UC << " on class " << classes.getClassForUc().getUcClass() << " was successfully added to the "<< name << " schedule" <<std::endl;
                 if(!undo)
                 {
                     Request undoit(2,student.getName(),UC,"default",2,1);
@@ -801,6 +807,7 @@ bool Application::addUC(std::string name, std::string UC,std::string aClass, int
 
         }
     }
+    //logfile << "Sorry, no available classes for" << UC <<"that don't overlap " << name << " schedule" <<std::endl;
     std::cout << "Sorry, no available classes for" << UC <<"that don't overlap " << name << " schedule" <<std::endl;
     return  false;
 
@@ -811,7 +818,7 @@ bool Application::addUC(std::string name, std::string UC,std::string aClass, int
 //...........................................................................................................................................................//
 bool Application::removeUC(std::string name, std::string UC, int undo)
 {
-
+    std::ofstream logfile("log.txt");
     std::vector<ClassForUc> in;
     Student student;
     std::string id;
@@ -839,7 +846,9 @@ bool Application::removeUC(std::string name, std::string UC, int undo)
     }
     if(!foundUC)
     {
+        //logfile << name << " does not have " << UC << " in his schedule" <<std::endl;
         std::cout << name << " does not have " << UC << " in his schedule" <<std::endl;
+
         return false;
     }
 
@@ -847,6 +856,7 @@ bool Application::removeUC(std::string name, std::string UC, int undo)
     students.erase(student);
     Student  newStudent(id,name,in);
     students.insert(newStudent);
+    //logfile<< name  << " was removed from " <<  UC << std::endl;
     std::cout<< name  << " was removed from " <<  UC << std::endl;
 
     if(!undo) //UNDO = 0
@@ -858,7 +868,7 @@ bool Application::removeUC(std::string name, std::string UC, int undo)
 
     if(in.empty()) //not really useful, I just thought it would be interesting
     {
-        std::cout<<"i was here" <<std::endl;
+        //logfile << name << " does not have any more UCs in his schedule"<<std::endl;
         std::cout << name << " does not have any more UCs in his schedule"<<std::endl;
         return true;
     }
@@ -868,6 +878,7 @@ bool Application::removeUC(std::string name, std::string UC, int undo)
 //.....................................................................................................//
 bool Application::switchClass(std::string name, std::string UC, std::string newClass, int undo)
 {
+    std::ofstream logfile("log.txt");
     std::string oldClass;
     Student studentCurrent;
     std::string id;
@@ -878,6 +889,7 @@ bool Application::switchClass(std::string name, std::string UC, std::string newC
 
     if(studentsInClassForUC(UC, newClass, 1) >= CAP)
     {
+        //logfile << name << "can't join" << newClass << "because the maximum amount of students for this class has been reached"<<std::endl;
         std::cout << name << "can't join" << newClass << "because the maximum amount of students for this class has been reached"<<std::endl;
         return false;
     }
@@ -904,6 +916,7 @@ bool Application::switchClass(std::string name, std::string UC, std::string newC
     }
     if(!foundUC)
     {
+        //logfile<< name << " can't switch to " << newClass << " because he is not in "<< UC << std::endl;
         std::cout << name << " can't switch to " << newClass << " because he is not in "<< UC << std::endl;
         return false;
     }
@@ -928,6 +941,7 @@ bool Application::switchClass(std::string name, std::string UC, std::string newC
     {
         students.erase(newStudent);
         students.insert(studentCurrent);
+        //logfile << name << " can't be in " << newClass <<  " in " << UC <<" because it will create overlaps in his schedule" <<std::endl;
         std::cout << name << " can't be in " << newClass <<  " in " << UC <<" because it will create overlaps in his schedule" <<std::endl;
         return false;
     }
@@ -955,13 +969,14 @@ bool Application::switchClass(std::string name, std::string UC, std::string newC
             {
                 students.erase(newStudent);                                         // and just put it back as it was
                 students.insert(studentCurrent);
+                //logfile << name << " can't switch to " << newClass <<" in "<< UC <<" because the balance between class occupation is disturbed"<<std::endl;
                 std::cout << name << " can't switch to " << newClass <<" in "<< UC <<" because the balance between class occupation is disturbed"<<std::endl;
                 return false; // If the difference is greater than 4, return false
             }
         }
     }
 
-
+    //logfile << name << " class has been changed from " << oldClass << " to " << newClass << " on UC " << UC << std::endl;
     std::cout << name << " class has been changed from " << oldClass << " to " << newClass << " on UC " << UC << std::endl;
 
     if(!undo)
@@ -1138,6 +1153,7 @@ void Application::checkRequests()
 }
 bool Application::reverseRequests()
 {
+    std::ofstream logfile("log.txt");
     int key;
     if(requestsProcessed.empty())
     {
@@ -1152,6 +1168,7 @@ bool Application::reverseRequests()
     {
         case 1:
         {
+
             std::cout << "removed " << request.getUc() << " from the schedule. ";
             break;
 
@@ -1204,7 +1221,7 @@ bool Application::reverseRequests()
 
         case 2:
         {
-            std::cout << "NO changes done" << std::endl;
+            std::cout << "No changes done" << std::endl;
             return false;
 
         }
