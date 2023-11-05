@@ -805,9 +805,6 @@ bool Application::addUC(std::string name, std::string UC,std::string aClass, int
     std::cout << "Sorry, no available classes for" << UC <<"that don't overlap " << name << " schedule" <<std::endl;
     return  false;
 
-
-
-
 }
 //...........................................................................................................................................................//
 bool Application::removeUC(std::string name, std::string UC, int undo)

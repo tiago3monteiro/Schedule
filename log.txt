@@ -1,5 +1,0 @@
-L.EIC001 on class 1LEIC02 was successfully added to the Vasco schedule
-Hernani class has been changed from 3LEIC11 to 3LEIC01 on UC L.EIC024
-Paulo was removed from L.EIC012
-L.EIC012 on class 2LEIC09 was successfully added to the Paulo schedule
-Vasco was removed from L.EIC001
